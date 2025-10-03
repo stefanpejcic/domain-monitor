@@ -6,9 +6,13 @@ on:
   workflow_dispatch:
     inputs:
       threshold:
-        description: "Trigger alert if days before expiration"
+        description: "Days before expiration to trigger an alert"
         required: false
         default: "30"
+
+permissions:
+  issues: write
+  contents: read
 
 jobs:
   check-domains:
