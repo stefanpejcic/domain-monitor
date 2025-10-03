@@ -1,10 +1,9 @@
 import whois
-from datetime import datetime, timedelta
+from datetime import datetime
 from github import Github
 import os
 
 DOMAINS_FILE = "domains.txt"
-DAYS_THRESHOLD = 30
 
 def read_domains(file_path):
     with open(file_path, "r") as f:
@@ -14,7 +13,7 @@ def get_expiration(domain):
     try:
         w = whois.whois(domain)
         exp = w.expiration_date
-        if isinstance(exp, list):  # sometimes it's a list
+        if isinstance(exp, list):
             exp = exp[0]
         return exp
     except Exception as e:
@@ -40,7 +39,9 @@ Please renew it ASAP.
 
 def main():
     token = os.getenv("GITHUB_TOKEN")
-    repo_name = os.getenv("GITHUB_REPOSITORY")  # GitHub Actions provides this
+    repo_name = os.getenv("GITHUB_REPOSITORY")
+    days_threshold = int(os.getenv("DAYS_THRESHOLD", "30"))
+
     g = Github(token)
     repo = g.get_repo(repo_name)
 
@@ -50,7 +51,7 @@ def main():
         if not exp_date:
             continue
         days_left = (exp_date - datetime.now()).days
-        if days_left <= DAYS_THRESHOLD:
+        if days_left <= days_threshold:
             create_issue(repo, domain, exp_date, days_left)
         else:
             print(f"{domain}: {days_left} days left (OK)")
