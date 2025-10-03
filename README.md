@@ -1,5 +1,3 @@
-# domain-monitor
-
 Easily monitor your domain expiration dates and get alerts when a domain is set to expire within **30 days**.
 
 relies entirely on **GitHub Actions** and **GitHub Issues**—no external services required.
