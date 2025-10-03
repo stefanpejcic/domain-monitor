@@ -2,8 +2,13 @@ name: Domain Expiration Monitor
 
 on:
   schedule:
-    - cron: "0 9 * * *"
+    - cron: "0 11 * * *"
   workflow_dispatch:
+    inputs:
+      threshold:
+        description: "Trigger alert if days before expiration"
+        required: false
+        default: "30"
 
 jobs:
   check-domains:
@@ -24,4 +29,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
+          DAYS_THRESHOLD: ${{ github.event.inputs.threshold || '30' }}
         run: python check_domains.py
