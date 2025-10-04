@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Domain & SSL Status</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-900">
+  <div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-6 text-center">🌐 Domain Status Page</h1>
+    <table class="min-w-full bg-white shadow-lg rounded-lg overflow-hidden">
+      <thead class="bg-gray-800 text-white">
+        <tr>
+          <th class="py-3 px-4 text-left">Domain</th>
+          <th class="py-3 px-4 text-left">WHOIS Expiry</th>
+          <th class="py-3 px-4 text-left">SSL Expiry</th>
+          <th class="py-3 px-4 text-left">HTTP Status</th>
+        </tr>
+      </thead>
+      <tbody id="status-table" class="divide-y divide-gray-200"></tbody>
+    </table>
+    <p class="text-gray-500 text-sm mt-6 text-center">Last updated: <span id="last-updated"></span></p>
+  </div>
+
+  <script>
+    async function loadStatus() {
+      try {
+        const res = await fetch("status.json?_=" + Date.now());
+        const data = await res.json();
+        const tbody = document.getElementById("status-table");
+        tbody.innerHTML = "";
+        data.domains.forEach(d => {
+          tbody.innerHTML += `
+            <tr class="hover:bg-gray-50">
+              <td class="py-3 px-4">${d.domain}</td>
+              <td class="py-3 px-4 ${d.whois_ok ? 'text-green-600' : 'text-red-600'}">
+                ${d.whois_expiry || "N/A"}
+              </td>
+              <td class="py-3 px-4 ${d.ssl_ok ? 'text-green-600' : 'text-red-600'}">
+                ${d.ssl_expiry || "N/A"}
+              </td>
+              <td class="py-3 px-4 ${d.http_ok ? 'text-green-600' : 'text-red-600'}">
+                ${d.http_status || "N/A"}
+              </td>
+            </tr>`;
+        });
+        document.getElementById("last-updated").textContent = data.last_updated;
+      } catch (err) {
+        console.error("Failed to load status.json", err);
+      }
+    }
+    loadStatus();
+  </script>
+</body>
+</html>
