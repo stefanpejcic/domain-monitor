@@ -4,3 +4,4 @@ openpanel.com
 openpanel.org
 sentinelfirewall.org
 wpxss.com
+expired.badssl.com
