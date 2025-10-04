@@ -1,4 +1,4 @@
-asily monitor your domains and get alerts when:
+Easily monitor your domains and get alerts when:
 
 * ⏳ domain is set to expire within **30 days**
 * 🔒 domain SSL certificate **expires soon**
@@ -10,6 +10,11 @@ relies entirely on **GitHub Actions** and **GitHub Issues**—no external servic
 
 ---
 
+## Demo
+
+For demo view: [http://status.pejcic.rs/status/](http://status.pejcic.rs/status/)
+
+---
 ## 🚀 Usage
 
 1. Fork repository
