@@ -14,6 +14,9 @@ relies entirely on **GitHub Actions** and **GitHub Issues**—no external servic
 
 For demo view: [http://status.pejcic.rs/status/](http://status.pejcic.rs/status/)
 
+<img width="1028" height="495" alt="slika" src="https://github.com/user-attachments/assets/735493ef-ecc4-4e48-8d58-334f5d2f0df2" />
+
+
 ---
 ## 🚀 Usage
 
