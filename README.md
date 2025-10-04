@@ -19,7 +19,8 @@ For demo view: [http://status.pejcic.rs/status/](http://status.pejcic.rs/status/
 
 1. Fork repository
 2. Add your domains to `domains.txt`.
-3. That’s it—no extra configuration needed.
+3. Optional: If you want a status page, create Gitub Page
+4. That’s it—no extra configuration needed.
 
 The workflow will:
 
