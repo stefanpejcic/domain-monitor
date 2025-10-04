@@ -1,8 +1,8 @@
-Easily monitor your domains and get alerts when:
+asily monitor your domains and get alerts when:
 
-- domain is set to expire within **30 days**
-- domain SSL certificate **expires soon**
-- HTTP status code for website is **>400**
+* ⏳ domain is set to expire within **30 days**
+* 🔒 domain SSL certificate **expires soon**
+* ⚠️ HTTP status code for website is **>400**
 
 relies entirely on **GitHub Actions** and **GitHub Issues**—no external services required.
 
