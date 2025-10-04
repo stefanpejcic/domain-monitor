@@ -4,6 +4,7 @@ import socket, ssl
 from datetime import datetime
 from github import Github, Auth
 import os
+import json
 
 DOMAINS_FILE = "domains.txt"
 
@@ -70,6 +71,7 @@ def main():
     repo = g.get_repo(repo_name)
 
     domains = read_domains(DOMAINS_FILE)
+    results = {"domains": [], "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
     for domain in domains:
         # ---- WHOIS Expiration ----
         exp_date = get_domain_expiration(domain)
@@ -124,6 +126,23 @@ def main():
                 close_issue(issue, f"✅ {domain} is healthy again (status {status}).")
             else:
                 print(f"{domain}: HTTP {status} OK")
+
+        # ---- JSON for status page ----
+        domain_info = {
+            "domain": domain,
+            "whois_expiry": exp_date.strftime("%Y-%m-%d") if exp_date else None,
+            "whois_ok": days_left > days_threshold if exp_date else False,
+            "ssl_expiry": ssl_exp.strftime("%Y-%m-%d") if ssl_exp else None,
+            "ssl_ok": ssl_days > days_threshold if ssl_exp else False,
+            "http_status": status,
+            "http_ok": status is not None and status < 400,
+        }
+        results["domains"].append(domain_info)
+
+    # ---- JSON Status page ----
+    os.makedirs("status", exist_ok=True)
+    with open("status/status.json", "w") as f:
+        json.dump(results, f, indent=2)
 
 if __name__ == "__main__":
     main()
