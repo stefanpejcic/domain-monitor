@@ -1,4 +1,8 @@
-Easily monitor your domain expiration dates and get alerts when a domain is set to expire within **30 days**.
+Easily monitor your domains and get alerts when:
+
+- domain is set to expire within **30 days**
+- domain SSL certificate **expires soon**
+- HTTP status code for website is **>400**
 
 relies entirely on **GitHub Actions** and **GitHub Issues**—no external services required.
 
@@ -16,10 +20,10 @@ The workflow will:
 
 * Run automatically **once per day** (or you can trigger it manually).
 * Check the expiration dates of your listed domains.
-* If a domain expires within **30 days**, a GitHub issue will be opened:
+* If a domain expires soon, SSL expired or status code is >400, a GitHub issue will be opened:
 
 <img width="997" height="576" alt="image" src="https://github.com/user-attachments/assets/72823c59-20bb-4b74-8b1e-4d8b17085beb" />  
 
-* If the domain is later renewed, the issue will be **automatically closed**:
+* If the domain is later renewed, SSL renewed or status code changes, the issue will be **automatically closed**:
 
 <img width="997" height="576" alt="image" src="https://github.com/user-attachments/assets/14fe1bcd-068f-4ecb-b2ff-f1e568708ce1" />  
