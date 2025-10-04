@@ -1,0 +1,36 @@
+name: Update Status Page
+
+on:
+  schedule:
+    - cron: "0 9 * * *"   # daily
+  workflow_dispatch:       # manual
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  update-status:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - run: pip install -r requirements.txt
+
+      - name: Run checks and generate status.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: python check_domains.py
+
+      - name: Commit status.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add status/status.json
+          git commit -m "Update status.json [skip ci]" || echo "No changes"
+          git push
