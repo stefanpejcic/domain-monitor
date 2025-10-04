@@ -1,4 +1,6 @@
 import whois
+import requests
+import socket, ssl
 from datetime import datetime
 from github import Github, Auth
 import os
@@ -9,42 +11,55 @@ def read_domains(file_path):
     with open(file_path, "r") as f:
         return [line.strip() for line in f if line.strip()]
 
-def get_expiration(domain):
+def get_domain_expiration(domain):
     try:
         w = whois.whois(domain)
         exp = w.expiration_date
-        if isinstance(exp, list):
+        if isinstance(exp, list):  # sometimes it's a list
             exp = exp[0]
         return exp
     except Exception as e:
-        print(f"Error checking {domain}: {e}")
+        print(f"[WHOIS] Error checking {domain}: {e}")
         return None
 
-def find_issue(repo, domain):
-    """Check if an open issue already exists for this domain."""
+def get_ssl_expiration(domain):
+    try:
+        ctx = ssl.create_default_context()
+        with socket.create_connection((domain, 443), timeout=5) as sock:
+            with ctx.wrap_socket(sock, server_hostname=domain) as ssock:
+                cert = ssock.getpeercert()
+                exp_str = cert['notAfter']
+                exp_date = datetime.strptime(exp_str, "%b %d %H:%M:%S %Y %Z")
+                return exp_date
+    except Exception as e:
+        print(f"[SSL] Error checking {domain}: {e}")
+        return None
+
+def get_http_status(domain):
+    try:
+        url = f"https://{domain}"
+        r = requests.get(url, timeout=10)
+        return r.status_code
+    except Exception as e:
+        print(f"[HTTP] Error checking {domain}: {e}")
+        return None
+
+def find_issue(repo, keyword):
+    """Find an open issue containing the keyword in title."""
     issues = repo.get_issues(state="open")
     for issue in issues:
-        if domain in issue.title:
+        if keyword in issue.title:
             return issue
     return None
 
-def create_issue(repo, domain, exp_date, days_left):
-    title = f"⚠️ Domain {domain} expires in {days_left} days!"
-    body = f"""
-The domain **{domain}** will expire on **{exp_date.strftime('%Y-%m-%d')}**.
-
-⏰ Days left: **{days_left}**
-
-Please renew it ASAP.
-"""
+def create_issue(repo, title, body):
     repo.create_issue(title=title, body=body)
-    print(f"Issue created for {domain}")
+    print(f"Issue created: {title}")
 
-def close_issue(issue, domain, exp_date, days_left):
-    msg = f"✅ Domain {domain} has been renewed. Expiration: {exp_date.strftime('%Y-%m-%d')} ({days_left} days left). Closing this issue."
+def close_issue(issue, msg):
     issue.create_comment(msg)
     issue.edit(state="closed")
-    print(f"Issue closed for {domain}")
+    print(f"Issue closed: {issue.title}")
 
 def main():
     token = os.getenv("GITHUB_TOKEN")
@@ -56,22 +71,59 @@ def main():
 
     domains = read_domains(DOMAINS_FILE)
     for domain in domains:
-        exp_date = get_expiration(domain)
-        if not exp_date:
-            continue
-        days_left = (exp_date - datetime.now()).days
-        issue = find_issue(repo, domain)
-
-        if days_left <= days_threshold:
-            if issue:
-                print(f"Issue already exists for {domain}")
+        # ---- WHOIS Expiration ----
+        exp_date = get_domain_expiration(domain)
+        if exp_date:
+            days_left = (exp_date - datetime.now()).days
+            issue = find_issue(repo, f"Domain {domain}")
+            if days_left <= days_threshold:
+                if issue:
+                    print(f"Issue already exists for {domain} (WHOIS)")
+                else:
+                    create_issue(
+                        repo,
+                        f"⚠️ Domain {domain} expires in {days_left} days!",
+                        f"**{domain}** will expire on {exp_date:%Y-%m-%d}.\nDays left: {days_left}"
+                    )
             else:
-                create_issue(repo, domain, exp_date, days_left)
+                if issue:
+                    close_issue(issue, f"✅ Domain {domain} renewed (expires {exp_date:%Y-%m-%d}, {days_left} days left).")
+                else:
+                    print(f"{domain}: WHOIS OK ({days_left} days left)")
+
+        # ---- SSL Expiration ----
+        ssl_exp = get_ssl_expiration(domain)
+        if ssl_exp:
+            ssl_days = (ssl_exp - datetime.now()).days
+            issue = find_issue(repo, f"SSL {domain}")
+            if ssl_days <= days_threshold:
+                if not issue:
+                    create_issue(
+                        repo,
+                        f"🔒 SSL for {domain} expires in {ssl_days} days!",
+                        f"SSL cert for **{domain}** expires on {ssl_exp:%Y-%m-%d}.\nDays left: {ssl_days}"
+                    )
+            else:
+                if issue:
+                    close_issue(issue, f"✅ SSL for {domain} renewed (expires {ssl_exp:%Y-%m-%d}, {ssl_days} days left).")
+                else:
+                    print(f"{domain}: SSL OK ({ssl_days} days left)")
+
+        # ---- HTTP Status ----
+        status = get_http_status(domain)
+        issue = find_issue(repo, f"Status {domain}")
+        if status is None or status >= 400:
+            if not issue:
+                create_issue(
+                    repo,
+                    f"❌ Status check failed for {domain}",
+                    f"Latest HTTP response: `{status}`"
+                )
         else:
             if issue:
-                close_issue(issue, domain, exp_date, days_left)
+                close_issue(issue, f"✅ {domain} is healthy again (status {status}).")
             else:
-                print(f"{domain}: {days_left} days left (OK, no issue needed)")
+                print(f"{domain}: HTTP {status} OK")
 
 if __name__ == "__main__":
     main()
