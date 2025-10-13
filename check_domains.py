@@ -77,9 +77,10 @@ def main():
         exp_date = get_domain_expiration(domain)
         if exp_date:
             if exp_date.tzinfo is not None:
-                exp_date = exp_date.astimezone(datetime.timezone.utc).replace(tzinfo=None)
+                exp_date = exp_date.astimezone(timezone.utc).replace(tzinfo=None)
         
-            days_left = (exp_date - datetime.utcnow()).days
+            now = datetime.utcnow()
+            days_left = (exp_date - now).days        
             issue = find_issue(repo, f"Domain {domain}")
             if days_left <= days_threshold:
                 if issue:
