@@ -1,7 +1,7 @@
 import whois
 import requests
 import socket, ssl
-from datetime import datetime
+from datetime import datetime, timezone
 from github import Github, Auth
 import os
 import json
@@ -76,7 +76,10 @@ def main():
         # ---- WHOIS Expiration ----
         exp_date = get_domain_expiration(domain)
         if exp_date:
-            days_left = (exp_date - datetime.now()).days
+            if exp_date.tzinfo is not None:
+                exp_date = exp_date.astimezone(datetime.timezone.utc).replace(tzinfo=None)
+        
+            days_left = (exp_date - datetime.utcnow()).days
             issue = find_issue(repo, f"Domain {domain}")
             if days_left <= days_threshold:
                 if issue:
