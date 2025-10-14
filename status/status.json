@@ -2,7 +2,7 @@
   "domains": [
     {
       "domain": "pejcic.rs",
-      "whois_expiry": "2026-07-10",
+      "whois_expiry": "2026-10-07",
       "whois_ok": true,
       "ssl_expiry": "2025-12-17",
       "ssl_ok": true,
@@ -12,7 +12,7 @@
     {
       "domain": "pcelarstvopejcic.com",
       "whois_expiry": "2025-11-12",
-      "whois_ok": true,
+      "whois_ok": false,
       "ssl_expiry": "2025-12-03",
       "ssl_ok": true,
       "http_status": 200,
@@ -55,5 +55,5 @@
       "http_ok": true
     }
   ],
-  "last_updated": "2025-10-06 09:15:13"
+  "last_updated": "2025-10-14 09:14:01"
 }
