@@ -2,8 +2,8 @@
   "domains": [
     {
       "domain": "pejcic.rs",
-      "whois_expiry": null,
-      "whois_ok": false,
+      "whois_expiry": "2026-10-07",
+      "whois_ok": true,
       "ssl_expiry": "2025-12-17",
       "ssl_ok": true,
       "http_status": 200,
@@ -11,8 +11,8 @@
     },
     {
       "domain": "pcelarstvopejcic.com",
-      "whois_expiry": null,
-      "whois_ok": false,
+      "whois_expiry": "2026-11-12",
+      "whois_ok": true,
       "ssl_expiry": "2025-12-03",
       "ssl_ok": true,
       "http_status": 200,
@@ -29,9 +29,9 @@
     },
     {
       "domain": "openpanel.org",
-      "whois_expiry": null,
-      "whois_ok": false,
-      "ssl_expiry": "2025-12-31",
+      "whois_expiry": "2027-02-27",
+      "whois_ok": true,
+      "ssl_expiry": "2026-01-16",
       "ssl_ok": true,
       "http_status": 200,
       "http_ok": true
@@ -55,5 +55,5 @@
       "http_ok": true
     }
   ],
-  "last_updated": "2025-10-18 09:11:27"
+  "last_updated": "2025-10-19 09:11:04"
 }
