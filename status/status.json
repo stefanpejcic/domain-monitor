@@ -15,8 +15,8 @@
       "whois_ok": true,
       "ssl_expiry": "2025-12-03",
       "ssl_ok": true,
-      "http_status": 200,
-      "http_ok": true
+      "http_status": 415,
+      "http_ok": false
     },
     {
       "domain": "openpanel.com",
@@ -51,9 +51,9 @@
       "whois_ok": true,
       "ssl_expiry": "2026-01-03",
       "ssl_ok": true,
-      "http_status": 200,
-      "http_ok": true
+      "http_status": 415,
+      "http_ok": false
     }
   ],
-  "last_updated": "2025-10-19 09:11:04"
+  "last_updated": "2025-10-20 09:14:37"
 }
