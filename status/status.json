@@ -48,12 +48,12 @@
     {
       "domain": "wpxss.com",
       "whois_expiry": "2025-11-30",
-      "whois_ok": true,
+      "whois_ok": false,
       "ssl_expiry": "2026-01-03",
       "ssl_ok": true,
       "http_status": 200,
       "http_ok": true
     }
   ],
-  "last_updated": "2025-10-30 09:13:43"
+  "last_updated": "2025-10-31 09:13:32"
 }
