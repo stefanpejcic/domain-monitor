@@ -33,7 +33,7 @@
           tbody.innerHTML += `
             <tr class="hover:bg-gray-50">
               <td class="py-3 px-4">${d.domain}</td>
-              <td class="py-3 px-4 ${d.whois_ok ? 'text-green-600' : 'text-red-600'}">
+              <td class="py-3 px-4 ${d.whois_ok ? 'text-green-600' : 'text-red-600 font-medium'}">
                 ${d.whois_expiry || "N/A"}
               </td>
               <td class="py-3 px-4 ${d.ssl_ok ? 'text-green-600' : 'text-red-600'}">
