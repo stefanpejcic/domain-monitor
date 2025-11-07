@@ -47,13 +47,13 @@
     },
     {
       "domain": "wpxss.com",
-      "whois_expiry": "2025-11-30",
-      "whois_ok": false,
+      "whois_expiry": "2026-11-30",
+      "whois_ok": true,
       "ssl_expiry": "2026-01-03",
       "ssl_ok": true,
       "http_status": 200,
       "http_ok": true
     }
   ],
-  "last_updated": "2025-11-06 09:13:49"
+  "last_updated": "2025-11-07 09:13:09"
 }
