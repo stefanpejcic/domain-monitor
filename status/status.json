@@ -5,7 +5,7 @@
       "whois_expiry": "2026-10-07",
       "whois_ok": true,
       "ssl_expiry": "2025-12-17",
-      "ssl_ok": true,
+      "ssl_ok": false,
       "http_status": 200,
       "http_ok": true
     },
@@ -55,5 +55,5 @@
       "http_ok": true
     }
   ],
-  "last_updated": "2025-11-16 09:11:42"
+  "last_updated": "2025-11-17 09:16:50"
 }
