@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Domain History</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-900">
+  <div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-6 text-center" id="domain-name"></h1>
+    <p class="text-center mb-4">Showing latest <span id="snapshot-count"></span> snapshots</p>
+    <div id="snapshots" class="space-y-4"></div>
+    <p class="mt-4 text-center">
+      <a href="index.html" class="text-blue-600 hover:underline">← Back to main status page</a>
+    </p>
+  </div>
+
+  <script>
+    async function getQueryParam(name, defaultValue=null) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name) || defaultValue;
+    }
+
+    async function loadDomainHistory() {
+      const domain = await getQueryParam("domain");
+      const count = parseInt(await getQueryParam("count", "100"));
+      if (!domain) return;
+
+      document.getElementById("domain-name").textContent = domain;
+      document.getElementById("snapshot-count").textContent = count;
+
+      const container = document.getElementById("snapshots");
+      container.innerHTML = "";
+
+      try {
+        // Fetch list of JSON files in history folder
+        const res = await fetch(`status/history/${domain}/`);
+        if (!res.ok) throw new Error("Failed to list history files");
+
+        const htmlText = await res.text();
+        // Parse links to JSON files (simple regex)
+        const files = Array.from(htmlText.matchAll(/href="(status_\d+\.json)"/g))
+                          .map(m => m[1])
+                          .sort().reverse()
+                          .slice(0, count);
+
+        for (const file of files) {
+          const snapshotRes = await fetch(`status/history/${domain}/${file}?_=${Date.now()}`);
+          const snapshot = await snapshotRes.json();
+          const pre = document.createElement("pre");
+          pre.className = "bg-white p-4 rounded shadow overflow-auto";
+          pre.textContent = JSON.stringify(snapshot, null, 2);
+          container.appendChild(pre);
+        }
+      } catch (err) {
+        console.error(err);
+        container.textContent = "Failed to load domain history. Make sure directory listing is enabled or JSON files are accessible.";
+      }
+    }
+
+    loadDomainHistory();
+  </script>
+</body>
+</html>
