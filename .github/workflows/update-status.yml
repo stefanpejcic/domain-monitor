@@ -2,8 +2,18 @@ name: Update Status Page
 
 on:
   schedule:
-    - cron: "0 9 * * *"   # daily
-  workflow_dispatch:       # manual
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+    inputs:
+      ssl_threshold:
+        description: "Days before expiration to trigger an alert"
+        required: false
+        default: "30"
+      response_time:
+        description: "HTTP response time in ms to trigger an alert"
+        required: false
+        default: "1000"
+  
 
 permissions:
   contents: write
@@ -21,10 +31,12 @@ jobs:
 
       - run: pip install -r requirements.txt
 
-      - name: Run checks and generate status.json
+      - name: Check domains
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
+          RESPONSE_THRESHOLD: ${{ github.event.inputs.response_time || '1000' }}
+          DAYS_THRESHOLD: ${{ github.event.inputs.ssl_threshold || '30' }}
         run: python check_domains.py
 
       - name: Commit files
