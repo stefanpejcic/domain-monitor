@@ -7,6 +7,7 @@ import os
 import json
 
 DOMAINS_FILE = "domains.txt"
+HTTP_RESPONSE_THRESHOLD_MS = 1000
 
 def read_domains(file_path):
     with open(file_path, "r") as f:
@@ -40,10 +41,11 @@ def get_http_status(domain):
     try:
         url = f"https://{domain}"
         r = requests.get(url, timeout=10)
-        return r.status_code
+        response_time_ms = r.elapsed.total_seconds() * 1000
+        return r.status_code, response_time_ms
     except Exception as e:
         print(f"[HTTP] Error checking {domain}: {e}")
-        return None
+        return None, None
 
 def find_issue(repo, keyword):
     """Find an open issue containing the keyword in title."""
@@ -116,20 +118,30 @@ def main():
                     print(f"{domain}: SSL OK ({ssl_days} days left)")
 
         # ---- HTTP Status ----
-        status = get_http_status(domain)
+        status, resp_time = get_http_status(domain)
         issue = find_issue(repo, f"Status {domain}")
+
+        # Check for HTTP errors
         if status is None or status >= 400:
             if not issue:
                 create_issue(
                     repo,
                     f"❌ Status check failed for {domain}",
-                    f"Latest HTTP response: `{status}`"
+                    f"Latest HTTP response: `{status}`, response time: {resp_time:.0f} ms"
+                )
+        # Check for slow response
+        elif resp_time and resp_time > HTTP_RESPONSE_THRESHOLD_MS:
+            if not issue:
+                create_issue(
+                    repo,
+                    f"⚠️ Slow response for {domain}",
+                    f"HTTP response time is {resp_time:.0f} ms (threshold {HTTP_RESPONSE_THRESHOLD_MS} ms)."
                 )
         else:
             if issue:
-                close_issue(issue, f"✅ {domain} is healthy again (status {status}).")
+                close_issue(issue, f"✅ {domain} is healthy again (status {status}, response time {resp_time:.0f} ms).")
             else:
-                print(f"{domain}: HTTP {status} OK")
+                print(f"{domain}: HTTP {status} OK, response time {resp_time:.0f} ms")
 
         # ---- JSON for status page ----
         domain_info = {
@@ -140,6 +152,7 @@ def main():
             "ssl_ok": ssl_days > days_threshold if ssl_exp else False,
             "http_status": status,
             "http_ok": status is not None and status < 400,
+            "http_response_time_ms": resp_time
         }
         results["domains"].append(domain_info)
 
