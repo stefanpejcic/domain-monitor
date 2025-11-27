@@ -157,7 +157,19 @@ def main():
         results["domains"].append(domain_info)
 
     # ---- JSON Status page ----
-    os.makedirs("status", exist_ok=True)
+    os.makedirs("status/history", exist_ok=True)  # create status/history folder
+
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    history_file = f"status/history/status_{timestamp}.json"
+    with open(history_file, "w") as f:
+        json.dump(results, f, indent=2)
+
+    # symlink to latest
+    symlink_path = "status/status.json"
+    if os.path.islink(symlink_path) or os.path.exists(symlink_path):
+        os.remove(symlink_path)
+    os.symlink(history_file, symlink_path)
+
     with open("status/status.json", "w") as f:
         json.dump(results, f, indent=2)
 
