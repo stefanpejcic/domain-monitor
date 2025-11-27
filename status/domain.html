@@ -26,6 +26,18 @@
       const count = parseInt(await getQueryParam("count", "100"));
       if (!domain) return;
 
+      // Load config
+      let config;
+      try {
+        const configRes = await fetch("status/config.json?_=" + Date.now());
+        config = await configRes.json();
+      } catch (err) {
+        console.error("Failed to load config.json", err);
+        document.getElementById("snapshots").textContent = "Failed to load configuration.";
+        return;
+      }
+
+      const { github_user, github_repo, github_branch } = config;
       document.getElementById("domain-name").textContent = domain;
       document.getElementById("snapshot-count").textContent = count;
 
@@ -33,19 +45,20 @@
       container.innerHTML = "";
 
       try {
-        // Fetch list of JSON files in history folder
-        const res = await fetch(`status/history/${domain}/`);
-        if (!res.ok) throw new Error("Failed to list history files");
+        // GitHub API URL for folder contents
+        const apiUrl = `https://api.github.com/repos/${github_user}/${github_repo}/contents/status/history/${domain}?ref=${github_branch}`;
+        const res = await fetch(apiUrl);
+        if (!res.ok) throw new Error("Failed to fetch folder contents");
 
-        const htmlText = await res.text();
-        // Parse links to JSON files (simple regex)
-        const files = Array.from(htmlText.matchAll(/href="(status_\d+\.json)"/g))
-                          .map(m => m[1])
-                          .sort().reverse()
-                          .slice(0, count);
+        const files = await res.json();
+        // Filter JSON files and sort latest first
+        const jsonFiles = files
+          .filter(f => f.name.endsWith(".json"))
+          .sort((a, b) => b.name.localeCompare(a.name))
+          .slice(0, count);
 
-        for (const file of files) {
-          const snapshotRes = await fetch(`status/history/${domain}/${file}?_=${Date.now()}`);
+        for (const file of jsonFiles) {
+          const snapshotRes = await fetch(file.download_url);
           const snapshot = await snapshotRes.json();
           const pre = document.createElement("pre");
           pre.className = "bg-white p-4 rounded shadow overflow-auto";
@@ -54,7 +67,7 @@
         }
       } catch (err) {
         console.error(err);
-        container.textContent = "Failed to load domain history. Make sure directory listing is enabled or JSON files are accessible.";
+        container.textContent = "Failed to load domain history. Make sure the domain exists and files are pushed.";
       }
     }
 
