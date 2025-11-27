@@ -7,7 +7,6 @@ import os
 import json
 
 DOMAINS_FILE = "domains.txt"
-HTTP_RESPONSE_THRESHOLD_MS = 1000
 
 def read_domains(file_path):
     with open(file_path, "r") as f:
@@ -68,6 +67,7 @@ def main():
     token = os.getenv("GITHUB_TOKEN")
     repo_name = os.getenv("GITHUB_REPOSITORY")
     days_threshold = int(os.getenv("DAYS_THRESHOLD", "30"))
+    response_threshold = int(os.getenv("RESPONSE_THRESHOLD", "1000"))
 
     g = Github(auth=Auth.Token(token))
     repo = g.get_repo(repo_name)
@@ -130,12 +130,12 @@ def main():
                     f"Latest HTTP response: `{status}`, response time: {resp_time:.0f} ms"
                 )
         # Check for slow response
-        elif resp_time and resp_time > HTTP_RESPONSE_THRESHOLD_MS:
+        elif resp_time and resp_time > response_threshold:
             if not issue:
                 create_issue(
                     repo,
                     f"⚠️ Slow response for {domain}",
-                    f"HTTP response time is {resp_time:.0f} ms (threshold {HTTP_RESPONSE_THRESHOLD_MS} ms)."
+                    f"HTTP response time is {resp_time:.0f} ms (threshold {response_threshold} ms)."
                 )
         else:
             if issue:
