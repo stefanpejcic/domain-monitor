@@ -15,6 +15,7 @@
           <th class="py-3 px-4 text-left">WHOIS Expiry</th>
           <th class="py-3 px-4 text-left">SSL Expiry</th>
           <th class="py-3 px-4 text-left">HTTP Status</th>
+          <th class="py-3 px-4 text-left">Response Time (ms)</th>
         </tr>
       </thead>
       <tbody id="status-table" class="divide-y divide-gray-200"></tbody>
@@ -29,7 +30,20 @@
         const data = await res.json();
         const tbody = document.getElementById("status-table");
         tbody.innerHTML = "";
+
         data.domains.forEach(d => {
+          // Determine color for response time
+          let respClass = "";
+          if (d.http_response_time_ms === null) {
+            respClass = "text-gray-500";
+          } else if (d.http_response_time_ms <= 1000) {
+            respClass = "text-green-600";
+          } else if (d.http_response_time_ms <= 2000) {
+            respClass = "text-orange-600 font-medium";
+          } else {
+            respClass = "text-red-600 font-bold";
+          }
+
           tbody.innerHTML += `
             <tr class="hover:bg-gray-50">
               <td class="py-3 px-4">${d.domain}</td>
@@ -42,17 +56,24 @@
               <td class="py-3 px-4 ${d.http_ok ? 'text-green-600' : 'text-red-600'}">
                 ${d.http_status || "N/A"}
               </td>
+              <td class="py-3 px-4 ${respClass}">
+                ${d.http_response_time_ms !== null ? d.http_response_time_ms.toFixed(0) : "N/A"}
+              </td>
             </tr>`;
         });
+
         document.getElementById("last-updated").textContent = data.last_updated;
       } catch (err) {
         console.error("Failed to load status.json", err);
       }
     }
+
     loadStatus();
+    //setInterval(loadStatus, 60000);
   </script>
 
-<a class="top-0 right-0 absolute" href="https://github.com/stefanpejcic/domain-monitor"><img loading="lazy" decoding="async" width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_darkblue_121621.png" class="attachment-full size-full" alt="Fork me on GitHub"></a>
-  
+  <a class="top-0 right-0 absolute" href="https://github.com/stefanpejcic/domain-monitor">
+    <img loading="lazy" decoding="async" width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_darkblue_121621.png" class="attachment-full size-full" alt="Fork me on GitHub">
+  </a>
 </body>
 </html>
