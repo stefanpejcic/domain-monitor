@@ -5,10 +5,14 @@ on:
     - cron: "0 11 * * *"
   workflow_dispatch:
     inputs:
-      threshold:
+      ssl_threshold:
         description: "Days before expiration to trigger an alert"
         required: false
         default: "30"
+      response_time:
+        description: "HTTP response time in ms to trigger an alert"
+        required: false
+        default: "1000"
 
 permissions:
   issues: write
@@ -33,5 +37,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
-          DAYS_THRESHOLD: ${{ github.event.inputs.threshold || '30' }}
+          RESPONSE_THRESHOLD: ${{ github.event.inputs.response_time || '1000' }}
+          DAYS_THRESHOLD: ${{ github.event.inputs.ssl_threshold || '30' }}
         run: python check_domains.py
