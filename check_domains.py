@@ -158,21 +158,19 @@ def main():
 
 
         #save per domain
-        domain_file = f"status/{domain}.json"
         domain_history_folder = f"status/history/{domain}"
         os.makedirs(domain_history_folder, exist_ok=True)
-
-        with open(domain_file, "w") as f:
-            json.dump(domain_info, f, indent=2)
 
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         history_file = f"{domain_history_folder}/status_{timestamp}.json"
         with open(history_file, "w") as f:
+            print(f"Saving results for domain in {history_file}")
             json.dump(domain_info, f, indent=2)
 
     # ---- JSON Status page ----
     os.makedirs("status", exist_ok=True)
     with open("status/status.json", "w") as f:
+        print(f"Saving combined results in status.json file.")
         json.dump(results, f, indent=2)
 
 if __name__ == "__main__":
