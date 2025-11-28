@@ -200,14 +200,14 @@ if (snapshots.length > 0) {
   `;
 }
 
-// Build HTTP section as horizontal bar with tooltips
+// Build HTTP section as horizontal bar with visible tooltips
 if (snapshots.length > 0) {
   httpContent.innerHTML = ''; // clear previous
 
   const barContainer = document.createElement('div');
-  barContainer.className = "items-center group h-8 mt-3 hidden w-full lg:flex";
+  barContainer.className = "items-center group h-8 mt-3 hidden w-full lg:flex relative"; // add relative
 
-  snapshots.forEach((s, index) => {
+  snapshots.forEach((s) => {
     const segWrapper = document.createElement('div');
     segWrapper.className = "relative size-full overflow-hidden px-[0.5px] transition first:rounded-l-[4px] first:pl-0 last:rounded-r-[4px] last:pr-0 sm:px-px";
     segWrapper.setAttribute('data-state', 'closed');
@@ -228,7 +228,7 @@ if (snapshots.length > 0) {
 
     // Create tooltip
     const tooltip = document.createElement('div');
-    tooltip.className = "absolute bottom-full mb-1 left-1/2 -translate-x-1/2 px-2 py-1 text-xs rounded bg-gray-800 text-white opacity-0 pointer-events-none transition-opacity duration-200 z-10 whitespace-nowrap";
+    tooltip.className = "absolute bottom-full mb-1 left-1/2 -translate-x-1/2 px-2 py-1 text-xs rounded bg-gray-800 text-white opacity-0 pointer-events-none transition-opacity duration-200 z-50 whitespace-nowrap shadow-lg";
     tooltip.innerHTML = `
       <div><strong>${s.date}</strong></div>
       <div>Status: ${s.http_ok ? 'OK' : 'Issue'}</div>
@@ -246,6 +246,7 @@ if (snapshots.length > 0) {
 
   httpContent.appendChild(barContainer);
 }
+
 
 
 
