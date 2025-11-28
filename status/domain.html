@@ -178,7 +178,7 @@ function domainHistory() {
 
                     this.statusSummary = `
                         Website was checked <strong>${totalChecks}</strong> times.
-                        <br>There were <strong>${outages}</strong> outages.
+                        <br>There were ${outages === 0 ? 'no' : `<strong>${outages}</strong>`} outages.
                         <br>Average response time: <strong>${avgResponse} ms</strong>.
                     `;
                 }
