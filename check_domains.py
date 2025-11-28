@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 from github import Github, Auth
 import os
 import json
+import xml.etree.ElementTree as ET
 
 def read_domains():
     with open("domains.txt", "r") as f:
@@ -78,6 +79,23 @@ def save_domain_history(domain, history):
     with open(history_file, "w") as f:
         json.dump(history, f, indent=2)
     print(f"Saved history for {domain} in {history_file}")
+
+def load_domain_xml(domain):
+    xml_file = f"status/history/{domain}.xml"
+    if os.path.exists(xml_file):
+        tree = ET.parse(xml_file)
+        return tree, tree.getroot()
+
+    root = ET.Element("domain_history")
+    root.set("domain", domain)
+    tree = ET.ElementTree(root)
+    return tree, root
+
+def save_domain_xml(domain, tree):
+    xml_file = f"status/history/{domain}.xml"
+    tree.write(xml_file, encoding="utf-8", xml_declaration=True)
+    print(f"Saved XML history for {domain} → {xml_file}")
+
 
 def get_outgoing_ip():
     try:
@@ -208,7 +226,8 @@ def main():
             else:
                 comment_on_issue(ip_issue, f"IP updated to `{resolved_ip}`")
                 ip_issue.edit(title=f"🚨 IP change detected for {domain} (was {previous_ip})")
-    
+
+        # ---- Checks completed for domain, saving.. ----
         domain_entry = {
             "timestamp": timestamp,
             "whois_expiry": exp_date.strftime("%Y-%m-%d") if exp_date else None,
@@ -220,15 +239,45 @@ def main():
             "http_response_time_ms": resp_time,
             "resolved_ip": resolved_ip
         }
+        
+        # ---- Save JSON for domain ----
         domain_history["history"].append({**domain_entry, "ip_address": gh_actions_ip})
         save_domain_history(domain, domain_history)
+        # ---- Save XML for domain ----
+        tree, root = load_domain_xml(domain)
+        entry_xml = ET.SubElement(root, "entry")
+        for key, value in {**domain_entry, "ip_address": gh_actions_ip}.items():
+            el = ET.SubElement(entry_xml, key)
+            el.text = str(value)
+        save_domain_xml(domain, tree)
+        # ---- Add domain to the dictionary for combined JSON/XML files ----
         combined_results["domains"].append({**domain_entry, "domain": domain})
 
-    # ---- Save combined status.json ----
+    # ---- Save combined data to status.json ----
     os.makedirs("status", exist_ok=True)
     with open("status/status.json", "w") as f:
         print("Saving combined results in status/status.json")
         json.dump(combined_results, f, indent=2)
+
+    # ---- Save combined data to index.xml ----
+    root = ET.Element("domains_report")
+    root.set("last_updated", combined_results["last_updated"])
+    root.set("ip_address", combined_results["ip_address"])
+
+    for item in combined_results["domains"]:
+        domain_el = ET.SubElement(root, "domain")
+        domain_el.set("name", item["domain"])
+
+        for key, value in item.items():
+            if key == "domain":
+                continue
+            child = ET.SubElement(domain_el, key)
+            child.text = str(value)
+
+    tree = ET.ElementTree(root)
+    tree.write("status/index.xml", encoding="utf-8", xml_declaration=True)
+    print("Generated status/index.xml")
+
 
 if __name__ == "__main__":
     main()
