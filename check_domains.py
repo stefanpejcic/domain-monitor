@@ -220,7 +220,7 @@ def main():
             "http_response_time_ms": resp_time,
             "resolved_ip": resolved_ip
         }
-        domain_history["history"].append(domain_entry, "ip_address": gh_actions_ip)
+        domain_history["history"].append({**domain_entry, "ip_address": gh_actions_ip})
         save_domain_history(domain, domain_history)
         combined_results["domains"].append({**domain_entry, "domain": domain})
 
