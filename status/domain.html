@@ -200,17 +200,17 @@ if (snapshots.length > 0) {
   `;
 }
 
-// Build HTTP section as horizontal bar with visible tooltips
+
+// Build HTTP section as horizontal bar with hover info
 if (snapshots.length > 0) {
   httpContent.innerHTML = ''; // clear previous
 
   const barContainer = document.createElement('div');
-  barContainer.className = "items-center group h-8 mt-3 hidden w-full lg:flex relative"; // add relative
+  barContainer.className = "items-center group h-8 mt-3 hidden w-full lg:flex relative";
 
   snapshots.forEach((s) => {
     const segWrapper = document.createElement('div');
     segWrapper.className = "relative size-full overflow-hidden px-[0.5px] transition first:rounded-l-[4px] first:pl-0 last:rounded-r-[4px] last:pr-0 sm:px-px";
-    segWrapper.setAttribute('data-state', 'closed');
 
     const segInner = document.createElement('div');
     segInner.className = "size-full rounded-[1px]";
@@ -226,28 +226,26 @@ if (snapshots.length > 0) {
       segInner.classList.add('bg-gray-300', 'dark:bg-gray-700');
     }
 
-    // Create tooltip
-    const tooltip = document.createElement('div');
-    tooltip.className = "absolute bottom-full mb-1 left-1/2 -translate-x-1/2 px-2 py-1 text-xs rounded bg-gray-800 text-white opacity-0 pointer-events-none transition-opacity duration-200 z-50 whitespace-nowrap shadow-lg";
-    tooltip.innerHTML = `
+    // Info box
+    const infoBox = document.createElement('div');
+    infoBox.className = "absolute bottom-full mb-1 left-1/2 -translate-x-1/2 px-2 py-1 text-xs rounded bg-gray-800 text-white hidden whitespace-nowrap z-50 shadow-lg";
+    infoBox.innerHTML = `
       <div><strong>${s.date}</strong></div>
       <div>Status: ${s.http_ok ? 'OK' : 'Issue'}</div>
       <div>Response: ${s.http_response_time_ms.toFixed(2)} ms</div>
     `;
 
-    // Show tooltip on hover
-    segWrapper.addEventListener('mouseenter', () => tooltip.classList.add('opacity-100'));
-    segWrapper.addEventListener('mouseleave', () => tooltip.classList.remove('opacity-100'));
+    // Show info box on hover
+    segWrapper.addEventListener('mouseenter', () => infoBox.classList.remove('hidden'));
+    segWrapper.addEventListener('mouseleave', () => infoBox.classList.add('hidden'));
 
     segWrapper.appendChild(segInner);
-    segWrapper.appendChild(tooltip);
+    segWrapper.appendChild(infoBox);
     barContainer.appendChild(segWrapper);
   });
 
   httpContent.appendChild(barContainer);
 }
-
-
 
 
   } catch (err) {
