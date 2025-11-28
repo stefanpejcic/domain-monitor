@@ -76,8 +76,9 @@
             </div>
 
             <div class="flex gap-2">
-                <button @click="showTable = true; showJSON = false" class="px-3 py-1 text-sm bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600" x-show="!showTable">Table</button>
-                <button @click="showJSON = true; showTable = false" class="px-3 py-1 text-sm bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600" x-show="!showJSON">JSON</button>
+                <button @click="showTable = true; showJSON = false; showXML = false" class="px-3 py-1 text-sm bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600" x-show="!showTable">Table</button>
+                <button @click="showJSON = true; showTable = false; showXML = false" class="px-3 py-1 text-sm bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600" x-show="!showJSON">JSON</button>
+                <button @click="showXML = true; showTable = false; showJSON = false; loadXML()" class="px-3 py-1 text-sm bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600" x-show="!showXML">XML</button>
 
                 <button title="Copy to clipboard"
                     class="px-3 py-1 text-sm bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600"
@@ -141,6 +142,12 @@
         <div x-show="showJSON" x-transition class="mt-4">
             <pre class="bg-gray-100 dark:bg-gray-800 p-3 rounded text-xs overflow-x-auto" x-text="JSON.stringify(history, null, 2)"></pre>
         </div>
+
+        <!-- XML -->
+        <div x-show="showXML" x-transition class="mt-4">
+            <pre class="bg-gray-100 dark:bg-gray-800 p-3 rounded text-xs overflow-x-auto" x-text="xmlContent"></pre>
+        </div>
+      
     </div>
 </div>
 
@@ -154,6 +161,8 @@ function domainHistory() {
         tooltip: { show: false, text: "", x: 0, y: 0 },
         showTable: true,
         showJSON: false,
+        showXML: false,
+        xmlContent: "",
         isUp: true,
         uptimePercentage: 0,
         firstChecked: '',
@@ -208,6 +217,18 @@ function domainHistory() {
             }
         },
 
+        // load xml file on btn click
+        async loadXML() {
+            try {
+                const res = await fetch(`${this.domain}.xml`);
+                if (!res.ok) throw new Error("Failed to load XML");
+                const text = await res.text();
+                this.xmlContent = text;
+            } catch (err) {
+                this.xmlContent = "Failed to load XML.";
+            }
+        }
+      
         // format to human readable date
         timeAgo(timestamp) {
             const now = new Date();
