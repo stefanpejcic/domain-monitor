@@ -4,74 +4,144 @@
   <meta charset="UTF-8">
   <title>Domain History</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 <body class="bg-gray-100 text-gray-900">
   <div class="container mx-auto p-6">
     <h1 class="text-3xl font-bold mb-6 text-center" id="domain-name"></h1>
     <p class="text-center mb-4">Showing latest <span id="snapshot-count"></span> snapshots</p>
+
+
+<div class="my-6">
+  <canvas id="domain-chart" class="bg-white p-4 rounded shadow"></canvas>
+</div>
+
+
+
+    
     <div id="snapshots" class="space-y-4"></div>
     <p class="mt-4 text-center">
       <a href="index.html" class="text-blue-600 hover:underline">← Back to main status page</a>
     </p>
   </div>
 
-  <script>
-    async function getQueryParam(name, defaultValue=null) {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(name) || defaultValue;
+<script>
+async function getQueryParam(name, defaultValue = null) {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(name) || defaultValue;
+}
+
+async function loadDomainHistory() {
+  const domain = await getQueryParam("domain");
+  const count = parseInt(await getQueryParam("count", "100"));
+  if (!domain) return;
+
+  // Load config
+  let config;
+  try {
+    const configRes = await fetch("status/config.json?_=" + Date.now());
+    config = await configRes.json();
+  } catch (err) {
+    console.error("Failed to load config.json", err);
+    document.getElementById("snapshots").textContent = "Failed to load configuration.";
+    return;
+  }
+
+  const { github_user, github_repo, github_branch } = config;
+  document.getElementById("domain-name").textContent = domain;
+  document.getElementById("snapshot-count").textContent = count;
+
+  const container = document.getElementById("snapshots");
+  container.innerHTML = "";
+
+  try {
+    const apiUrl = `https://api.github.com/repos/${github_user}/${github_repo}/contents/status/history/${domain}?ref=${github_branch}`;
+    const res = await fetch(apiUrl);
+    if (!res.ok) throw new Error("Failed to fetch folder contents");
+
+    const files = await res.json();
+
+    const jsonFiles = files
+      .filter(f => f.name.endsWith(".json"))
+      .sort((a, b) => b.name.localeCompare(a.name))
+      .slice(0, count);
+
+    // Prepare data for Chart.js
+    const timestamps = [];
+    const responseTimes = [];
+    const httpStatuses = [];
+
+    for (const file of jsonFiles.reverse()) { // oldest first
+      const snapshotRes = await fetch(file.download_url);
+      const snapshot = await snapshotRes.json();
+
+      timestamps.push(file.name); // or use snapshot date if available
+      responseTimes.push(snapshot.http_response_time_ms);
+      httpStatuses.push(snapshot.http_status);
+
+      const pre = document.createElement("pre");
+      pre.className = "bg-white p-4 rounded shadow overflow-auto";
+      pre.textContent = JSON.stringify(snapshot, null, 2);
+      container.appendChild(pre);
     }
 
-    async function loadDomainHistory() {
-      const domain = await getQueryParam("domain");
-      const count = parseInt(await getQueryParam("count", "100"));
-      if (!domain) {
-        window.location.href = "index.html";
-        return;
-      }
-
-      let config;
-      try {
-        const configRes = await fetch("config.json?_=" + Date.now());
-        config = await configRes.json();
-      } catch (err) {
-        console.error("Failed to load config.json", err);
-        document.getElementById("snapshots").textContent = "Failed to load configuration.";
-        return;
-      }
-
-      const { github_user, github_repo, github_branch } = config;
-      document.getElementById("domain-name").textContent = domain;
-      document.getElementById("snapshot-count").textContent = count;
-
-      const container = document.getElementById("snapshots");
-      container.innerHTML = "";
-
-      try {
-        const apiUrl = `https://api.github.com/repos/${github_user}/${github_repo}/contents/status/history/${domain}?ref=${github_branch}`;
-        const res = await fetch(apiUrl);
-        if (!res.ok) throw new Error("Failed to fetch folder contents");
-
-        const files = await res.json();
-        const jsonFiles = files
-          .filter(f => f.name.endsWith(".json"))
-          .sort((a, b) => b.name.localeCompare(a.name))
-          .slice(0, count);
-
-        for (const file of jsonFiles) {
-          const snapshotRes = await fetch(file.download_url);
-          const snapshot = await snapshotRes.json();
-          const pre = document.createElement("pre");
-          pre.className = "bg-white p-4 rounded shadow overflow-auto";
-          pre.textContent = JSON.stringify(snapshot, null, 2);
-          container.appendChild(pre);
+    // Create Chart.js chart
+    const ctx = document.getElementById('domain-chart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: timestamps,
+        datasets: [
+          {
+            label: 'HTTP Response Time (ms)',
+            data: responseTimes,
+            borderColor: 'rgba(59, 130, 246, 1)',
+            backgroundColor: 'rgba(59, 130, 246, 0.2)',
+            tension: 0.3,
+            yAxisID: 'y1',
+          },
+          {
+            label: 'HTTP Status',
+            data: httpStatuses,
+            borderColor: 'rgba(16, 185, 129, 1)',
+            backgroundColor: 'rgba(16, 185, 129, 0.2)',
+            tension: 0.3,
+            yAxisID: 'y2',
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: true },
+          tooltip: { mode: 'index', intersect: false }
+        },
+        scales: {
+          y1: { 
+            type: 'linear', 
+            position: 'left', 
+            title: { display: true, text: 'Response Time (ms)' } 
+          },
+          y2: { 
+            type: 'linear', 
+            position: 'right', 
+            title: { display: true, text: 'HTTP Status' }, 
+            grid: { drawOnChartArea: false } 
+          }
         }
-      } catch (err) {
-        console.error(err);
-        container.textContent = "Failed to load domain history. Make sure the domain exists and files are pushed.";
       }
-    }
+    });
 
-    loadDomainHistory();
-  </script>
+  } catch (err) {
+    console.error(err);
+    container.textContent = "Failed to load domain history. Make sure the domain exists and files are pushed.";
+  }
+}
+
+loadDomainHistory();
+</script>
+
+  
 </body>
 </html>
