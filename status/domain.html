@@ -252,10 +252,12 @@ function domainHistory() {
             const logsText = JSON.stringify(this.history, null, 2);
             navigator.clipboard.writeText(logsText)
                 .then(() => {
+                    const btn = event.currentTarget;
+                    const rect = btn.getBoundingClientRect();
                     this.tooltip.text = "Copied!";
                     this.tooltip.show = true;
-                    this.tooltip.x = window.innerWidth / 2;
-                    this.tooltip.y = 100;
+                    this.tooltip.x = rect.left + rect.width / 2;
+                    this.tooltip.y = rect.top - 30; // above the button
                     setTimeout(() => this.tooltip.show = false, 1000);
                 })
                 .catch(err => {
@@ -263,7 +265,7 @@ function domainHistory() {
                     this.tooltip.show = true;
                     setTimeout(() => this.tooltip.show = false, 1500);
                 });
-        },
+        }
         
         openLogsInNewTab() {
             window.open(`history/${this.domain}.json`, '_blank');
