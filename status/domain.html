@@ -137,6 +137,26 @@
                   </tr>
                 </thead>
                 <tbody>
+
+                  <template x-if="history.length === 0">
+                    <template x-for="i in 20" :key="i">
+                      <tr class="border-b border-gray-200 dark:border-gray-700 animate-pulse">
+                        <td class="px-3 py-1">
+                          <div class="h-4 bg-gray-300 dark:bg-gray-700 rounded w-24"></div>
+                        </td>
+                        <td class="px-3 py-1">
+                          <div class="h-4 bg-gray-300 dark:bg-gray-700 rounded w-16"></div>
+                        </td>
+                        <td class="px-3 py-1">
+                          <div class="h-4 bg-gray-300 dark:bg-gray-700 rounded w-12"></div>
+                        </td>
+                        <td class="px-3 py-1">
+                          <div class="h-4 bg-gray-300 dark:bg-gray-700 rounded w-8"></div>
+                        </td>
+                      </tr>
+                    </template>
+                  </template>
+                  
                   <template x-for="(entry, index) in [...history].slice().reverse()" :key="index">
                       <tr class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800">
                           <td class="px-3 py-1" x-text="entry.time"></td>
