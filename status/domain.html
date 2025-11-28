@@ -52,7 +52,7 @@ async function loadDomainHistory() {
 
   const { github_user, github_repo, github_branch } = config;
   document.getElementById("domain-name").textContent = domain;
-  document.getElementById("snapshot-count").textContent = count;
+  document.getElementById("snapshot-count").textContent = count; // initially show req count
 
   const domainStatusDiv = document.getElementById("domain-status");
   const httpContent = document.getElementById("http-content");
@@ -248,9 +248,31 @@ if (snapshots.length > 0) {
 }
 
 
+document.getElementById("snapshot-count").textContent = jsonFiles.length; // update count
+
+
   } catch (err) {
     console.error(err);
-    document.getElementById("sections").textContent = "Failed to load domain history. Make sure the domain exists and files are pushed.";
+
+    try {
+        const domainsRes = await fetch('../domains.txt?_=' + Date.now());
+        const domainsText = await domainsRes.text();
+        const domains = domainsText.split(/\r?\n/).map(d => d.trim()).filter(Boolean);
+
+        if (domains.includes(domain)) {
+            document.getElementById("sections").textContent = 
+                "You have exceeded the number of requests you can do in an hour, by default, GitHub allows each IP address 60 requests per hour, which you have consumed. You'll have to wait before accessing this website again. Please wait for another hour and your IP address' limit will be restored.";
+        } else {
+            document.getElementById("sections").textContent = 
+                `The domain "${domain}" is not in the list of monitored domains.`;
+        }
+    } catch (err2) {
+        console.error(err2);
+        document.getElementById("sections").textContent = 
+            "Failed to load domain history and could not check domains.txt.";
+    }
+  
+  
   }
 }
 
