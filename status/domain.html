@@ -208,9 +208,9 @@
       
         <!-- API -->
         <div x-show="showAPI" x-transition class="mt-4">
-          <h2 class="mx-auto inline-flex items-center justify-center mt-3 text-md font-semibold">API</h2>
-          <p x-show="domain" class="bg-gray-100 dark:bg-gray-800 p-3 rounded text-xs overflow-x-auto">You can use our API to integrate the information and updates from this status page into your own website or application. Simply make a <code>GET</code> request to the following URL:
-            <code x-text="`${window.location.origin}/status/history/${domain}.json`"></code>
+          <p x-show="domain" class="bg-gray-100 dark:bg-gray-800 p-3 rounded text-sm overflow-x-auto">You can use our API to integrate the information and updates from this status page into your own website or application. Simply make a <code>GET</code> request to the following URL:
+          </br>
+          <code x-text="`${window.location.origin}/status/history/${domain}.json`"></code>
           </p>
         </div>
     </div>
