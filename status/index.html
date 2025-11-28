@@ -21,7 +21,7 @@
     </span>
     <h1 class="mt-3 text-lg font-semibold text-gray-900 dark:text-gray-50"
         :class="allUp ? 'text-gray-900 dark:text-gray-50' : 'text-red-600 dark:text-red-400'">
-      <span x-text="allUp ? 'All services are online' : 'Some services are down'"></span>
+      <span x-text="allUp ? 'No issues detected' : 'Issues detected'"></span>
     </h1>
     <p class="text-sm text-gray-700 dark:text-gray-300">Last updated on <span x-text="lastUpdated"></span></p>
 
