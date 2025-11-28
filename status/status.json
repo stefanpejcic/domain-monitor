@@ -1,71 +1,71 @@
 {
   "domains": [
     {
-      "timestamp": "2025-11-28 14:35:07",
+      "timestamp": "2025-11-28 14:35:42",
       "whois_expiry": "2026-10-07",
       "whois_ok": true,
       "ssl_expiry": "2026-02-17",
       "ssl_ok": true,
       "http_status": 200,
       "http_ok": true,
-      "http_response_time_ms": 257.75,
+      "http_response_time_ms": 65.031,
       "domain": "pejcic.rs"
     },
     {
-      "timestamp": "2025-11-28 14:35:09",
+      "timestamp": "2025-11-28 14:35:43",
       "whois_expiry": "2026-11-12",
       "whois_ok": true,
       "ssl_expiry": "2026-02-02",
       "ssl_ok": true,
       "http_status": 200,
       "http_ok": true,
-      "http_response_time_ms": 648.685,
+      "http_response_time_ms": 366.546,
       "domain": "pcelarstvopejcic.com"
     },
     {
-      "timestamp": "2025-11-28 14:35:11",
+      "timestamp": "2025-11-28 14:35:45",
       "whois_expiry": "2027-03-10",
       "whois_ok": true,
       "ssl_expiry": "2026-01-25",
       "ssl_ok": true,
       "http_status": 200,
       "http_ok": true,
-      "http_response_time_ms": 154.23700000000002,
+      "http_response_time_ms": 148.095,
       "domain": "openpanel.com"
     },
     {
-      "timestamp": "2025-11-28 14:35:13",
+      "timestamp": "2025-11-28 14:35:46",
       "whois_expiry": "2027-02-27",
       "whois_ok": true,
       "ssl_expiry": "2026-01-16",
       "ssl_ok": true,
       "http_status": 200,
       "http_ok": true,
-      "http_response_time_ms": 161.526,
+      "http_response_time_ms": 47.862,
       "domain": "openpanel.org"
     },
     {
-      "timestamp": "2025-11-28 14:35:15",
+      "timestamp": "2025-11-28 14:35:48",
       "whois_expiry": "2026-09-28",
       "whois_ok": true,
-      "ssl_expiry": "2026-02-26",
-      "ssl_ok": true,
+      "ssl_expiry": "2025-12-27",
+      "ssl_ok": false,
       "http_status": 200,
       "http_ok": true,
-      "http_response_time_ms": 233.496,
+      "http_response_time_ms": 70.914,
       "domain": "sentinelfirewall.org"
     },
     {
-      "timestamp": "2025-11-28 14:35:16",
+      "timestamp": "2025-11-28 14:35:50",
       "whois_expiry": "2026-11-30",
       "whois_ok": true,
       "ssl_expiry": "2026-01-03",
       "ssl_ok": true,
       "http_status": 200,
       "http_ok": true,
-      "http_response_time_ms": 746.248,
+      "http_response_time_ms": 493.695,
       "domain": "wpxss.com"
     }
   ],
-  "last_updated": "2025-11-28 14:35:07"
+  "last_updated": "2025-11-28 14:35:42"
 }
