@@ -205,6 +205,8 @@ def main():
         except Exception as e:
             print(f"[DNS] Error resolving {domain}: {e}")
             resolved_ip = None
+        """
+        # temporary off
         last_entry = domain_history["history"][-1] if domain_history["history"] else None
         previous_ip = last_entry.get("resolved_ip") if last_entry else None
         ip_issue = find_issue(repo, f"IP change for {domain}")
@@ -226,6 +228,7 @@ def main():
             else:
                 comment_on_issue(ip_issue, f"IP updated to `{resolved_ip}`")
                 ip_issue.edit(title=f"🚨 IP change detected for {domain} (was {previous_ip})")
+        """
 
         # ---- Checks completed for domain, saving.. ----
         domain_entry = {
