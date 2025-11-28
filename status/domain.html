@@ -76,30 +76,33 @@
             </div>
 
 <div class="flex gap-2">
-    <button 
-        x-show="!showTable && !showJSON && !showXML && !showAPI" 
-        @click="showTable = true; showJSON = false; showXML = false; showAPI = false" 
+    <button x-show="!showTable && !showJSON && !showXML && !showCSV && !showAPI"
+        @click="showTable = true"
         class="px-3 py-1 text-sm bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600">
         Table
     </button>
 
     <button 
-        x-show="showTable && !showJSON" 
-        @click="showJSON = true; showTable = false; showXML = false; showAPI = false" 
+        x-show="showTable && !showJSON"
+        @click="showJSON = true; showTable = false"
         class="px-3 py-1 text-sm bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600">
         JSON
     </button>
 
-    <button 
-        x-show="showJSON && !showXML" 
-        @click="showXML = true; showTable = false; showJSON = false; showAPI = false; loadXML()" 
+    <button x-show="showJSON && !showCSV"
+        @click="showCSV = true; showJSON = false"
+        class="px-3 py-1 text-sm bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600">
+        CSV
+    </button>
+  
+    <button x-show="showCSV && !showXML"
+        @click="showXML = true; showCSV = false; loadXML()"
         class="px-3 py-1 text-sm bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600">
         XML
     </button>
 
-    <button 
-        x-show="showXML && !showAPI" 
-        @click="showAPI = true; showTable = false; showJSON = false; showXML = false" 
+    <button x-show="showXML && !showAPI"
+        @click="showAPI = true; showXML = false"
         class="px-3 py-1 text-sm bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600">
         API
     </button>
@@ -168,8 +171,13 @@
         <div x-show="showXML" x-transition class="mt-4">
             <pre class="bg-gray-100 dark:bg-gray-800 p-3 rounded text-xs overflow-x-auto" x-text="xmlContent"></pre>
         </div>
-  
-        <!-- XML -->
+
+        <!-- CSV -->
+        <div x-show="showCSV" x-transition class="mt-4">
+            <pre class="bg-gray-100 dark:bg-gray-800 p-3 rounded text-xs overflow-x-auto" x-text="tableToCSV()"></pre>
+        </div>
+      
+        <!-- API -->
         <div x-show="showAPI" x-transition class="mt-4">
           <h2 class="mx-auto inline-flex items-center justify-center mt-3 text-md font-semibold">API</h2>
           <p x-show="domain" class="bg-gray-100 dark:bg-gray-800 p-3 rounded text-xs overflow-x-auto">You can use our API to integrate the information and updates from this status page into your own website or application. Simply make a <code>GET</code> request to the following URL:
@@ -191,6 +199,7 @@ function domainHistory() {
         showJSON: false,
         showXML: false,
         showAPI: false,
+        showCSV: false,
         xmlContent: "",
         isUp: true,
         uptimePercentage: 0,
@@ -286,6 +295,18 @@ function domainHistory() {
             return `${diffDay} day${diffDay > 1 ? 's' : ''} ago`;
         },
 
+        tableToCSV() {
+            if (!this.history || this.history.length === 0) return "";
+            const headers = ["Checked", "Status", "Response (ms)", "Up?"];
+            const rows = this.history.map(e => [
+                `"${e.time}"`,
+                `"${e.statusCode}"`,
+                `"${e.response}"`,
+                `"${e.up ? 'Yes' : 'No'}"`
+            ]);
+            return [headers, ...rows].map(r => r.join(",")).join("\n");
+        },
+      
         statusColor(code) {
             if (code >= 200 && code <= 299) return { bg: "bg-emerald-50 dark:bg-emerald-400/10", text: "text-emerald-900 dark:text-emerald-400", ring: "ring-emerald-600/30 dark:ring-emerald-400/20", dot: "bg-emerald-600 dark:bg-emerald-400" };
             if (code >= 300 && code <= 399) return { bg: "bg-orange-50 dark:bg-orange-400/10", text: "text-orange-900 dark:text-orange-400", ring: "ring-orange-600/30 dark:ring-orange-400/20", dot: "bg-orange-600 dark:bg-orange-400" };
@@ -314,9 +335,22 @@ function domainHistory() {
         hideTooltip() {
             this.tooltip.show = false;
         },
-
+                
         copyLogs(event) {
-            const logsText = JSON.stringify(this.history, null, 2);
+            let logsText = "";
+        
+            if (this.showXML) {
+                logsText = this.xmlContent || "";
+            } else if (this.showJSON) {
+                logsText = JSON.stringify(this.history, null, 2);
+            } else if (this.showCSV) {
+                logsText = this.tableToCSV();
+            } else if (this.showTable) {
+                logsText = this.tableToCSV();
+            }
+        
+            if (!logsText) return;
+        
             navigator.clipboard.writeText(logsText)
                 .then(() => {
                     const btn = event.currentTarget;
@@ -324,7 +358,7 @@ function domainHistory() {
                     this.tooltip.text = "Copied!";
                     this.tooltip.show = true;
                     this.tooltip.x = rect.left + rect.width / 2;
-                    this.tooltip.y = rect.top - 30; // above the button
+                    this.tooltip.y = rect.top - 30;
                     setTimeout(() => this.tooltip.show = false, 1000);
                 })
                 .catch(err => {
@@ -333,6 +367,7 @@ function domainHistory() {
                     setTimeout(() => this.tooltip.show = false, 1500);
                 });
         },
+
         
         openLogsInNewTab() {
             window.open(`history/${this.domain}.json`, '_blank');
