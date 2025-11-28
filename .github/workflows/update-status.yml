@@ -30,23 +30,6 @@ jobs:
 
       - run: pip install -r requirements.txt
 
-      - name: Generate config.json
-        run: |
-          mkdir -p status
-          REPO="${{ github.repository }}"
-          BRANCH="${{ github.ref_name }}"
-          USER="${REPO%%/*}"
-          REPO_NAME="${REPO##*/}"
-          cat <<EOF > status/config.json
-          {
-            "github_user": "$USER",
-            "github_repo": "$REPO_NAME",
-            "github_branch": "$BRANCH"
-          }
-          EOF
-          echo "Generated status/config.json: "
-          cat status/config.json
-
       - name: Check domains
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -60,7 +43,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add status/status.json
-          git add status/config.json
           git add status/history/*.json
           git commit -m "Data fetched [skip ci]" || echo "No changes"
           git push
