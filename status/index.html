@@ -75,7 +75,7 @@
         <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="domain.http_status"></dd>
         <dd class="mt-4 inline-flex items-center gap-x-1.5 rounded-md px-2 py-1.5 text-xs font-medium"
             :class="httpStatusInfo(domain.http_status).class"
-            v-html="httpStatusInfo(domain.http_status).icon + ' ' + httpStatusInfo(domain.http_status).text">
+            x-html="httpStatusInfo(domain.http_status).icon + ' ' + httpStatusInfo(domain.http_status).text">
         </dd>
     </div>
 
@@ -84,7 +84,7 @@
         <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="domain.http_response_time_ms"></dd>
         <dd class="mt-4 inline-flex items-center gap-x-1.5 rounded-md px-2 py-1.5 text-xs font-medium"
             :class="responseTimeInfo(domain.http_response_time_ms).class"
-            v-html="responseTimeInfo(domain.http_response_time_ms).icon + ' ' + responseTimeInfo(domain.http_response_time_ms).text">
+            x-html="responseTimeInfo(domain.http_response_time_ms).icon + ' ' + responseTimeInfo(domain.http_response_time_ms).text">
         </dd>
     </div>
 
@@ -93,7 +93,7 @@
         <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="domain.ssl_ok"></dd>
         <dd class="mt-4 inline-flex items-center gap-x-1.5 rounded-md px-2 py-1.5 text-xs font-medium"
             :class="sslStatusInfo(domain.ssl_ok).class">
-            <span v-html="sslStatusInfo(domain.ssl_ok).icon"></span> Expires on: <span x-text="domain.ssl_expiry"></span>
+            <span x-html="sslStatusInfo(domain.ssl_ok).icon"></span> Expires on: <span x-text="domain.ssl_expiry"></span>
         </dd>
     </div>
 
@@ -103,7 +103,7 @@
         <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="domain.whois_ok"></dd>
         <dd class="mt-4 inline-flex items-center gap-x-1.5 rounded-md px-2 py-1.5 text-xs font-medium"
             :class="whoisStatusInfo(domain.whois_ok).class">
-            <span v-html="whoisStatusInfo(domain.whois_ok).icon"></span> Expires on: <span x-text="domain.whois_expiry"></span>
+            <span x-html="whoisStatusInfo(domain.whois_ok).icon"></span> Expires on: <span x-text="domain.whois_expiry"></span>
         </dd>
     </div>
 
