@@ -150,7 +150,7 @@ function domainHistory() {
                 this.history = (data.history || []).map(e => ({
                     time: e.timestamp,
                     statusCode: e.http_status,
-                    response: e.http_response_time_ms,
+                    response: parseFloat(e.http_response_time_ms.toFixed(2)),
                     up: e.http_ok,
                     whois_ok: e.whois_ok,
                     whois_expiry: e.whois_expiry,
@@ -196,7 +196,7 @@ function domainHistory() {
         showTooltip(e, entry) {
             this.tooltip.show = true;
             const dateTime = new Date(entry.time).toLocaleString();
-            this.tooltip.text = `${dateTime}\nStatus: ${entry.statusCode} | Response: ${entry.response} ms`;
+            this.tooltip.text = `${dateTime}\nStatus: ${entry.statusCode} | Response: ${entry.response.toFixed(2)} ms`;
             this.tooltip.x = e.clientX + 10;
             this.tooltip.y = e.clientY + 10;
         },
