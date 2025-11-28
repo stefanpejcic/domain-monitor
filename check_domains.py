@@ -62,6 +62,10 @@ def close_issue(issue, msg):
     issue.edit(state="closed")
     print(f"Issue closed: {issue.title}")
 
+def comment_on_issue(issue, msg):
+    issue.create_comment(msg)
+    print(f"Comment added to issue: {issue.title}")
+
 def load_domain_history(domain):
     history_file = f"status/history/{domain}.json"
     if os.path.exists(history_file):
@@ -99,7 +103,7 @@ def main():
             if exp_date.tzinfo is not None:
                 exp_date = exp_date.astimezone(timezone.utc).replace(tzinfo=None)
             days_left = (exp_date - now).days
-            issue = find_issue(repo, f"Domain {domain}")
+            issue = find_issue(repo, f"Domain {domain} expires in")
             if days_left <= days_threshold:
                 if not issue:
                     create_issue(
@@ -107,6 +111,8 @@ def main():
                         f"⚠️ Domain {domain} expires in {days_left} days!",
                         f"**{domain}** will expire on {exp_date:%Y-%m-%d}.\nDays left: {days_left}"
                     )
+                else:
+                    comment_on_issue(issue, f"@stefanpejcic Reminder: **{domain}** still expires in {days_left} days (on {exp_date:%Y-%m-%d}).")
             else:
                 if issue:
                     close_issue(issue, f"✅ Domain {domain} renewed (expires {exp_date:%Y-%m-%d}, {days_left} days left).")
@@ -114,7 +120,7 @@ def main():
         # ---- SSL Expiration ----
         ssl_exp = get_ssl_expiration(domain)
         ssl_days = None
-        issue = find_issue(repo, f"SSL {domain}")
+        issue = find_issue(repo, f"SSL for {domain}")
         if ssl_exp:
             ssl_days = (ssl_exp - now).days
             if ssl_days <= days_threshold:
@@ -130,7 +136,7 @@ def main():
 
         # ---- HTTP Status ----
         status, resp_time = get_http_status(domain)
-        issue = find_issue(repo, f"Status {domain}")
+        issue = find_issue(repo, f"Slow response for {domain}")
         if status is None or status >= 400:
             if not issue:
                 create_issue(
