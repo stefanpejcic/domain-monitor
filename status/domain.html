@@ -282,7 +282,7 @@ function domainHistory() {
         // load xml file on btn click
         async loadXML() {
             try {
-                const res = await fetch(`${this.domain}.xml`);
+                const res = await fetch(`history/${this.domain}.xml`);
                 if (!res.ok) throw new Error("Failed to load XML");
                 const text = await res.text();
                 this.xmlContent = text;
