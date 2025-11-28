@@ -90,6 +90,16 @@
       "http_status": 200,
       "http_ok": true,
       "http_response_time_ms": 58.324
+    },
+    {
+      "timestamp": "2025-11-28 13:54:03",
+      "whois_expiry": "2026-10-07",
+      "whois_ok": true,
+      "ssl_expiry": "2026-02-17",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 87.38600000000001
     }
   ]
 }
