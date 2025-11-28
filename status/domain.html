@@ -201,13 +201,14 @@ if (snapshots.length > 0) {
 }
 
 // Build HTTP section as horizontal bar of segments
+// Build HTTP section as horizontal bar with full coloring
 if (snapshots.length > 0) {
   httpContent.innerHTML = ''; // clear previous
 
   const barContainer = document.createElement('div');
   barContainer.className = "items-center group h-8 mt-3 hidden w-full lg:flex";
 
-  snapshots.forEach(s => {
+  snapshots.forEach((s, index) => {
     const segWrapper = document.createElement('div');
     segWrapper.className = "size-full overflow-hidden px-[0.5px] transition first:rounded-l-[4px] first:pl-0 last:rounded-r-[4px] last:pr-0 sm:px-px";
     segWrapper.setAttribute('data-state', 'closed');
@@ -215,13 +216,15 @@ if (snapshots.length > 0) {
     const segInner = document.createElement('div');
     segInner.className = "size-full rounded-[1px]";
 
-    // Determine color
+    // Set segment color
     if (s.http_ok) {
-      segInner.classList.add('bg-emerald-500', 'dark:bg-emerald-500');
-    } else if (s.http_response_time_ms > 1000) { // example threshold for warning
-      segInner.classList.add('bg-amber-500', 'dark:bg-amber-500');
+      segInner.classList.add('bg-emerald-500', 'dark:bg-emerald-500'); // OK
+    } else if (!s.http_ok && s.http_response_time_ms > 1000) {
+      segInner.classList.add('bg-amber-500', 'dark:bg-amber-500'); // Warning (slow)
+    } else if (!s.http_ok) {
+      segInner.classList.add('bg-red-500', 'dark:bg-red-500'); // Failure
     } else {
-      segInner.classList.add('bg-red-500', 'dark:bg-red-500');
+      segInner.classList.add('bg-gray-300', 'dark:bg-gray-700'); // fallback/unavailable
     }
 
     segWrapper.appendChild(segInner);
@@ -230,6 +233,7 @@ if (snapshots.length > 0) {
 
   httpContent.appendChild(barContainer);
 }
+
 
 
   } catch (err) {
