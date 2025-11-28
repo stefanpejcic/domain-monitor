@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" x-data="domainMonitor()" x-init="loadStatus()">
+<html lang="en" x-data="domainMonitor()" x-init="init()">
 <head>
   <meta charset="UTF-8">
   <title>Domain Monitor</title>
@@ -26,7 +26,7 @@
     <p class="text-sm text-gray-700 dark:text-gray-300">Last updated on <span x-text="lastUpdated"></span></p>
   </div>
 
-  <div x-data="domainMonitor()">
+  <div>
     <template x-for="(domain, idx) in domains" :key="idx">
       <div class="border rounded-lg p-4 bg-white dark:bg-[#090E1A] dark:border-gray-900 space-y-2">
         
@@ -66,83 +66,55 @@
 
 
 
-          
-          <!-- Info badges -->
-          <div class="flex flex-wrap gap-2 pb-2">
-            <!-- Checked from -->
-            <span class="inline-flex items-center gap-1.5 rounded-md bg-gray-100 px-2.5 py-1 text-gray-600 dark:bg-gray-800 dark:text-gray-400">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-                <path d="M18.364 17.364L12 23.728 5.636 17.364C2.121 13.849 2.121 8.151 5.636 4.636 9.151 1.121 14.849 1.121 18.364 4.636 21.879 8.151 21.879 13.849 18.364 17.364ZM12 13C13.105 13 14 12.105 14 11 14 9.895 13.105 9 12 9 10.895 9 10 9.895 10 11 10 12.105 10.895 13 12 13Z"></path>
-              </svg>
-              From IP: <span x-text="ip_address"></span>
-            </span>
 
-            <!-- Last checked -->
-            <span class="inline-flex items-center gap-1.5 rounded-md bg-gray-100 px-2.5 py-1 text-gray-600 dark:bg-gray-800 dark:text-gray-400">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" aria-hidden="true" class="remixicon -ml-0.5 size-4 shrink-0"><path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM13 12V7H11V14H17V12H13Z"></path></svg>
-              Last run: <span x-text="domain.timestamp"></span>
-            </span>
-          </div>
-  
-          <!-- Metrics -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-2">
-            <!-- HTTP Status -->
-            <div class="border rounded-lg p-3" :class="httpStatusColor(domain.http_status)">
-              <dt class="text-sm font-medium text-gray-500 dark:text-gray-500 flex items-center gap-1">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-                  <path d="M12 22C17.523 22 22 17.523 22 12 22 6.477 17.523 2 12 2 6.477 2 2 6.477 2 12 2 17.523 6.477 22 12 22ZM17.457 9.457 11 15.914 6.793 11.707 8.207 10.293 11 13.086 16.043 8.043 17.457 9.457Z"></path>
-                </svg>
-                Status code
-              </dt>
-              <dd class="text-xl font-semibold" x-text="domain.http_status"></dd>
-            </div>
-  
-            <!-- Response time -->
-            <div class="border rounded-lg p-3" :class="responseTimeColor(domain.http_response_time_ms)">
-              <dt class="text-sm font-medium text-gray-500 dark:text-gray-500 flex items-center gap-1">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-                  <path d="M12 22C6.477 22 2 17.523 2 12 2 6.477 6.477 2 12 2 17.523 2 22 6.477 22 12 22 17.523 17.523 22 12 22ZM12 16a1 1 0 110-2 1 1 0 010 2ZM12 10a2 2 0 110-4 2 2 0 010 4Z"></path>
-                </svg>
-                Response time (ms)
-              </dt>
-              <dd class="text-xl font-semibold" x-text="domain.http_response_time_ms.toFixed(0)"></dd>
-            </div>
-  
-            <!-- IP address -->
-            <div class="border rounded-lg p-3">
-              <dt class="text-sm font-medium text-gray-500 dark:text-gray-500 flex items-center gap-1">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-                  <path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 3.582 8 8 8s8-3.582 8-8c0-5.523-4.477-10-10-10zM12 20c-4.418 0-8-3.582-8-8 0-4.418 3.582-8 8-8 4.418 0 8 3.582 8 8 0 4.418-3.582 8-8 8z"></path>
-                </svg>
-                IP address
-              </dt>
-              <dd class="text-xl font-semibold" x-text="domain.resolved_ip"></dd>
-            </div>
-  
-            <!-- SSL -->
-            <div class="border rounded-lg p-3" :class="sslColor(domain.ssl_ok)">
-              <dt class="text-sm font-medium text-gray-500 dark:text-gray-500 flex items-center gap-1">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-                  <path d="M12 1C7.037 1 3 5.037 3 10v4c0 5.523 4.477 10 10 10s10-4.477 10-10v-4c0-4.963-4.037-9-9-9zM12 21c-3.866 0-7-3.134-7-7v-4c0-3.866 3.134-7 7-7s7 3.134 7 7v4c0 3.866-3.134 7-7 7z"></path>
-                </svg>
-                SSL
-              </dt>
-              <dd class="text-xl font-semibold" x-text="domain.ssl_ok"></dd>
-            </div>
+<dl class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
 
 
-            <!-- WHOIS -->
-            <div class="border rounded-lg p-3" :class="whoisColor(domain.whois_ok)">
-              <dt class="text-sm font-medium text-gray-500 dark:text-gray-500 flex items-center gap-1">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-                  <path d="M12 1C7.037 1 3 5.037 3 10v4c0 5.523 4.477 10 10 10s10-4.477 10-10v-4c0-4.963-4.037-9-9-9zM12 21c-3.866 0-7-3.134-7-7v-4c0-3.866 3.134-7 7-7s7 3.134 7 7v4c0 3.866-3.134 7-7 7z"></path>
-                </svg>
-                WHOIS
-              </dt>
-              <dd class="text-xl font-semibold" x-text="domain.whois_ok"></dd>
-            </div>
-            
-          </div>
+    <div class="relative w-full rounded-lg border p-6 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900" >
+        <dt class="text-sm font-medium text-gray-500 dark:text-gray-500">Status code</dt>
+        <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="domain.http_status"></dd>
+        <dd class="mt-4 inline-flex items-center gap-x-1.5 rounded-md px-2 py-1.5 text-xs font-medium"
+            :class="httpStatusInfo(domain.http_status).class"
+            v-html="httpStatusInfo(domain.http_status).icon + ' ' + httpStatusInfo(domain.http_status).text">
+        </dd>
+    </div>
+
+    <div class="relative w-full rounded-lg border p-6 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900" >
+        <dt class="text-sm font-medium text-gray-500 dark:text-gray-500">Response time</dt>
+        <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="domain.http_response_time_ms"></dd>
+        <dd class="mt-4 inline-flex items-center gap-x-1.5 rounded-md px-2 py-1.5 text-xs font-medium"
+            :class="responseTimeInfo(domain.http_response_time_ms).class"
+            v-html="responseTimeInfo(domain.http_response_time_ms).icon + ' ' + responseTimeInfo(domain.http_response_time_ms).text">
+        </dd>
+    </div>
+
+    <div class="relative w-full rounded-lg border p-6 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900" >
+        <dt class="text-sm font-medium text-gray-500 dark:text-gray-500">SSL status</dt>
+        <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="domain.ssl_ok"></dd>
+        <dd class="mt-4 inline-flex items-center gap-x-1.5 rounded-md px-2 py-1.5 text-xs font-medium"
+            :class="sslStatusInfo(domain.ssl_ok).class">
+            <span v-html="sslStatusInfo(domain.ssl_ok).icon"></span> Expires on: <span x-text="domain.ssl_expiry"></span>
+        </dd>
+    </div>
+
+
+    <div class="relative w-full rounded-lg border p-6 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900" >
+        <dt class="text-sm font-medium text-gray-500 dark:text-gray-500">WHOIS status</dt>
+        <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="domain.whois_ok"></dd>
+        <dd class="mt-4 inline-flex items-center gap-x-1.5 rounded-md px-2 py-1.5 text-xs font-medium"
+            :class="whoisStatusInfo(domain.whois_ok).class">
+            <span v-html="whoisStatusInfo(domain.whois_ok).icon"></span> Expires on: <span x-text="domain.whois_expiry"></span>
+        </dd>
+    </div>
+
+      <div class="relative w-full rounded-lg border p-6 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900" >
+        <dt class="text-sm font-medium text-gray-500 dark:text-gray-500">IP address</dt>
+        <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="domain.resolved_ip"></dd>
+    </div>
+
+  
+</dl>
+
   
         </div>
       </div>
@@ -159,23 +131,92 @@ function domainMonitor() {
     lastUpdated: '',
     domains: [],
     get allUp() {
-      return this.domains.every(d => d.http_ok && d.whois_ok);
+      return this.domains.every(d => d.http_ok && d.whois_ok && d.ssl_ok);
     },
-    httpStatusColor(status) {
-      if (status < 200) return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-400/10 dark:text-yellow-500';
-      if (status <= 410) return 'bg-emerald-100 text-emerald-800 dark:bg-emerald-400/10 dark:text-emerald-500';
-      if (status > 500) return 'bg-red-100 text-red-800 dark:bg-red-400/10 dark:text-red-500';
-      return '';
+    httpStatusInfo(status) {
+      if (status < 200) {
+        return {
+          class: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-400/10 dark:text-yellow-500',
+          icon: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" aria-hidden="true" class="remixicon size-4 shrink-0"><path d="M12.0003 3C17.3924 3 21.8784 6.87976 22.8189 12C21.8784 17.1202 17.3924 21 12.0003 21C6.60812 21 2.12215 17.1202 1.18164 12C2.12215 6.87976 6.60812 3 12.0003 3ZM12.0003 19C16.2359 19 19.8603 16.052 20.7777 12C19.8603 7.94803 16.2359 5 12.0003 5C7.7646 5 4.14022 7.94803 3.22278 12C4.14022 16.052 7.7646 19 12.0003 19ZM12.0003 16.5C9.51498 16.5 7.50026 14.4853 7.50026 12C7.50026 9.51472 9.51498 7.5 12.0003 7.5C14.4855 7.5 16.5003 9.51472 16.5003 12C16.5003 14.4853 14.4855 16.5 12.0003 16.5ZM12.0003 14.5C13.381 14.5 14.5003 13.3807 14.5003 12C14.5003 10.6193 13.381 9.5 12.0003 9.5C10.6196 9.5 9.50026 10.6193 9.50026 12C9.50026 13.3807 10.6196 14.5 12.0003 14.5Z"></path></svg>`,
+          text: 'bellow: 200'
+        };
+      } else if (status <= 410) {
+        return {
+          class: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-400/10 dark:text-emerald-500',
+          icon: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" aria-hidden="true" class="remixicon size-4 shrink-0"><path d="M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z"></path></svg>`,
+          text: 'within: 200-410'
+        };
+      } else if (status > 410) {
+        return {
+          class: 'bg-red-100 text-red-800 dark:bg-red-400/10 dark:text-red-500',
+          icon: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" aria-hidden="true" class="remixicon size-4 shrink-0"><path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM11 15H13V17H11V15ZM11 7H13V13H11V7Z"></path></svg>`,
+          text: 'critical: 410+'
+        };
+      } else {
+        return {
+          class: '',
+          icon: '',
+          text: 'unknown'
+        };
+      }
     },
-    responseTimeColor(ms) {
-      if (ms < 200) return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-400/10 dark:text-yellow-500';
-      if (ms <= 500) return 'bg-emerald-100 text-emerald-800 dark:bg-emerald-400/10 dark:text-emerald-500';
-      if (ms > 500) return 'bg-red-100 text-red-800 dark:bg-red-400/10 dark:text-red-500';
-      return '';
+
+
+    responseTimeInfo(ms) {
+      if (ms < 200) {
+        return {
+          class: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-400/10 dark:text-yellow-500',
+          icon: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" aria-hidden="true" class="remixicon size-4 shrink-0"><path d="M12.0003 3C17.3924 3 21.8784 6.87976 22.8189 12C21.8784 17.1202 17.3924 21 12.0003 21C6.60812 21 2.12215 17.1202 1.18164 12C2.12215 6.87976 6.60812 3 12.0003 3ZM12.0003 19C16.2359 19 19.8603 16.052 20.7777 12C19.8603 7.94803 16.2359 5 12.0003 5C7.7646 5 4.14022 7.94803 3.22278 12C4.14022 16.052 7.7646 19 12.0003 19ZM12.0003 16.5C9.51498 16.5 7.50026 14.4853 7.50026 12C7.50026 9.51472 9.51498 7.5 12.0003 7.5C14.4855 7.5 16.5003 9.51472 16.5003 12C16.5003 14.4853 14.4855 16.5 12.0003 16.5ZM12.0003 14.5C13.381 14.5 14.5003 13.3807 14.5003 12C14.5003 10.6193 13.381 9.5 12.0003 9.5C10.6196 9.5 9.50026 10.6193 9.50026 12C9.50026 13.3807 10.6196 14.5 12.0003 14.5Z"></path></svg>`,
+          text: 'fast: <200ms'
+        };
+      } else if (ms <= 500) {
+        return {
+          class: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-400/10 dark:text-emerald-500',
+          icon: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" aria-hidden="true" class="remixicon size-4 shrink-0"><path d="M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z"></path></svg>`,
+          text: 'moderate: 200–500ms'
+        };
+      } else if (ms > 500) {
+        return {
+          class: 'bg-red-100 text-red-800 dark:bg-red-400/10 dark:text-red-500',
+          icon: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" aria-hidden="true" class="remixicon size-4 shrink-0"><path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM11 15H13V17H11V15ZM11 7H13V13H11V7Z"></path></svg>`,
+          text: 'slow: >500ms'
+        };
+      } else {
+        return {
+          class: '',
+          icon: '',
+          text: 'unknown'
+        };
+      }
     },
-    sslColor(ok) {
-      return ok ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-400/10 dark:text-emerald-500' : 'bg-red-100 text-red-800 dark:bg-red-400/10 dark:text-red-500';
+    
+    sslStatusInfo(isOk) {
+      if (isOk) {
+        return {
+          class: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-400/10 dark:text-emerald-500',
+          icon: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="remixicon size-4 shrink-0"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15l-5-5 1.41-1.41L11 14.17l7.59-7.59L20 8l-9 9z"/></svg>`
+        };
+      } else {
+        return {
+          class: 'bg-red-100 text-red-800 dark:bg-red-400/10 dark:text-red-500',
+          icon: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="remixicon size-4 shrink-0"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>`
+        };
+      }
     },
+    whoisStatusInfo(isOk) {
+      if (isOk) {
+        return {
+          class: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-400/10 dark:text-emerald-500',
+          icon: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="remixicon size-4 shrink-0"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15l-5-5 1.41-1.41L11 14.17l7.59-7.59L20 8l-9 9z"/></svg>`
+        };
+      } else {
+        return {
+          class: 'bg-red-100 text-red-800 dark:bg-red-400/10 dark:text-red-500',
+          icon: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="remixicon size-4 shrink-0"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>`
+        };
+      }
+    },
+  
     whoisColor(ok) {
       return ok ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-400/10 dark:text-emerald-500' : 'bg-red-100 text-red-800 dark:bg-red-400/10 dark:text-red-500';
     },
