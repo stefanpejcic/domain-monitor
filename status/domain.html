@@ -90,16 +90,32 @@ async function loadDomainHistory() {
       
         const formatted = `${year}-${month}-${day} ${hour}:${min}:${sec}`;
         timestamps.push(formatted);
+        snapshot.timestamp = formatted;
       } else {
         timestamps.push(file.name);
       }
       responseTimes.push(snapshot.http_response_time_ms);
       httpStatuses.push(snapshot.http_status);
 
-      const pre = document.createElement("pre");
-      pre.className = "bg-white p-4 rounded shadow overflow-auto";
-      pre.textContent = JSON.stringify(snapshot, null, 2);
-      container.appendChild(pre);
+const div = document.createElement("div");
+div.innerHTML = `
+<div class="relative w-full max-w-md mx-auto p-6 bg-white rounded-xl shadow-lg border border-transparent hover:border-blue-400 hover:shadow-xl transition duration-300">
+  <div class="flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <span class="w-3 h-3 ${snapshot.http_status === 200 ? 'bg-green-500' : 'bg-red-500'} rounded-full"></span>
+      <p class="text-xl font-semibold text-gray-900">${snapshot.http_status}</p>
+    </div>
+    <span class="text-gray-500 text-sm">${snapshot.timestamp || ''}</span>
+  </div>
+  <div class="mt-4">
+    <p class="text-gray-700"><strong>Response Time:</strong> ${snapshot.http_response_time_ms} ms</p>
+    <p class="text-gray-700 break-words"><strong>Status Message:</strong> ${snapshot.status_message}</p>
+  </div>
+  <div class="absolute inset-0 rounded-xl border border-transparent hover:border-gray-300 transition duration-300 pointer-events-none"></div>
+</div>
+`;
+container.appendChild(div);
+
     }
 
     // Create Chart.js chart
@@ -116,14 +132,6 @@ async function loadDomainHistory() {
             backgroundColor: 'rgba(59, 130, 246, 0.2)',
             tension: 0.3,
             yAxisID: 'y1',
-          },
-          {
-            label: 'HTTP Status',
-            data: httpStatuses,
-            borderColor: 'rgba(16, 185, 129, 1)',
-            backgroundColor: 'rgba(16, 185, 129, 0.2)',
-            tension: 0.3,
-            yAxisID: 'y2',
           }
         ]
       },
@@ -138,12 +146,6 @@ async function loadDomainHistory() {
             type: 'linear', 
             position: 'left', 
             title: { display: true, text: 'Response Time (ms)' } 
-          },
-          y2: { 
-            type: 'linear', 
-            position: 'right', 
-            title: { display: true, text: 'HTTP Status' }, 
-            grid: { drawOnChartArea: false } 
           }
         }
       }
