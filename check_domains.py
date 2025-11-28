@@ -103,7 +103,7 @@ def main():
     # ---- Set custom header for curl ----
     HEADERS = {
         "User-Agent": "Github Actions - stefanpejcic/domain-monitor/1.0",
-        "X-Github-Repository": repo
+        "X-Github-Repository": repo.full_name
     }
 
     combined_results = {
