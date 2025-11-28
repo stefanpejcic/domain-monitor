@@ -29,7 +29,7 @@
         </div>
       </div>
       <!-- Subscribe button with dropdown -->
-      <div x-data="{ open: false, showApi: false }" class="relative inline-block text-left">
+      <div x-data="{ open: false, showApiModal: false }" class="relative inline-block text-left">
         <button @mouseenter="open = true" @mouseleave="open = false"
                 class="relative inline-flex items-center justify-center whitespace-nowrap rounded-md border px-3 py-2 text-center text-sm font-medium shadow-sm transition-all duration-100 ease-in-out outline outline-offset-2 outline-0 focus-visible:outline-2 outline-blue-500 dark:outline-blue-500 border-gray-300 dark:border-gray-800 text-gray-900 dark:text-gray-50 bg-white dark:bg-gray-950 hover:bg-gray-50 dark:hover:bg-gray-900/60">
           Subscribe
@@ -63,7 +63,7 @@
             </li>
       
             <!-- API -->
-            <li @click="showApi = !showApi"
+            <li @click="showApiModal = true"
                 class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer">
               <svg viewBox="0 0 512 512" class="w-5 h-5">
                 <path d="M160 389a20.91 20.91 0 0 1-13.82-5.2l-128-112a21 21 0 0 1 0-31.6l128-112a21 21 0 0 1 27.66 31.61L63.89 256l109.94 96.19A21 21 0 0 1 160 389zm192 0a21 21 0 0 1-13.84-36.81L448.11 256l-109.94-96.19a21 21 0 0 1 27.66-31.61l128 112a21 21 0 0 1 0 31.6l-128 112A20.89 20.89 0 0 1 352 389zm-144 48a21 21 0 0 1-20.12-27l96-320a21 21 0 1 1 40.23 12l-96 320A21 21 0 0 1 208 437z"></path>
@@ -73,12 +73,24 @@
           </ul>
         </div>
       
-        <!-- Hidden API section -->
-        <div x-show="showApi" x-transition class="mt-2 p-4 rounded-md bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-50">
-          <h4 class="font-semibold mb-2">API Info</h4>
-          <p>You can use our API to integrate the information and updates from this status page into your own website or application. Simply make a <code>GET</code> request to the following URL:
-          </br>
-          <code x-text="`${window.location.origin}/status/status.json`"></code></p>
+        <!-- API modal -->
+        <div x-data="{ showApiModal: false }" x-show="showApiModal" x-transition class="fixed inset-0 flex items-center justify-center z-50">
+          <div class="fixed inset-0 bg-black bg-opacity-50" @click="showApiModal = false"></div>
+          <div class="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-md w-full p-6 z-50">
+            <h4 class="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-50">API Info</h4>
+            <p class="text-gray-700 dark:text-gray-300 mb-4">
+              You can use our API to integrate the information and updates from this status page into your own website or application. Simply make a <code>GET</code> request to the following URL:
+            </p>
+            <p class="bg-gray-100 dark:bg-gray-800 p-2 rounded text-gray-900 dark:text-gray-50 break-words">
+              <code x-text="`${window.location.origin}/status/status.json`"></code>
+            </p>
+            <div class="mt-4 text-right">
+              <button @click="showApiModal = false"
+                      class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+                Close
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
