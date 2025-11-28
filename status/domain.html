@@ -26,7 +26,6 @@
       const count = parseInt(await getQueryParam("count", "100"));
       if (!domain) return;
 
-      // Load config
       let config;
       try {
         const configRes = await fetch("config.json?_=" + Date.now());
@@ -45,13 +44,11 @@
       container.innerHTML = "";
 
       try {
-        // GitHub API URL for folder contents
         const apiUrl = `https://api.github.com/repos/${github_user}/${github_repo}/contents/status/history/${domain}?ref=${github_branch}`;
         const res = await fetch(apiUrl);
         if (!res.ok) throw new Error("Failed to fetch folder contents");
 
         const files = await res.json();
-        // Filter JSON files and sort latest first
         const jsonFiles = files
           .filter(f => f.name.endsWith(".json"))
           .sort((a, b) => b.name.localeCompare(a.name))
