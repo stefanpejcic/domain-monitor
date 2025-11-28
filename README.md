@@ -3,6 +3,7 @@ Easily monitor your domains and get alerts when:
 * ⏳ domain is set to expire within **30 days**
 * 🔒 domain SSL certificate **expires soon**
 * ⚠️ HTTP status code for website is **>400**
+* 🚨 IP address for the website changes
 
 relies entirely on **GitHub Actions** and **GitHub Issues**—no external services required.
 
@@ -36,3 +37,8 @@ The workflow will:
 * If the domain is later renewed, SSL renewed or status code changes, the issue will be **automatically closed**:
 
 <img width="997" height="576" alt="image" src="https://github.com/user-attachments/assets/14fe1bcd-068f-4ecb-b2ff-f1e568708ce1" />  
+
+
+## TODO
+- detect namserver changes and open issues
+- add ignore option for ip changes when cloudflare proxy is used
