@@ -29,7 +29,7 @@
       // Load config
       let config;
       try {
-        const configRes = await fetch("status/config.json?_=" + Date.now());
+        const configRes = await fetch("config.json?_=" + Date.now());
         config = await configRes.json();
       } catch (err) {
         console.error("Failed to load config.json", err);
