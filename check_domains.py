@@ -6,10 +6,8 @@ from github import Github, Auth
 import os
 import json
 
-DOMAINS_FILE = "domains.txt"
-
-def read_domains(file_path):
-    with open(file_path, "r") as f:
+def read_domains():
+    with open("domains.txt", "r") as f:
         return [line.strip() for line in f if line.strip()]
 
 def get_domain_expiration(domain):
@@ -36,10 +34,10 @@ def get_ssl_expiration(domain):
         print(f"[SSL] Error checking {domain}: {e}")
         return None
 
-def get_http_status(domain):
+def get_http_status(domain, headers):
     try:
         url = f"https://{domain}"
-        r = requests.get(url, timeout=10)
+        r = requests.get(url, headers=headers, timeout=10)
         response_time_ms = r.elapsed.total_seconds() * 1000
         return r.status_code, response_time_ms
     except Exception as e:
@@ -80,6 +78,14 @@ def save_domain_history(domain, history):
         json.dump(history, f, indent=2)
     print(f"Saved history for {domain} in {history_file}")
 
+def get_outgoing_ip():
+    try:
+        r = requests.get("https://api.ipify.org?format=json", timeout=1)
+        return r.json().get("ip")
+    except Exception as e:
+        print(f"[IP] Error checking Github Worker's outgoing IP: {e}")
+        return None
+
 def main():
     token = os.getenv("GITHUB_TOKEN")
     repo_name = os.getenv("GITHUB_REPOSITORY")
@@ -89,9 +95,24 @@ def main():
     g = Github(auth=Auth.Token(token))
     repo = g.get_repo(repo_name)
 
-    domains = read_domains(DOMAINS_FILE)
-    combined_results = {"domains": [], "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+    # ---- Get github worker IP ----
+    gh_actions_ip = get_outgoing_ip()
+    print(f"Outgoing IP: {gh_actions_ip}")
 
+    # ---- Set custom header for curl ----
+    HEADERS = {
+        "User-Agent": "Github Actions - stefanpejcic/domain-monitor/1.0",
+        "X-Github-Repository": repo
+    }
+
+    combined_results = {
+        "domains": [],
+        "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "ip_address": gh_actions_ip
+    }
+
+    # ---- domains.txt ----
+    domains = read_domains()
     for domain in domains:
         now = datetime.utcnow()
         timestamp = now.strftime("%Y-%m-%d %H:%M:%S")
@@ -135,7 +156,7 @@ def main():
                     close_issue(issue, f"✅ SSL for {domain} renewed (expires {ssl_exp:%Y-%m-%d}, {ssl_days} days left).")
 
         # ---- HTTP Status ----
-        status, resp_time = get_http_status(domain)
+        status, resp_time = get_http_status(domain, HEADERS)
         issue = find_issue(repo, f"Slow response for {domain}")
         if status is None or status >= 400:
             if not issue:
@@ -167,7 +188,7 @@ def main():
             "http_ok": status is not None and status < 400,
             "http_response_time_ms": resp_time
         }
-        domain_history["history"].append(domain_entry)
+        domain_history["history"].append(domain_entry, "ip_address": gh_actions_ip)
         save_domain_history(domain, domain_history)
         combined_results["domains"].append({**domain_entry, "domain": domain})
 
