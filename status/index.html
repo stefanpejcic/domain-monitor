@@ -225,21 +225,26 @@
       </div>
     </template>
   </div>
+
+
+  <!-- iframe -->
+  <div x-show="showHidden" x-transition x-cloak class="mt-2 p-4 rounded text-gray-900 dark:text-gray-50">
+    <p class="text-gray-700 dark:text-gray-300 mb-4">
+      You can copy the following code to embed the status badge into your own website or application:
+    </p>
+    <p class="bg-gray-100 dark:bg-gray-800 p-2 rounded text-gray-900 dark:text-gray-50 break-words">
+      <code x-text="`<iframe src='${origin}/status/iframe.html' width='250' height='30' frameborder='0' scrolling='no'></iframe>`"></code>
+    </p>
+    <p class="mt-2 text-gray-700 dark:text-gray-300 mb-4">
+      Live preview: <iframe :src="`${origin}/status/iframe.html`" width="250" height="30" frameborder="0" scrolling="no" class="border rounded"></iframe>
+    </p>
+  </div>
+
+
+  
 </div>
 
-<!-- iframe -->
-<div x-show="showHidden" x-transition x-cloak class="mt-2 p-4 rounded text-gray-900 dark:text-gray-50">
-  <p class="text-gray-700 dark:text-gray-300 mb-4">
-    You can copy the following code to embed the status badge into your own website or application:
-  </p>
-  <p class="bg-gray-100 dark:bg-gray-800 p-2 rounded text-gray-900 dark:text-gray-50 break-words">
-    <code x-text="`<iframe src='${origin}/status/iframe.html' width='250' height='30' frameborder='0' scrolling='no'></iframe>`"></code>
-  </p>
-  <p class="mt-2 text-gray-700 dark:text-gray-300 mb-4">
-    Live preview: <iframe :src="`${origin}/status/iframe.html`" width="250" height="30" frameborder="0" scrolling="no" class="border rounded"></iframe>
-  </p>
-</div>
-  
+
 <small class="mt-auto text-center p-5">⚡ Subscribe via RSS — <a href="index.xml" target="_blank" class="no-underline">to all updates</a> | 
   <button @click="showHidden = !showHidden" class="">Badge</button> | <a href="status.json" target="_blank">JSON</a></small>
 <a class="top-0 right-0 absolute" href="https://github.com/stefanpejcic/domain-monitor"><img loading="lazy" decoding="async" width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_darkblue_121621.png" class="attachment-full size-full" alt="Fork me on GitHub"></a>
