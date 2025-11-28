@@ -200,8 +200,7 @@ if (snapshots.length > 0) {
   `;
 }
 
-// Build HTTP section as horizontal bar of segments
-// Build HTTP section as horizontal bar with full coloring
+// Build HTTP section as horizontal bar with tooltips
 if (snapshots.length > 0) {
   httpContent.innerHTML = ''; // clear previous
 
@@ -210,7 +209,7 @@ if (snapshots.length > 0) {
 
   snapshots.forEach((s, index) => {
     const segWrapper = document.createElement('div');
-    segWrapper.className = "size-full overflow-hidden px-[0.5px] transition first:rounded-l-[4px] first:pl-0 last:rounded-r-[4px] last:pr-0 sm:px-px";
+    segWrapper.className = "relative size-full overflow-hidden px-[0.5px] transition first:rounded-l-[4px] first:pl-0 last:rounded-r-[4px] last:pr-0 sm:px-px";
     segWrapper.setAttribute('data-state', 'closed');
 
     const segInner = document.createElement('div');
@@ -218,16 +217,30 @@ if (snapshots.length > 0) {
 
     // Set segment color
     if (s.http_ok) {
-      segInner.classList.add('bg-emerald-500', 'dark:bg-emerald-500'); // OK
+      segInner.classList.add('bg-emerald-500', 'dark:bg-emerald-500');
     } else if (!s.http_ok && s.http_response_time_ms > 1000) {
-      segInner.classList.add('bg-amber-500', 'dark:bg-amber-500'); // Warning (slow)
+      segInner.classList.add('bg-amber-500', 'dark:bg-amber-500');
     } else if (!s.http_ok) {
-      segInner.classList.add('bg-red-500', 'dark:bg-red-500'); // Failure
+      segInner.classList.add('bg-red-500', 'dark:bg-red-500');
     } else {
-      segInner.classList.add('bg-gray-300', 'dark:bg-gray-700'); // fallback/unavailable
+      segInner.classList.add('bg-gray-300', 'dark:bg-gray-700');
     }
 
+    // Create tooltip
+    const tooltip = document.createElement('div');
+    tooltip.className = "absolute bottom-full mb-1 left-1/2 -translate-x-1/2 px-2 py-1 text-xs rounded bg-gray-800 text-white opacity-0 pointer-events-none transition-opacity duration-200 z-10 whitespace-nowrap";
+    tooltip.innerHTML = `
+      <div><strong>${s.date}</strong></div>
+      <div>Status: ${s.http_ok ? 'OK' : 'Issue'}</div>
+      <div>Response: ${s.http_response_time_ms.toFixed(2)} ms</div>
+    `;
+
+    // Show tooltip on hover
+    segWrapper.addEventListener('mouseenter', () => tooltip.classList.add('opacity-100'));
+    segWrapper.addEventListener('mouseleave', () => tooltip.classList.remove('opacity-100'));
+
     segWrapper.appendChild(segInner);
+    segWrapper.appendChild(tooltip);
     barContainer.appendChild(segWrapper);
   });
 
