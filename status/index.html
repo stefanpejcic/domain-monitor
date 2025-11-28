@@ -178,6 +178,7 @@ function domainMonitor() {
       const res = await fetch('status.json?_=' + Date.now());
       const data = await res.json();
       this.ip_address = data.ip_address;
+      this.lastUpdated = data.last_updated;
       this.domains = data.domains.map(d => ({ ...d, open: false }));
     }
   }
