@@ -46,7 +46,7 @@
 
           tbody.innerHTML += `
             <tr class="hover:bg-gray-50">
-              <td class="py-3 px-4">${d.domain}</td>
+              <td class="py-3 px-4"><a href="domain.html?domain=${d.domain}" title="Click to view historical data">${d.domain}</a></td>
               <td class="py-3 px-4 ${d.whois_ok ? 'text-green-600' : 'text-red-600 font-medium'}">
                 ${d.whois_expiry || "N/A"}
               </td>
