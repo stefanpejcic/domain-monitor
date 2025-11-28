@@ -54,7 +54,6 @@ async function loadDomainHistory() {
     return;
   }
 
-  const { github_user, github_repo, github_branch } = config;
   const domainStatusDiv = document.getElementById("domain-status");
   const httpContent = document.getElementById("http-content");
   domainStatusDiv.innerHTML = "";
