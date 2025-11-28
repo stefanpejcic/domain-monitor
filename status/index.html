@@ -20,7 +20,7 @@
 
   
 <div class="container mx-auto p-6">
-  <div id="status-accordion" class="space-y-3"></div>
+  <div id="status-accordion" class="relative w-full rounded-lg border p-6 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900 space-y-3"></div>
 </div>
 
 <script>
@@ -43,7 +43,7 @@
         }
 
         accordion.innerHTML += `
-          <div class="relative w-full rounded-lg border p-4 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900">
+          <div>
             <h3 class="flex">
               <button type="button" class="group flex flex-1 cursor-pointer items-center justify-between py-3 text-left focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 h-12 rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-900 hover:bg-gray-100/70 dark:bg-gray-800 dark:text-gray-50 hover:dark:bg-gray-800/70"
                       aria-expanded="false"
