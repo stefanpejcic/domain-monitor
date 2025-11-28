@@ -11,10 +11,11 @@ def read_domains():
         return [line.strip() for line in f if line.strip()]
 
 def get_domain_expiration(domain):
+    # TODO: also detect ns change
     try:
         w = whois.whois(domain)
         exp = w.expiration_date
-        if isinstance(exp, list):  # sometimes it's a list
+        if isinstance(exp, list):  # sometimes a list
             exp = exp[0]
         return exp
     except Exception as e:
@@ -178,6 +179,36 @@ def main():
 
         # ---- Update per-domain JSON ----
         domain_history = load_domain_history(domain)
+
+        # ---- Resolve domain IP ----
+        # we need domain_history for this!
+        try:
+            resolved_ip = socket.gethostbyname(domain)
+        except Exception as e:
+            print(f"[DNS] Error resolving {domain}: {e}")
+            resolved_ip = None
+        last_entry = domain_history["history"][-1] if domain_history["history"] else None
+        previous_ip = last_entry.get("resolved_ip") if last_entry else None
+        ip_issue = find_issue(repo, f"IP change for {domain}")
+        
+        last_reported_ip = None
+        if ip_issue:
+            import re
+            m = re.search(r"\(was ([\d\.]+)\)", ip_issue.title)
+            if m:
+                last_reported_ip = m.group(1)
+        
+        if resolved_ip and last_reported_ip != resolved_ip:
+            if not ip_issue:
+                create_issue(
+                    repo,
+                    f"🌐 IP change detected for {domain} (was {previous_ip})",
+                    f"Domain **{domain}** IP changed from `{previous_ip}` to `{resolved_ip}`"
+                )
+            else:
+                comment_on_issue(ip_issue, f"IP updated to `{resolved_ip}`")
+                ip_issue.edit(title=f"🌐 IP change detected for {domain} (was {previous_ip})")
+    
         domain_entry = {
             "timestamp": timestamp,
             "whois_expiry": exp_date.strftime("%Y-%m-%d") if exp_date else None,
@@ -186,7 +217,8 @@ def main():
             "ssl_ok": ssl_days > days_threshold if ssl_days is not None else False,
             "http_status": status,
             "http_ok": status is not None and status < 400,
-            "http_response_time_ms": resp_time
+            "http_response_time_ms": resp_time,
+            "resolved_ip": resolved_ip
         }
         domain_history["history"].append(domain_entry, "ip_address": gh_actions_ip)
         save_domain_history(domain, domain_history)
