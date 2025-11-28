@@ -1,0 +1,43 @@
+name: Create Screenshots
+
+on:
+  workflow_dispatch:
+    inputs:
+      resolution:
+        description: "Resolution for screenshots (e.g., 1920x1080)"
+        required: false
+        default: "1920x1080"
+  schedule:
+    - cron: "0 2 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  run-screenshots:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run create_screenshots.py
+        env:
+          SCREEN_RESOLUTION: ${{ github.event.inputs.resolution }}
+        run: python create_screenshots.py
+
+      - name: Commit screenshots
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add screenshots/
+          git commit -m "Updated screenshots [skip ci]" || echo "No changes to commit"
+          git push
