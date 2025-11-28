@@ -64,7 +64,21 @@
           </div>
 
 
+          <div class="flex flex-wrap gap-2 pb-2">
+            <!-- Checked from -->
+            <span class="inline-flex items-center gap-1.5 rounded-md bg-gray-100 px-2.5 py-1 text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                <path d="M18.364 17.364L12 23.728 5.636 17.364C2.121 13.849 2.121 8.151 5.636 4.636 9.151 1.121 14.849 1.121 18.364 4.636 21.879 8.151 21.879 13.849 18.364 17.364ZM12 13C13.105 13 14 12.105 14 11 14 9.895 13.105 9 12 9 10.895 9 10 9.895 10 11 10 12.105 10.895 13 12 13Z"></path>
+              </svg>
+              From IP: <span x-text="ip_address"></span>
+            </span>
 
+            <!-- Last checked -->
+            <span class="inline-flex items-center gap-1.5 rounded-md bg-gray-100 px-2.5 py-1 text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" aria-hidden="true" class="remixicon -ml-0.5 size-4 shrink-0"><path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM13 12V7H11V14H17V12H13Z"></path></svg>
+              Last run: <span x-text="domain.timestamp"></span>
+            </span>
+          </div>
 
 
 <dl class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
