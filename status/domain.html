@@ -8,6 +8,10 @@
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-50 p-6">
 
+<p class="mb-2 text-center">
+    <a href="index.html" class="text-blue-600 hover:underline">← Back to main status page</a>
+</p>
+  
 <div class="max-w-5xl mx-auto space-y-10">
     <!-- Header -->
     <div class="flex flex-col md:flex-row items-center gap-4">
@@ -276,9 +280,7 @@ function domainHistory() {
 }
 </script>
 
-    <p class="mt-4 text-center">
-      <a href="index.html" class="text-blue-600 hover:underline">← Back to main status page</a>
-    </p>
+<small class="mt-4 text-center" x-show="domain">⚡ Subscribe via RSS — <a href="../index.xml" target="_blank" class="no-underline">to all updates</a> or <a :href="`${domain}.xml`" target="_blank" class="no-underline"> only this feed (<span x-text="domain"></span>)</a></small>
 
 </body>
 </html>
