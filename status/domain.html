@@ -4,23 +4,17 @@
   <meta charset="UTF-8">
   <title>Domain History</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 </head>
 <body class="bg-gray-100 text-gray-900">
   <div class="container mx-auto p-6">
     <h1 class="text-3xl font-bold mb-6 text-center" id="domain-name"></h1>
     <p class="text-center mb-4">Showing latest <span id="snapshot-count"></span> snapshots</p>
 
+    <!-- Status summary -->
+    <div id="domain-status" class="mb-6"></div>
 
-<div class="my-6">
-  <canvas id="domain-chart" class="bg-white p-4 rounded shadow"></canvas>
-</div>
-
-
-
-    
     <div id="snapshots" class="space-y-4"></div>
+
     <p class="mt-4 text-center">
       <a href="index.html" class="text-blue-600 hover:underline">← Back to main status page</a>
     </p>
@@ -56,6 +50,8 @@ async function loadDomainHistory() {
 
   const container = document.getElementById("snapshots");
   container.innerHTML = "";
+  const statusDiv = document.getElementById("domain-status");
+  statusDiv.innerHTML = "";
 
   try {
     const apiUrl = `https://api.github.com/repos/${github_user}/${github_repo}/contents/status/history/${domain}?ref=${github_branch}`;
@@ -69,11 +65,42 @@ async function loadDomainHistory() {
       .sort((a, b) => b.name.localeCompare(a.name))
       .slice(0, count);
 
-    // Prepare data for Chart.js
-    const timestamps = [];
-    const responseTimes = [];
-    const httpStatuses = [];
+    if (jsonFiles.length === 0) {
+      statusDiv.innerHTML = `<p class="text-center text-gray-500">No snapshots available for this domain.</p>`;
+      return;
+    }
 
+    // Fetch the latest snapshot first for status display
+    const latestRes = await fetch(jsonFiles[0].download_url);
+    const latestSnapshot = await latestRes.json();
+    const match = jsonFiles[0].name.match(/status_(\d{8})_(\d{6})\.json/);
+    let latestTimestamp = '';
+    if (match) {
+      const [_, ymd, hms] = match;
+      const year = ymd.substring(0, 4);
+      const month = ymd.substring(4, 6);
+      const day = ymd.substring(6, 8);
+      const hour = hms.substring(0, 2);
+      const min = hms.substring(2, 4);
+      const sec = hms.substring(4, 6);
+      latestTimestamp = `${year}-${month}-${day} ${hour}:${min}:${sec}`;
+    }
+
+    // Display the up/down status at the top
+    const isUp = latestSnapshot.http_status === 200;
+    statusDiv.innerHTML = `
+      <div class="flex flex-col items-center">
+        <span class="mx-auto inline-flex items-center justify-center rounded-full ${isUp ? 'bg-emerald-100' : 'bg-red-100'} p-4">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" aria-hidden="true" class="${isUp ? 'text-emerald-500' : 'text-red-500'}">
+            ${isUp ? '<path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM17.4571 9.45711L11 15.9142L6.79289 11.7071L8.20711 10.2929L11 13.0858L16.0429 8.04289L17.4571 9.45711Z"></path>' : '<path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM15 9L9 15M9 9L15 15"></path>'}
+          </svg>
+        </span>
+        <h1 class="mt-3 text-lg font-semibold text-gray-900">${isUp ? 'All services are online' : 'Some services are down'}</h1>
+        <p class="text-sm text-gray-700">Last updated on ${latestTimestamp}</p>
+      </div>
+    `;
+
+    // Display all snapshots
     for (const file of jsonFiles.reverse()) { // oldest first
       const snapshotRes = await fetch(file.download_url);
       const snapshot = await snapshotRes.json();
@@ -83,73 +110,26 @@ async function loadDomainHistory() {
         const year = ymd.substring(0, 4);
         const month = ymd.substring(4, 6);
         const day = ymd.substring(6, 8);
-      
         const hour = hms.substring(0, 2);
         const min = hms.substring(2, 4);
         const sec = hms.substring(4, 6);
-      
-        const formatted = `${year}-${month}-${day} ${hour}:${min}:${sec}`;
-        timestamps.push(formatted);
-        snapshot.timestamp = formatted;
+        snapshot.timestamp = `${year}-${month}-${day} ${hour}:${min}:${sec}`;
       } else {
-        timestamps.push(file.name);
+        snapshot.timestamp = file.name;
       }
-      responseTimes.push(snapshot.http_response_time_ms);
-      httpStatuses.push(snapshot.http_status);
 
-const div = document.createElement("div");
-div.innerHTML = `
-<div class="relative w-full max-w-md mx-auto p-6 bg-white rounded-xl shadow-lg border border-transparent hover:border-blue-400 hover:shadow-xl transition duration-300">
-  <div class="flex items-center justify-between">
-    <div class="flex items-center space-x-3">
-      <span class="w-3 h-3 ${snapshot.http_status === 200 ? 'bg-green-500' : 'bg-red-500'} rounded-full"></span>
-      <p class="text-xl font-semibold text-gray-900">${snapshot.http_status}</p>
-    </div>
-    <span class="text-gray-500 text-sm">${snapshot.timestamp || ''}</span>
-  </div>
-  <div class="mt-4">
-    <p class="text-gray-700"><strong>Response Time:</strong> ${snapshot.http_response_time_ms} ms</p>
-    <p class="text-gray-700 break-words"><strong>Status Message:</strong> ${snapshot.status_message}</p>
-  </div>
-  <div class="absolute inset-0 rounded-xl border border-transparent hover:border-gray-300 transition duration-300 pointer-events-none"></div>
-</div>
-`;
-container.appendChild(div);
-
+      const div = document.createElement("div");
+      div.className = "p-4 bg-white rounded shadow hover:shadow-lg transition duration-300 border-l-4 " + 
+                      (snapshot.http_status === 200 ? "border-emerald-500" : "border-red-500");
+      div.innerHTML = `
+        <div class="flex justify-between items-center">
+          <div class="font-semibold text-lg">${snapshot.http_status} - ${snapshot.status_message}</div>
+          <div class="text-gray-500 text-sm">${snapshot.timestamp}</div>
+        </div>
+        <div class="mt-2 text-gray-700">Response Time: ${snapshot.http_response_time_ms} ms</div>
+      `;
+      container.appendChild(div);
     }
-
-    // Create Chart.js chart
-    const ctx = document.getElementById('domain-chart').getContext('2d');
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: timestamps,
-        datasets: [
-          {
-            label: 'HTTP Response Time (ms)',
-            data: responseTimes,
-            borderColor: 'rgba(59, 130, 246, 1)',
-            backgroundColor: 'rgba(59, 130, 246, 0.2)',
-            tension: 0.3,
-            yAxisID: 'y1',
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { display: true },
-          tooltip: { mode: 'index', intersect: false }
-        },
-        scales: {
-          y1: { 
-            type: 'linear', 
-            position: 'left', 
-            title: { display: true, text: 'Response Time (ms)' } 
-          }
-        }
-      }
-    });
 
   } catch (err) {
     console.error(err);
@@ -160,6 +140,5 @@ container.appendChild(div);
 loadDomainHistory();
 </script>
 
-  
 </body>
 </html>
