@@ -85,8 +85,8 @@
                       <th class="px-3 py-1 border-b border-gray-300 dark:border-gray-700 text-left">Checked</th>
                       <th class="px-3 py-1 border-b border-gray-300 dark:border-gray-700 text-left">Status</th>
                       <th class="px-3 py-1 border-b border-gray-300 dark:border-gray-700 text-left">Response (ms)</th>
-                      <th class="px-3 py-1 border-b border-gray-300 dark:border-gray-700 text-left">WHOIS</th>
-                      <th class="px-3 py-1 border-b border-gray-300 dark:border-gray-700 text-left">SSL</th>
+                      <!--th class="px-3 py-1 border-b border-gray-300 dark:border-gray-700 text-left">WHOIS</th>
+                      <th class="px-3 py-1 border-b border-gray-300 dark:border-gray-700 text-left">SSL</th-->
                       <th class="px-3 py-1 border-b border-gray-300 dark:border-gray-700 text-left">Up?</th>
                   </tr>
                 </thead>
@@ -101,12 +101,12 @@
                               </span>
                           </td>
                           <td class="px-3 py-1" x-text="entry.response"></td>
-                          <td class="px-3 py-1 relative" @mouseenter="showTooltip($event, {text: entry.whois_ok ? 'OK' : 'Expiring Soon', extra: 'Expiry: ' + entry.whois_expiry})" @mouseleave="hideTooltip()">
+                          <!--td class="px-3 py-1 relative" @mouseenter="showTooltip($event, {text: entry.whois_ok ? 'OK' : 'Expiring Soon', extra: 'Expiry: ' + entry.whois_expiry})" @mouseleave="hideTooltip()">
                               <span x-text="entry.whois_ok ? 'OK' : 'Issue'"></span>
                           </td>
                           <td class="px-3 py-1 relative"  @mouseenter="showTooltip($event, {text: entry.ssl_ok ? 'Valid' : 'Expiring', extra: 'Expiry: ' + entry.ssl_expiry})"  @mouseleave="hideTooltip()">
                               <span x-text="entry.ssl_ok ? 'Valid' : 'X'"></span>
-                          </td>
+                      </td-->
                           <td class="px-3 py-1 flex items-center gap-1">
                               <span x-html="entry.up ? '&#10003;' : '&#10007;'"></span>
                               <span x-text="entry.up ? 'Yes' : 'No'"></span>
