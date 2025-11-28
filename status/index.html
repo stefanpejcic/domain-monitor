@@ -48,9 +48,9 @@
     
   </div>
 
-  <div>
+  <div class="bg-white dark:bg-[#090E1A]">
     <template x-for="(domain, idx) in domains" :key="idx">
-      <div class="border rounded-lg p-4 bg-white dark:bg-[#090E1A] dark:border-gray-900 space-y-2">
+      <div class="rounded-lg p-4 bg-white dark:bg-[#090E1A] dark:border-gray-900 space-y-2">
         
         <!-- Toggle -->
         <button @click="domain.open = !domain.open"
