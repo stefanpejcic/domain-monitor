@@ -37,7 +37,7 @@
         let respTimeClass = "text-gray-500";
 
         if (d.http_response_time_ms !== null) {
-          if (d.http_response_time_ms <= 1000) respTimeClass = "text-green-600";
+          if (d.http_response_time_ms <= 1000) respTimeClass = "text-emerald-500";
           else if (d.http_response_time_ms <= 2000) respTimeClass = "text-orange-600 font-medium";
           else respTimeClass = "text-red-600 font-bold";
         }
@@ -60,12 +60,52 @@
                 </div>
               </button>
             </h3>
-            <div id="domain-panel-${idx}" class="mt-2 hidden px-4 pb-4 text-sm text-gray-700 dark:text-gray-200 space-y-1">
-              <div><strong>WHOIS Expiry:</strong> <span class="${d.whois_ok ? 'text-green-600' : 'text-red-600 font-medium'}">${d.whois_expiry || 'N/A'}</span></div>
-              <div><strong>SSL Expiry:</strong> <span class="${d.ssl_ok ? 'text-green-600' : 'text-red-600'}">${d.ssl_expiry || 'N/A'}</span></div>
-              <div><strong>HTTP Status:</strong> <span class="${d.http_ok ? 'text-green-600' : 'text-red-600'}">${d.http_status || 'N/A'}</span></div>
-              <div><strong>Response Time:</strong> <span class="${respTimeClass}">${d.http_response_time_ms !== null ? d.http_response_time_ms.toFixed(0) + ' ms' : 'N/A'}</span></div>
-            </div>
+            <div id="domain-panel-${idx}" class="mt-2 px-4 pb-4 text-sm text-gray-700 dark:text-gray-200 space-y-1">
+
+<div>
+    <div class="flex items-center space-x-1.5">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" aria-hidden="true" class="remixicon size-5 shrink-0 text-emerald-500 dark:text-emerald-500" > <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM17.4571 9.45711L11 15.9142L6.79289 11.7071L8.20711 10.2929L11 13.0858L16.0429 8.04289L17.4571 9.45711Z" ></path></svg >
+        <span class="text-sm font-medium text-emerald-500 dark:text-emerald-500">Operational</span>
+    </div>
+    <div class="flex gap-4 justify-between">
+      <h3 class="mt-2 text-lg font-medium text-gray-900 dark:text-gray-50">Emma's Online-Shop</h3>
+      <a href="domain.html?domain=${d.domain}" class="relative inline-flex items-center justify-center whitespace-nowrap rounded-md border px-3 py-2 text-center text-sm font-medium shadow-sm transition-all duration-100 ease-in-out disabled:pointer-events-none disabled:shadow-none outline outline-offset-2 outline-0 focus-visible:outline-2 outline-blue-500 dark:outline-blue-500 border-gray-300 dark:border-gray-800 text-gray-900 dark:text-gray-50 bg-white dark:bg-gray-950 hover:bg-gray-50 dark:hover:bg-gray-900/60 disabled:text-gray-400 disabled:dark:text-gray-600" tremor-id="tremor-raw" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="radix-:r5:" data-state="closed">View Detailed Data</a>
+    </div>
+    <div class="mt-4 flex flex-wrap items-center gap-2">
+
+        <span tabindex="1" class="inline-flex items-center gap-1.5 rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" aria-hidden="true" class="remixicon -ml-0.5 size-4 shrink-0" > <path d="M17 7C13.5705 7 10.6449 9.15804 9.50734 12.1903L11.3805 12.8927C12.2337 10.6185 14.4278 9 17 9C17.6983 9 18.3687 9.11928 18.992 9.33857C21.3265 10.16 23 12.3846 23 15C23 18.3137 20.3137 21 17 21H7C3.68629 21 1 18.3137 1 15C1 12.3846 2.67346 10.16 5.00804 9.33857C5.0027 9.22639 5 9.11351 5 9C5 5.13401 8.13401 2 12 2C15.242 2 17.9693 4.20399 18.7652 7.19539C18.1973 7.0675 17.6065 7 17 7Z" ></path></svg >
+          Status: <span class="${d.http_ok ? 'text-emerald-500' : 'text-red-600'}">${d.http_status || 'N/A'}</span>
+        </span>
+
+        <span tabindex="1" class="inline-flex items-center gap-1.5 rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" aria-hidden="true" class="remixicon -ml-0.5 size-4 shrink-0" > <path d="M17 7C13.5705 7 10.6449 9.15804 9.50734 12.1903L11.3805 12.8927C12.2337 10.6185 14.4278 9 17 9C17.6983 9 18.3687 9.11928 18.992 9.33857C21.3265 10.16 23 12.3846 23 15C23 18.3137 20.3137 21 17 21H7C3.68629 21 1 18.3137 1 15C1 12.3846 2.67346 10.16 5.00804 9.33857C5.0027 9.22639 5 9.11351 5 9C5 5.13401 8.13401 2 12 2C15.242 2 17.9693 4.20399 18.7652 7.19539C18.1973 7.0675 17.6065 7 17 7Z" ></path></svg >
+          IP: <code>${d.resolved_ip || 'N/A'}</code>
+        </span>
+
+        <span tabindex="1" class="inline-flex items-center gap-1.5 rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" aria-hidden="true" class="remixicon -ml-0.5 size-4 shrink-0" > <path d="M17 7C13.5705 7 10.6449 9.15804 9.50734 12.1903L11.3805 12.8927C12.2337 10.6185 14.4278 9 17 9C17.6983 9 18.3687 9.11928 18.992 9.33857C21.3265 10.16 23 12.3846 23 15C23 18.3137 20.3137 21 17 21H7C3.68629 21 1 18.3137 1 15C1 12.3846 2.67346 10.16 5.00804 9.33857C5.0027 9.22639 5 9.11351 5 9C5 5.13401 8.13401 2 12 2C15.242 2 17.9693 4.20399 18.7652 7.19539C18.1973 7.0675 17.6065 7 17 7Z" ></path></svg >
+          Response: <span class="${respTimeClass}">${d.http_response_time_ms !== null ? d.http_response_time_ms.toFixed(0) + ' ms' : 'N/A'}</span>
+        </span>
+    
+        <span tabindex="1" class="inline-flex items-center gap-1.5 rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" aria-hidden="true" class="remixicon -ml-0.5 size-4 shrink-0" > <path d="M18.364 17.364L12 23.7279L5.63604 17.364C2.12132 13.8492 2.12132 8.15076 5.63604 4.63604C9.15076 1.12132 14.8492 1.12132 18.364 4.63604C21.8787 8.15076 21.8787 13.8492 18.364 17.364ZM12 13C13.1046 13 14 12.1046 14 11C14 9.89543 13.1046 9 12 9C10.8954 9 10 9.89543 10 11C10 12.1046 10.8954 13 12 13Z" ></path></svg >
+          WHOIS: <span class="${d.whois_ok ? 'text-emerald-500' : 'text-red-600 font-medium'}">${d.whois_expiry || 'N/A'}</span>
+        </span>
+        
+        <span tabindex="1" class="inline-flex items-center gap-1.5 rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" aria-hidden="true" class="remixicon -ml-0.5 size-4 shrink-0" > <path d="M17 7C13.5705 7 10.6449 9.15804 9.50734 12.1903L11.3805 12.8927C12.2337 10.6185 14.4278 9 17 9C17.6983 9 18.3687 9.11928 18.992 9.33857C21.3265 10.16 23 12.3846 23 15C23 18.3137 20.3137 21 17 21H7C3.68629 21 1 18.3137 1 15C1 12.3846 2.67346 10.16 5.00804 9.33857C5.0027 9.22639 5 9.11351 5 9C5 5.13401 8.13401 2 12 2C15.242 2 17.9693 4.20399 18.7652 7.19539C18.1973 7.0675 17.6065 7 17 7Z" ></path></svg >
+          SSL: <span class="${d.ssl_ok ? 'text-emerald-500' : 'text-red-600'}">${d.ssl_expiry || 'N/A'}</span>
+        </span>
+        
+        <span tabindex="1" class="inline-flex items-center gap-1.5 rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" aria-hidden="true" class="remixicon -ml-0.5 size-4 shrink-0" > <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM13 12V7H11V14H17V12H13Z" ></path></svg >
+          Last run: ${d.timestamp || 'N/A'}
+        </span>
+        
+    </div>
+</div>
+
           </div>
         `;
       });
