@@ -28,9 +28,59 @@
           <p class="pt-1 text-sm text-gray-700 dark:text-gray-300">Last updated on <span x-text="lastUpdated"></span></p>
         </div>
       </div>
-      <a href="#" class="relative inline-flex items-center justify-center whitespace-nowrap rounded-md border px-3 py-2 text-center text-sm font-medium shadow-sm transition-all duration-100 ease-in-out disabled:pointer-events-none disabled:shadow-none outline outline-offset-2 outline-0 focus-visible:outline-2 outline-blue-500 dark:outline-blue-500 border-gray-300 dark:border-gray-800 text-gray-900 dark:text-gray-50 bg-white dark:bg-gray-950 hover:bg-gray-50 dark:hover:bg-gray-900/60 disabled:text-gray-400 disabled:dark:text-gray-600" href="domain.html?domain=pejcic.rs">
-         Subscribe
-      </a>
+      <!-- Subscribe button with dropdown -->
+      <div x-data="{ open: false, showApi: false }" class="relative inline-block text-left">
+        <button @mouseenter="open = true" @mouseleave="open = false"
+                class="relative inline-flex items-center justify-center whitespace-nowrap rounded-md border px-3 py-2 text-center text-sm font-medium shadow-sm transition-all duration-100 ease-in-out outline outline-offset-2 outline-0 focus-visible:outline-2 outline-blue-500 dark:outline-blue-500 border-gray-300 dark:border-gray-800 text-gray-900 dark:text-gray-50 bg-white dark:bg-gray-950 hover:bg-gray-50 dark:hover:bg-gray-900/60">
+          Subscribe
+          <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+      
+        <!-- Dropdown menu -->
+        <div x-show="open" @mouseenter="open = true" @mouseleave="open = false"
+             x-transition:enter="transition ease-out duration-100"
+             x-transition:enter-start="opacity-0 scale-95"
+             x-transition:enter-end="opacity-100 scale-100"
+             x-transition:leave="transition ease-in duration-75"
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-95"
+             class="absolute mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-gray-900 ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
+          
+          <ul class="py-1">
+            <!-- RSS -->
+            <li>
+              <a href="index.xml" target="_blank" 
+                 class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+                <svg viewBox="0 0 512 512" class="w-5 h-5">
+                  <path d="M108.56 342.78a60.34 60.34 0 1 0 60.56 60.44 60.63 60.63 0 0 0-60.56-60.44Z"></path>
+                  <path d="M48 186.67v86.55c52 0 101.94 15.39 138.67 52.11s52 86.56 52 138.67h86.66c0-151.56-125.66-277.33-277.33-277.33Z"></path>
+                  <path d="M48 48v86.56c185.25 0 329.22 144.08 329.22 329.44H464C464 234.66 277.67 48 48 48Z"></path>
+                </svg>
+                RSS
+              </a>
+            </li>
+      
+            <!-- API -->
+            <li @click="showApi = !showApi"
+                class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer">
+              <svg viewBox="0 0 512 512" class="w-5 h-5">
+                <path d="M160 389a20.91 20.91 0 0 1-13.82-5.2l-128-112a21 21 0 0 1 0-31.6l128-112a21 21 0 0 1 27.66 31.61L63.89 256l109.94 96.19A21 21 0 0 1 160 389zm192 0a21 21 0 0 1-13.84-36.81L448.11 256l-109.94-96.19a21 21 0 0 1 27.66-31.61l128 112a21 21 0 0 1 0 31.6l-128 112A20.89 20.89 0 0 1 352 389zm-144 48a21 21 0 0 1-20.12-27l96-320a21 21 0 1 1 40.23 12l-96 320A21 21 0 0 1 208 437z"></path>
+              </svg>
+              API
+            </li>
+          </ul>
+        </div>
+      
+        <!-- Hidden API section -->
+        <div x-show="showApi" x-transition class="mt-2 p-4 rounded-md bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-50">
+          <h4 class="font-semibold mb-2">API Info</h4>
+          <p>You can use our API to integrate the information and updates from this status page into your own website or application. Simply make a <code>GET</code> request to the following URL:
+          </br>
+          <code x-text="`${window.location.origin}/status/status.json`"></code></p>
+        </div>
+      </div>
     </div>
     
 <div class="mt-2 flex">
