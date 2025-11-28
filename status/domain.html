@@ -34,10 +34,12 @@ async function getQueryParam(name, defaultValue = null) {
 
 async function loadDomainHistory() {
   const domain = await getQueryParam("domain");
-  const count = parseInt(await getQueryParam("count", "100"));
-  if (!domain) return;
+  const count = parseInt(await getQueryParam("count", "288"));
+  if (!domain) {
+      window.location.href = "index.html";
+      return;
+  }
 
-  // Load config
   let config;
   try {
     const configRes = await fetch("config.json?_=" + Date.now());
