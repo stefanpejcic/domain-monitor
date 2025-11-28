@@ -61,7 +61,7 @@ async function loadDomainHistory() {
   httpContent.innerHTML = "";
 
   try {
-    const filePath = `status/history/${domain}.json`;
+    const filePath = `history/${domain}.json`;
     const fileRes = await fetch(filePath);
     if (!fileRes.ok) throw new Error("Failed to fetch domain JSON");
 
