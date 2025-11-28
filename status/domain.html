@@ -24,7 +24,10 @@
     async function loadDomainHistory() {
       const domain = await getQueryParam("domain");
       const count = parseInt(await getQueryParam("count", "100"));
-      if (!domain) return;
+      if (!domain) {
+        window.location.href = "index.html";
+        return;
+      }
 
       let config;
       try {
