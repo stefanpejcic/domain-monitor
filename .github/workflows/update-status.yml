@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       ssl_threshold:
-        description: "Days before expiration to trigger an alert"
+        description: "Days before SSL/WHOIS expiration to trigger an alert"
         required: false
         default: "30"
       response_time:
