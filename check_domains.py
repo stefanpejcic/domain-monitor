@@ -202,12 +202,12 @@ def main():
             if not ip_issue:
                 create_issue(
                     repo,
-                    f"🌐 IP change detected for {domain} (was {previous_ip})",
+                    f"🚨 IP change detected for {domain} (was {previous_ip})",
                     f"Domain **{domain}** IP changed from `{previous_ip}` to `{resolved_ip}`"
                 )
             else:
                 comment_on_issue(ip_issue, f"IP updated to `{resolved_ip}`")
-                ip_issue.edit(title=f"🌐 IP change detected for {domain} (was {previous_ip})")
+                ip_issue.edit(title=f"🚨 IP change detected for {domain} (was {previous_ip})")
     
         domain_entry = {
             "timestamp": timestamp,
