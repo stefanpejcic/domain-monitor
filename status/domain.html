@@ -378,7 +378,7 @@ function domainHistory() {
 }
 </script>
 
-<small class="mt-4 text-center" x-show="domain">⚡ Subscribe via RSS — <a href="index.xml" target="_blank" class="no-underline">to all updates</a> or <a :href="history/`${domain}.xml`" target="_blank" class="no-underline"> only this feed (<span x-text="domain"></span>)</a></small>
+<small class="mt-4 text-center" x-show="domain">⚡ Subscribe via RSS — <a href="index.xml" target="_blank" class="no-underline">to all updates</a> or <a :href="`history/${domain}.xml`" target="_blank" class="no-underline"> only this feed (<span x-text="domain"></span>)</a></small>
 
 </body>
 </html>
