@@ -8,7 +8,7 @@
       "ssl_ok": true,
       "http_status": 200,
       "http_ok": true,
-      "http_response_time_ms": 83.878
+      "http_response_time_ms": 82.613
     },
     {
       "domain": "pcelarstvopejcic.com",
@@ -18,7 +18,7 @@
       "ssl_ok": true,
       "http_status": 200,
       "http_ok": true,
-      "http_response_time_ms": 436.772
+      "http_response_time_ms": 424.77700000000004
     },
     {
       "domain": "openpanel.com",
@@ -28,7 +28,7 @@
       "ssl_ok": true,
       "http_status": 200,
       "http_ok": true,
-      "http_response_time_ms": 98.856
+      "http_response_time_ms": 203.454
     },
     {
       "domain": "openpanel.org",
@@ -38,17 +38,17 @@
       "ssl_ok": true,
       "http_status": 200,
       "http_ok": true,
-      "http_response_time_ms": 91.909
+      "http_response_time_ms": 58.45
     },
     {
       "domain": "sentinelfirewall.org",
       "whois_expiry": "2026-09-28",
       "whois_ok": true,
-      "ssl_expiry": "2026-02-26",
-      "ssl_ok": true,
+      "ssl_expiry": "2025-12-27",
+      "ssl_ok": false,
       "http_status": 200,
       "http_ok": true,
-      "http_response_time_ms": 311.61699999999996
+      "http_response_time_ms": 78.763
     },
     {
       "domain": "wpxss.com",
@@ -58,8 +58,8 @@
       "ssl_ok": true,
       "http_status": 200,
       "http_ok": true,
-      "http_response_time_ms": 612.6519999999999
+      "http_response_time_ms": 614.337
     }
   ],
-  "last_updated": "2025-11-28 11:39:07"
+  "last_updated": "2025-11-28 11:47:58"
 }
