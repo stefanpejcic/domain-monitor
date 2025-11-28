@@ -152,6 +152,19 @@
               </dt>
               <dd class="text-xl font-semibold" x-text="domain.ssl_ok"></dd>
             </div>
+
+
+            <!-- WHOIS -->
+            <div class="border rounded-lg p-3" :class="whoisColor(domain.whois_ok)">
+              <dt class="text-sm font-medium text-gray-500 dark:text-gray-500 flex items-center gap-1">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                  <path d="M12 1C7.037 1 3 5.037 3 10v4c0 5.523 4.477 10 10 10s10-4.477 10-10v-4c0-4.963-4.037-9-9-9zM12 21c-3.866 0-7-3.134-7-7v-4c0-3.866 3.134-7 7-7s7 3.134 7 7v4c0 3.866-3.134 7-7 7z"></path>
+                </svg>
+                WHOIS
+              </dt>
+              <dd class="text-xl font-semibold" x-text="domain.whois_ok"></dd>
+            </div>
+            
           </div>
   
         </div>
@@ -184,6 +197,9 @@ function domainMonitor() {
       return '';
     },
     sslColor(ok) {
+      return ok ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-400/10 dark:text-emerald-500' : 'bg-red-100 text-red-800 dark:bg-red-400/10 dark:text-red-500';
+    },
+    whoisColor(ok) {
       return ok ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-400/10 dark:text-emerald-500' : 'bg-red-100 text-red-800 dark:bg-red-400/10 dark:text-red-500';
     },
     async init() {
