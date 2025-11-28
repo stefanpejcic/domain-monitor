@@ -47,18 +47,8 @@
         <div x-show="domain.open" class="mt-2 p-2 space-y-2 text-sm text-gray-700 dark:text-gray-200">
 
           <div class="space-y-2">
-            <!-- Status + Operational badge -->
-            <div class="flex items-center space-x-1.5">
-              <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" 
-                   :class="domain.http_ok ? 'text-emerald-500' : 'text-red-600'">
-                <path x-show="domain.http_ok" d="M12 22C17.523 22 22 17.523 22 12 22 6.477 17.523 2 12 2 6.477 2 2 6.477 2 12 2 17.523 6.477 22 12 22ZM17.457 9.457 11 15.914 6.793 11.707 8.207 10.293 11 13.086 16.043 8.043 17.457 9.457Z"></path>
-                <path x-show="!domain.http_ok" d="M12 22C17.523 22 22 17.523 22 12 22 6.477 17.523 2 12 2 6.477 2 2 6.477 2 12 2 17.523 6.477 22 12 22ZM15 9l-6 6M9 9l6 6"></path>
-              </svg>
-              <span class="text-sm font-medium" :class="domain.http_ok ? 'text-emerald-500' : 'text-red-600'" 
-                    x-text="domain.http_ok ? 'Operational' : 'Down'"></span>
-            </div>
-          
-            <!-- Domain name + Detailed Data button -->
+
+            <!-- name and btn -->
             <div class="flex gap-4 justify-between items-center">
               <h3 class="mt-2 text-lg font-medium text-gray-900 dark:text-gray-50">
                 <a :href="`http://${domain.domain}`" :title="`Visit http://${domain.domain}`" target="_blank"
