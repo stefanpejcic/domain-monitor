@@ -6,6 +6,7 @@ from github import Github, Auth
 import os
 import json
 import xml.etree.ElementTree as ET
+import xml.dom.minidom as minidom
 
 def read_domains():
     with open("domains.txt", "r") as f:
@@ -93,9 +94,12 @@ def load_domain_xml(domain):
 
 def save_domain_xml(domain, tree):
     xml_file = f"status/history/{domain}.xml"
-    tree.write(xml_file, encoding="utf-8", xml_declaration=True)
+    raw_xml = ET.tostring(tree.getroot(), encoding='utf-8')
+    parsed = minidom.parseString(raw_xml)
+    pretty_xml = parsed.toprettyxml(indent="  ")  # 2 spaces
+    with open(xml_file, "w", encoding="utf-8") as f:
+        f.write(pretty_xml)
     print(f"Saved XML history for {domain} → {xml_file}")
-
 
 def get_outgoing_ip():
     try:
