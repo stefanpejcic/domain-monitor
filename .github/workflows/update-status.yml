@@ -64,3 +64,15 @@ jobs:
           git add status/history/*.json
           git commit -m "Data fetched [skip ci]" || echo "No changes"
           git push
+
+      - name: Trigger self for next run
+        uses: peter-evans/workflow-dispatch@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          workflow: "update-status.yml"
+          ref: ${{ github.ref }}
+          inputs: |
+            ssl_threshold: ${{ github.event.inputs.ssl_threshold || '30' }}
+            response_time: ${{ github.event.inputs.response_time || '1000' }}
+
