@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Domain History</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/flowbite@1.7.0/dist/flowbite.js"></script>
 </head>
 <body class="text-gray-900">
   <div class="container mx-auto p-6">
@@ -40,6 +41,9 @@ async function loadDomainHistory() {
       return;
   }
 
+  document.title = `Domain History: ${domain}`;
+  document.getElementById("domain-name").textContent = domain;
+  
   let config;
   try {
     const configRes = await fetch("config.json?_=" + Date.now());
@@ -51,8 +55,6 @@ async function loadDomainHistory() {
   }
 
   const { github_user, github_repo, github_branch } = config;
-  document.getElementById("domain-name").textContent = domain;
-
   const domainStatusDiv = document.getElementById("domain-status");
   const httpContent = document.getElementById("http-content");
   domainStatusDiv.innerHTML = "";
@@ -110,34 +112,38 @@ async function loadDomainHistory() {
     const barContainer = document.createElement('div');
     barContainer.className = "items-center group h-8 mt-3 hidden w-full lg:flex relative";
 
-    snapshots.forEach((s) => {
+    snapshots.forEach((s, index) => {
       const segWrapper = document.createElement('div');
       segWrapper.className = "relative size-full overflow-hidden px-[0.5px] transition first:rounded-l-[4px] first:pl-0 last:rounded-r-[4px] last:pr-0 sm:px-px";
-
+    
       const segInner = document.createElement('div');
       segInner.className = "size-full rounded-[1px]";
-
+    
       // Set segment color
       if (s.http_ok) segInner.classList.add('bg-emerald-500', 'dark:bg-emerald-500');
       else if (!s.http_ok && s.http_response_time_ms > 1000) segInner.classList.add('bg-amber-500', 'dark:bg-amber-500');
       else segInner.classList.add('bg-red-500', 'dark:bg-red-500');
-
-      // Info box
-      const infoBox = document.createElement('div');
-      infoBox.className = "absolute bottom-full mb-1 left-1/2 -translate-x-1/2 px-2 py-1 text-xs rounded bg-gray-800 text-white hidden whitespace-nowrap z-50 shadow-lg";
-      infoBox.innerHTML = `
+    
+      // Flowbite tooltip
+      const tooltipId = `tooltip-${index}`;
+      segInner.setAttribute('data-tooltip-target', tooltipId);
+      segInner.setAttribute('data-tooltip-placement', 'top');
+    
+      const tooltip = document.createElement('div');
+      tooltip.id = tooltipId;
+      tooltip.role = 'tooltip';
+      tooltip.className = "absolute z-50 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-800 rounded-lg shadow-sm opacity-0 transition-opacity duration-300";
+      tooltip.innerHTML = `
         <div><strong>${s.date}</strong></div>
         <div>Status: ${s.http_ok ? 'OK' : 'Issue'}</div>
         <div>Response: ${s.http_response_time_ms.toFixed(2)} ms</div>
       `;
-
-      segWrapper.addEventListener('mouseenter', () => infoBox.classList.remove('hidden'));
-      segWrapper.addEventListener('mouseleave', () => infoBox.classList.add('hidden'));
-
+    
       segWrapper.appendChild(segInner);
-      segWrapper.appendChild(infoBox);
+      segWrapper.appendChild(tooltip);
       barContainer.appendChild(segWrapper);
     });
+
 
     httpContent.appendChild(barContainer);
 
