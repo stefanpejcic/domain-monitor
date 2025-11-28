@@ -26,13 +26,13 @@
     <p class="text-sm text-gray-700 dark:text-gray-300">Last updated on <span x-text="lastUpdated"></span></p>
   </div>
 
-  <div x-data="domainMonitor()" class="space-y-4">
+  <div x-data="domainMonitor()">
     <template x-for="(domain, idx) in domains" :key="idx">
       <div class="border rounded-lg p-4 bg-white dark:bg-[#090E1A] dark:border-gray-900 space-y-2">
         
         <!-- Toggle -->
         <button @click="domain.open = !domain.open"
-                class="w-full flex justify-between items-center bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded-lg text-sm font-medium text-gray-900 dark:text-gray-50">
+                class="w-full flex justify-between items-center bg-gray-100 dark:bg-gray-800 p-4 rounded-lg text-sm font-medium text-gray-900 dark:text-gray-50">
           <span x-text="domain.domain"></span>
           <span class="flex items-center gap-1" :class="domain.http_ok ? 'text-emerald-500' : 'text-red-600'">
             <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
