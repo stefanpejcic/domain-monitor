@@ -43,7 +43,7 @@
             <template x-for="(entry, index) in history" :key="index">
                 <div class="w-2 rounded-[1px] cursor-pointer flex-shrink-0"
                      :class="getColor(entry)"
-                     :style="`height: ${Math.min(Math.max(entry.response / 50, 4), 32)}px`"
+                     :style="`height: ${Math.min(Math.max(entry.response / 25, 4), 32)}px`"
                      @mouseenter="showTooltip($event, entry)"
                      @mouseleave="hideTooltip()"></div>
             </template>
@@ -218,8 +218,12 @@ function domainHistory() {
 
         showTooltip(e, entry) {
             this.tooltip.show = true;
-            const dateTime = new Date(entry.time).toLocaleString();
-            this.tooltip.text = `${dateTime}\nStatus: ${entry.statusCode} | Response: ${entry.response.toFixed(2)} ms`;
+            if(entry.time){ 
+                const dateTime = new Date(entry.time).toLocaleString();
+                this.tooltip.text = `${dateTime}\nStatus: ${entry.statusCode} | Response: ${entry.response.toFixed(2)} ms`;
+            } else {
+                this.tooltip.text = `${entry.text}${entry.extra ? '\n' + entry.extra : ''}`;
+            }
             this.tooltip.x = e.clientX + 10;
             this.tooltip.y = e.clientY + 10;
         },
