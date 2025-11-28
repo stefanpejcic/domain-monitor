@@ -61,12 +61,11 @@ async function loadDomainHistory() {
   httpContent.innerHTML = "";
 
   try {
-    const apiUrl = `https://api.github.com/repos/${github_user}/${github_repo}/contents/status/history/${domain}.json?ref=${github_branch}`;
-    const res = await fetch(apiUrl);
-    if (!res.ok) throw new Error("Failed to fetch domain JSON");
+    const filePath = `status/history/${domain}.json`;
+    const fileRes = await fetch(filePath);
+    if (!fileRes.ok) throw new Error("Failed to fetch domain JSON");
 
-    const file = await res.json();
-    const domainData = JSON.parse(atob(file.content)); // GitHub returns base64 content
+    const domainData = await fileRes.json();
     const snapshots = domainData.history.slice(-count); // last `count` entries
 
     if (snapshots.length === 0) {
