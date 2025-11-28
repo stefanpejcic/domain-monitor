@@ -8,13 +8,12 @@ on:
       ssl_threshold:
         description: "Days before expiration to trigger an alert"
         required: false
-        default: "30"
+        default: "10"
       response_time:
         description: "HTTP response time in ms to trigger an alert"
         required: false
         default: "1000"
   
-
 permissions:
   contents: write
   issues: write
@@ -53,7 +52,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           RESPONSE_THRESHOLD: ${{ github.event.inputs.response_time || '1000' }}
-          DAYS_THRESHOLD: ${{ github.event.inputs.ssl_threshold || '30' }}
+          DAYS_THRESHOLD: ${{ github.event.inputs.ssl_threshold || '10' }}
         run: python check_domains.py
 
       - name: Commit files
@@ -62,7 +61,6 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add status/status.json
           git add status/config.json
-          git add status/*.json
-          git add status/history/*/*.json
+          git add status/history/*.json
           git commit -m "Data fetched [skip ci]" || echo "No changes"
           git push
