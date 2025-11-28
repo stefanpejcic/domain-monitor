@@ -15,8 +15,7 @@
 
   <!-- Header -->
   <div class="pt-20 flex flex-col items-center">
-
-
+    
     <div class="flex gap-4 justify-between items-center w-full p-4 rounded-lg" :class="allUp ? 'bg-emerald-100 dark:bg-emerald-400/20 dark:to-emerald-500/10' : 'bg-red-100 dark:bg-red-400/20 dark:to-red-500/10'">     
       <div class="flex gap-2">
         <span class="p-2 mx-auto inline-flex items-center justify-center rounded-full"
@@ -123,18 +122,18 @@
 </div>
 
 
-<!-- Hidden -->
-<div x-data="{ origin: window.location.origin, showHidden: false }" x-transition x-cloak class="mt-2 p-4 bg-gray-100 dark:bg-gray-800 rounded text-gray-900 dark:text-gray-50">
+<!-- iframe -->
+<div x-show="showHidden" x-transition x-cloak class="mt-2 p-4 bg-gray-100 dark:bg-gray-800 rounded text-gray-900 dark:text-gray-50">
   <p class="text-gray-700 dark:text-gray-300 mb-4">
     You can copy the following code to embed the status badge into your own website or application:
   </p>
   <p class="bg-gray-100 dark:bg-gray-800 p-2 rounded text-gray-900 dark:text-gray-50 break-words">
     <code x-text="`<iframe src='${origin}/status/iframe.html' width='250' height='30' frameborder='0' scrolling='no'></iframe>`"></code>
   </p>
- <p class="mt-2 text-gray-700 dark:text-gray-300 mb-4">
-   Live preview: <iframe :src="`${origin}/status/iframe.html`" width="250" height="30" frameborder="0" scrolling="no" class="border rounded"></iframe>
- </p> 
-</div>    
+  <p class="mt-2 text-gray-700 dark:text-gray-300 mb-4">
+    Live preview: <iframe :src="`${origin}/status/iframe.html`" width="250" height="30" frameborder="0" scrolling="no" class="border rounded"></iframe>
+  </p>
+</div>
     
   </div>
 
@@ -257,6 +256,7 @@ function domainMonitor() {
     lastUpdated: '',
     domains: [],
     showHidden: false,
+    origin: window.location.origin,
     get allUp() {
       return this.domains.every(d => d.http_ok && d.whois_ok && d.ssl_ok);
     },
