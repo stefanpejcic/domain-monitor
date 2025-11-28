@@ -15,16 +15,8 @@
 
     <!-- Sections -->
     <div id="sections" class="space-y-8">
-      <div id="whois-section">
-        <h2 class="text-2xl font-semibold mb-4">WHOIS</h2>
-        <div class="space-y-2" id="whois-content"></div>
-      </div>
-      <div id="ssl-section">
-        <h2 class="text-2xl font-semibold mb-4">SSL</h2>
-        <div class="space-y-2" id="ssl-content"></div>
-      </div>
       <div id="http-section">
-        <h2 class="text-2xl font-semibold mb-4">HTTP</h2>
+        <h2 class="text-2xl font-semibold mb-4">24-hour response time</h2>
         <div class="space-y-2" id="http-content"></div>
       </div>
     </div>
@@ -63,13 +55,9 @@ async function loadDomainHistory() {
   document.getElementById("snapshot-count").textContent = count;
 
   const domainStatusDiv = document.getElementById("domain-status");
-  const whoisContent = document.getElementById("whois-content");
-  const sslContent = document.getElementById("ssl-content");
   const httpContent = document.getElementById("http-content");
 
   domainStatusDiv.innerHTML = "";
-  whoisContent.innerHTML = "";
-  sslContent.innerHTML = "";
   httpContent.innerHTML = "";
 
   try {
@@ -212,16 +200,37 @@ if (snapshots.length > 0) {
   `;
 }
 
-    // Build HTTP section
-    snapshots.forEach(s => {
-      const div = document.createElement("div");
-      div.className = "p-3 bg-white rounded shadow flex justify-between items-center border-l-4 " + (s.http_ok ? "border-emerald-500" : "border-red-500");
-      div.innerHTML = `
-        <div class="font-semibold">${s.date}</div>
-        <div class="text-gray-700">Status: ${s.http_ok ? 'OK' : 'Issue'} | Response: ${s.http_response_time_ms.toFixed(2)} ms</div>
-      `;
-      httpContent.appendChild(div);
-    });
+// Build HTTP section as horizontal bar of segments
+if (snapshots.length > 0) {
+  httpContent.innerHTML = ''; // clear previous
+
+  const barContainer = document.createElement('div');
+  barContainer.className = "items-center group h-8 mt-3 hidden w-full lg:flex";
+
+  snapshots.forEach(s => {
+    const segWrapper = document.createElement('div');
+    segWrapper.className = "size-full overflow-hidden px-[0.5px] transition first:rounded-l-[4px] first:pl-0 last:rounded-r-[4px] last:pr-0 sm:px-px";
+    segWrapper.setAttribute('data-state', 'closed');
+
+    const segInner = document.createElement('div');
+    segInner.className = "size-full rounded-[1px]";
+
+    // Determine color
+    if (s.http_ok) {
+      segInner.classList.add('bg-emerald-500', 'dark:bg-emerald-500');
+    } else if (s.http_response_time_ms > 1000) { // example threshold for warning
+      segInner.classList.add('bg-amber-500', 'dark:bg-amber-500');
+    } else {
+      segInner.classList.add('bg-red-500', 'dark:bg-red-500');
+    }
+
+    segWrapper.appendChild(segInner);
+    barContainer.appendChild(segWrapper);
+  });
+
+  httpContent.appendChild(barContainer);
+}
+
 
   } catch (err) {
     console.error(err);
