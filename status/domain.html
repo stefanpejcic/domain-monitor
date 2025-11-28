@@ -52,51 +52,24 @@ async function loadDomainHistory() {
 
   const { github_user, github_repo, github_branch } = config;
   document.getElementById("domain-name").textContent = domain;
-  document.getElementById("snapshot-count").textContent = count; // initially show req count
 
   const domainStatusDiv = document.getElementById("domain-status");
   const httpContent = document.getElementById("http-content");
-
   domainStatusDiv.innerHTML = "";
   httpContent.innerHTML = "";
 
   try {
-    const apiUrl = `https://api.github.com/repos/${github_user}/${github_repo}/contents/status/history/${domain}?ref=${github_branch}`;
+    const apiUrl = `https://api.github.com/repos/${github_user}/${github_repo}/contents/status/history/${domain}.json?ref=${github_branch}`;
     const res = await fetch(apiUrl);
-    if (!res.ok) throw new Error("Failed to fetch folder contents");
+    if (!res.ok) throw new Error("Failed to fetch domain JSON");
 
-    const files = await res.json();
-    const jsonFiles = files
-      .filter(f => f.name.endsWith(".json"))
-      .sort((a, b) => b.name.localeCompare(a.name))
-      .slice(0, count);
+    const file = await res.json();
+    const domainData = JSON.parse(atob(file.content)); // GitHub returns base64 content
+    const snapshots = domainData.history.slice(-count); // last `count` entries
 
-    if (jsonFiles.length === 0) {
+    if (snapshots.length === 0) {
       domainStatusDiv.innerHTML = `<p class="text-center text-gray-500">No snapshots available for this domain.</p>`;
       return;
-    }
-
-    // Process all snapshots
-    const snapshots = [];
-    for (const file of jsonFiles.reverse()) { // oldest first
-      const snapshotRes = await fetch(file.download_url);
-      const snapshot = await snapshotRes.json();
-      const match = file.name.match(/status_(\d{8})_(\d{6})\.json/);
-      if (match) {
-        const [_, ymd, hms] = match;
-        const year = ymd.substring(0, 4);
-        const month = ymd.substring(4, 6);
-        const day = ymd.substring(6, 8);
-        const hour = hms.substring(0, 2);
-        const min = hms.substring(2, 4);
-        const sec = hms.substring(4, 6);
-        snapshot.timestamp = `${year}-${month}-${day} ${hour}:${min}:${sec}`;
-        snapshot.date = `${year}-${month}-${day}`;
-      } else {
-        snapshot.timestamp = file.name;
-        snapshot.date = file.name;
-      }
-      snapshots.push(snapshot);
     }
 
     const latest = snapshots[snapshots.length - 1];
@@ -106,178 +79,72 @@ async function loadDomainHistory() {
     if (!latest.whois_ok) failedChecks.push("WHOIS");
     
     const isUp = failedChecks.length === 0;
-    
-    // Build the message based on failed checks
-    let statusMessage = "";
-    if (isUp) {
-      statusMessage = "No problems detected";
-    } else if (failedChecks.length === 1) {
-      statusMessage = `${failedChecks[0]} check failed`;
-    } else {
-      statusMessage = `${failedChecks.join(", ")} checks failed`;
-    }
+    let statusMessage = isUp ? "No problems detected" :
+        (failedChecks.length === 1 ? `${failedChecks[0]} check failed` : `${failedChecks.join(", ")} checks failed`);
 
-domainStatusDiv.innerHTML = `
-  <div class="flex flex-col items-center mb-6">
-    <span class="mx-auto inline-flex items-center justify-center rounded-full ${isUp ? 'bg-emerald-100' : 'bg-red-100'} p-4">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" aria-hidden="true" class="${isUp ? 'text-emerald-500' : 'text-red-500'}">
-        ${isUp 
-          ? '<path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM17.4571 9.45711L11 15.9142L6.79289 11.7071L8.20711 10.2929L11 13.0858L16.0429 8.04289L17.4571 9.45711Z"></path>' 
-          : '<path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM15 9L9 15M9 9L15 15"></path>'}
-      </svg>
-    </span>
-    <h1 class="mt-3 text-lg font-semibold text-gray-900">${statusMessage}</h1>  
-<div class="mt-2 flex flex-wrap items-center gap-2">
-    <span
-        tabindex="1"
-        class="inline-flex items-center gap-1.5 rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600"
-        ><svg
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="currentColor"
-            aria-hidden="true"
-            class="remixicon -ml-0.5 size-4 shrink-0"
-        >
-            <path
-                d="M18.364 17.364L12 23.7279L5.63604 17.364C2.12132 13.8492 2.12132 8.15076 5.63604 4.63604C9.15076 1.12132 14.8492 1.12132 18.364 4.63604C21.8787 8.15076 21.8787 13.8492 18.364 17.364ZM12 13C13.1046 13 14 12.1046 14 11C14 9.89543 13.1046 9 12 9C10.8954 9 10 9.89543 10 11C10 12.1046 10.8954 13 12 13Z"
-            ></path></svg
-        ><span id="whois-badge"></span></span
-    ><span
-        tabindex="1"
-        class="inline-flex items-center gap-1.5 rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600"
-        ><svg
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="currentColor"
-            aria-hidden="true"
-            class="remixicon -ml-0.5 size-4 shrink-0"
-        >
-            <path
-                d="M17 7C13.5705 7 10.6449 9.15804 9.50734 12.1903L11.3805 12.8927C12.2337 10.6185 14.4278 9 17 9C17.6983 9 18.3687 9.11928 18.992 9.33857C21.3265 10.16 23 12.3846 23 15C23 18.3137 20.3137 21 17 21H7C3.68629 21 1 18.3137 1 15C1 12.3846 2.67346 10.16 5.00804 9.33857C5.0027 9.22639 5 9.11351 5 9C5 5.13401 8.13401 2 12 2C15.242 2 17.9693 4.20399 18.7652 7.19539C18.1973 7.0675 17.6065 7 17 7Z"
-            ></path></svg
-        ><span id="ssl-badge"></span></span
-    ><span
-        tabindex="1"
-        class="inline-flex items-center gap-1.5 rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600"
-        ><svg
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="currentColor"
-            aria-hidden="true"
-            class="remixicon -ml-0.5 size-4 shrink-0"
-        >
-            <path
-                d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM13 12V7H11V14H17V12H13Z"
-            ></path></svg
-        >Last run: ${latest.timestamp}</span
-    >
-</div>
-    
-  </div>
-`;
-
-
-    
-if (snapshots.length > 0) {
-  const latest = snapshots[snapshots.length - 1];
-
-  // WHOIS badge
-  const whoisBadge = document.getElementById("whois-badge");
-  whoisBadge.innerHTML = `
-      WHOIS: Expiry ${latest.whois_expiry} | ${latest.whois_ok ? "OK" : "Issue"}
-  `;
-
-  // SSL badge
-  const sslBadge = document.getElementById("ssl-badge");
-  sslBadge.innerHTML = `
-      SSL: Expiry ${latest.ssl_expiry} | ${latest.ssl_ok ? "OK" : "Issue"}
-  `;
-}
-
-
-// Build HTTP section as horizontal bar with hover info
-if (snapshots.length > 0) {
-  httpContent.innerHTML = ''; // clear previous
-
-  const barContainer = document.createElement('div');
-  barContainer.className = "items-center group h-8 mt-3 hidden w-full lg:flex relative";
-
-  snapshots.forEach((s) => {
-    const segWrapper = document.createElement('div');
-    segWrapper.className = "relative size-full overflow-hidden px-[0.5px] transition first:rounded-l-[4px] first:pl-0 last:rounded-r-[4px] last:pr-0 sm:px-px";
-
-    const segInner = document.createElement('div');
-    segInner.className = "size-full rounded-[1px]";
-
-    // Set segment color
-    if (s.http_ok) {
-      segInner.classList.add('bg-emerald-500', 'dark:bg-emerald-500');
-    } else if (!s.http_ok && s.http_response_time_ms > 1000) {
-      segInner.classList.add('bg-amber-500', 'dark:bg-amber-500');
-    } else if (!s.http_ok) {
-      segInner.classList.add('bg-red-500', 'dark:bg-red-500');
-    } else {
-      segInner.classList.add('bg-gray-300', 'dark:bg-gray-700');
-    }
-
-    // Info box
-    const infoBox = document.createElement('div');
-    infoBox.className = "absolute bottom-full mb-1 left-1/2 -translate-x-1/2 px-2 py-1 text-xs rounded bg-gray-800 text-white hidden whitespace-nowrap z-50 shadow-lg";
-    infoBox.innerHTML = `
-      <div><strong>${s.date}</strong></div>
-      <div>Status: ${s.http_ok ? 'OK' : 'Issue'}</div>
-      <div>Response: ${s.http_response_time_ms.toFixed(2)} ms</div>
+    domainStatusDiv.innerHTML = `
+      <div class="flex flex-col items-center mb-6">
+        <span class="mx-auto inline-flex items-center justify-center rounded-full ${isUp ? 'bg-emerald-100' : 'bg-red-100'} p-4">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" aria-hidden="true" class="${isUp ? 'text-emerald-500' : 'text-red-500'}">
+            ${isUp 
+              ? '<path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM17.4571 9.45711L11 15.9142L6.79289 11.7071L8.20711 10.2929L11 13.0858L16.0429 8.04289L17.4571 9.45711Z"></path>' 
+              : '<path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM15 9L9 15M9 9L15 15"></path>'}
+          </svg>
+        </span>
+        <h1 class="mt-3 text-lg font-semibold text-gray-900">${statusMessage}</h1>  
+        <div class="mt-2 flex flex-wrap items-center gap-2">
+          <span class="inline-flex items-center gap-1.5 rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600">WHOIS: Expiry ${latest.whois_expiry} | ${latest.whois_ok ? "OK" : "Issue"}</span>
+          <span class="inline-flex items-center gap-1.5 rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600">SSL: Expiry ${latest.ssl_expiry} | ${latest.ssl_ok ? "OK" : "Issue"}</span>
+          <span class="inline-flex items-center gap-1.5 rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600">Last run: ${latest.timestamp}</span>
+        </div>
+      </div>
     `;
 
-    // Show info box on hover
-    segWrapper.addEventListener('mouseenter', () => infoBox.classList.remove('hidden'));
-    segWrapper.addEventListener('mouseleave', () => infoBox.classList.add('hidden'));
+    document.getElementById("snapshot-count").textContent = snapshots.length;
 
-    segWrapper.appendChild(segInner);
-    segWrapper.appendChild(infoBox);
-    barContainer.appendChild(segWrapper);
-  });
+    // Build HTTP section as horizontal bar with hover info
+    httpContent.innerHTML = ''; // clear previous
+    const barContainer = document.createElement('div');
+    barContainer.className = "items-center group h-8 mt-3 hidden w-full lg:flex relative";
 
-  httpContent.appendChild(barContainer);
-}
+    snapshots.forEach((s) => {
+      const segWrapper = document.createElement('div');
+      segWrapper.className = "relative size-full overflow-hidden px-[0.5px] transition first:rounded-l-[4px] first:pl-0 last:rounded-r-[4px] last:pr-0 sm:px-px";
 
+      const segInner = document.createElement('div');
+      segInner.className = "size-full rounded-[1px]";
 
-document.getElementById("snapshot-count").textContent = jsonFiles.length; // update count
+      // Set segment color
+      if (s.http_ok) segInner.classList.add('bg-emerald-500', 'dark:bg-emerald-500');
+      else if (!s.http_ok && s.http_response_time_ms > 1000) segInner.classList.add('bg-amber-500', 'dark:bg-amber-500');
+      else segInner.classList.add('bg-red-500', 'dark:bg-red-500');
 
+      // Info box
+      const infoBox = document.createElement('div');
+      infoBox.className = "absolute bottom-full mb-1 left-1/2 -translate-x-1/2 px-2 py-1 text-xs rounded bg-gray-800 text-white hidden whitespace-nowrap z-50 shadow-lg";
+      infoBox.innerHTML = `
+        <div><strong>${s.date}</strong></div>
+        <div>Status: ${s.http_ok ? 'OK' : 'Issue'}</div>
+        <div>Response: ${s.http_response_time_ms.toFixed(2)} ms</div>
+      `;
+
+      segWrapper.addEventListener('mouseenter', () => infoBox.classList.remove('hidden'));
+      segWrapper.addEventListener('mouseleave', () => infoBox.classList.add('hidden'));
+
+      segWrapper.appendChild(segInner);
+      segWrapper.appendChild(infoBox);
+      barContainer.appendChild(segWrapper);
+    });
+
+    httpContent.appendChild(barContainer);
 
   } catch (err) {
     console.error(err);
-
-    try {
-        const domainsRes = await fetch('../domains.txt?_=' + Date.now());
-        const domainsText = await domainsRes.text();
-        const domains = domainsText.split(/\r?\n/).map(d => d.trim()).filter(Boolean);
-
-        if (domains.includes(domain)) {
-            document.getElementById("sections").textContent = 
-                "You have exceeded the number of requests you can do in an hour, by default, GitHub allows each IP address 60 requests per hour, which you have consumed. You'll have to wait before accessing this website again. Please wait for another hour and your IP address' limit will be restored.";
-        } else {
-            document.getElementById("sections").textContent = 
-                `The domain "${domain}" is not in the list of monitored domains.`;
-        }
-    } catch (err2) {
-        console.error(err2);
-        document.getElementById("sections").textContent = 
-            "Failed to load domain history and could not check domains.txt.";
-    }
-  
-  
+    document.getElementById("sections").textContent = `Failed to load domain history for ${domain}.`;
   }
 }
 
 loadDomainHistory();
 </script>
-
 </body>
 </html>
