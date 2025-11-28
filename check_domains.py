@@ -47,7 +47,6 @@ def get_http_status(domain):
         return None, None
 
 def find_issue(repo, keyword):
-    """Find an open issue containing the keyword in title."""
     issues = repo.get_issues(state="open")
     for issue in issues:
         if keyword in issue.title:
@@ -63,6 +62,20 @@ def close_issue(issue, msg):
     issue.edit(state="closed")
     print(f"Issue closed: {issue.title}")
 
+def load_domain_history(domain):
+    history_file = f"status/history/{domain}.json"
+    if os.path.exists(history_file):
+        with open(history_file, "r") as f:
+            return json.load(f)
+    return {"domain": domain, "history": []}
+
+def save_domain_history(domain, history):
+    os.makedirs("status/history", exist_ok=True)
+    history_file = f"status/history/{domain}.json"
+    with open(history_file, "w") as f:
+        json.dump(history, f, indent=2)
+    print(f"Saved history for {domain} in {history_file}")
+
 def main():
     token = os.getenv("GITHUB_TOKEN")
     repo_name = os.getenv("GITHUB_REPOSITORY")
@@ -73,21 +86,22 @@ def main():
     repo = g.get_repo(repo_name)
 
     domains = read_domains(DOMAINS_FILE)
-    results = {"domains": [], "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+    combined_results = {"domains": [], "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+
     for domain in domains:
+        now = datetime.utcnow()
+        timestamp = now.strftime("%Y-%m-%d %H:%M:%S")
+
         # ---- WHOIS Expiration ----
         exp_date = get_domain_expiration(domain)
+        days_left = None
         if exp_date:
             if exp_date.tzinfo is not None:
                 exp_date = exp_date.astimezone(timezone.utc).replace(tzinfo=None)
-        
-            now = datetime.utcnow()
-            days_left = (exp_date - now).days        
+            days_left = (exp_date - now).days
             issue = find_issue(repo, f"Domain {domain}")
             if days_left <= days_threshold:
-                if issue:
-                    print(f"Issue already exists for {domain} (WHOIS)")
-                else:
+                if not issue:
                     create_issue(
                         repo,
                         f"⚠️ Domain {domain} expires in {days_left} days!",
@@ -96,14 +110,13 @@ def main():
             else:
                 if issue:
                     close_issue(issue, f"✅ Domain {domain} renewed (expires {exp_date:%Y-%m-%d}, {days_left} days left).")
-                else:
-                    print(f"{domain}: WHOIS OK ({days_left} days left)")
 
         # ---- SSL Expiration ----
         ssl_exp = get_ssl_expiration(domain)
+        ssl_days = None
+        issue = find_issue(repo, f"SSL {domain}")
         if ssl_exp:
-            ssl_days = (ssl_exp - datetime.now()).days
-            issue = find_issue(repo, f"SSL {domain}")
+            ssl_days = (ssl_exp - now).days
             if ssl_days <= days_threshold:
                 if not issue:
                     create_issue(
@@ -114,14 +127,10 @@ def main():
             else:
                 if issue:
                     close_issue(issue, f"✅ SSL for {domain} renewed (expires {ssl_exp:%Y-%m-%d}, {ssl_days} days left).")
-                else:
-                    print(f"{domain}: SSL OK ({ssl_days} days left)")
 
         # ---- HTTP Status ----
         status, resp_time = get_http_status(domain)
         issue = find_issue(repo, f"Status {domain}")
-
-        # Check for HTTP errors
         if status is None or status >= 400:
             if not issue:
                 create_issue(
@@ -129,7 +138,6 @@ def main():
                     f"❌ Status check failed for {domain}",
                     f"Latest HTTP response: `{status}`, response time: {resp_time:.0f} ms"
                 )
-        # Check for slow response
         elif resp_time and resp_time > response_threshold:
             if not issue:
                 create_issue(
@@ -140,38 +148,29 @@ def main():
         else:
             if issue:
                 close_issue(issue, f"✅ {domain} is healthy again (status {status}, response time {resp_time:.0f} ms).")
-            else:
-                print(f"{domain}: HTTP {status} OK, response time {resp_time:.0f} ms")
 
-        # ---- JSON for status page ----
-        domain_info = {
-            "domain": domain,
+        # ---- Update per-domain JSON ----
+        domain_history = load_domain_history(domain)
+        domain_entry = {
+            "timestamp": timestamp,
             "whois_expiry": exp_date.strftime("%Y-%m-%d") if exp_date else None,
-            "whois_ok": days_left > days_threshold if exp_date else False,
+            "whois_ok": days_left > days_threshold if days_left is not None else False,
             "ssl_expiry": ssl_exp.strftime("%Y-%m-%d") if ssl_exp else None,
-            "ssl_ok": ssl_days > days_threshold if ssl_exp else False,
+            "ssl_ok": ssl_days > days_threshold if ssl_days is not None else False,
             "http_status": status,
             "http_ok": status is not None and status < 400,
             "http_response_time_ms": resp_time
         }
-        results["domains"].append(domain_info)
+        domain_history["history"].append(domain_entry)
+        save_domain_history(domain, domain_history)
 
+        combined_results["domains"].append(domain_entry)
 
-        #save per domain
-        domain_history_folder = f"status/history/{domain}"
-        os.makedirs(domain_history_folder, exist_ok=True)
-
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        history_file = f"{domain_history_folder}/status_{timestamp}.json"
-        with open(history_file, "w") as f:
-            print(f"Saving results for domain in {history_file}")
-            json.dump(domain_info, f, indent=2)
-
-    # ---- JSON Status page ----
+    # ---- Save combined status.json ----
     os.makedirs("status", exist_ok=True)
     with open("status/status.json", "w") as f:
-        print(f"Saving combined results in status.json file.")
-        json.dump(results, f, indent=2)
+        print("Saving combined results in status/status.json")
+        json.dump(combined_results, f, indent=2)
 
 if __name__ == "__main__":
     main()
