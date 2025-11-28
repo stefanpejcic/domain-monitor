@@ -163,8 +163,7 @@ def main():
         }
         domain_history["history"].append(domain_entry)
         save_domain_history(domain, domain_history)
-
-        combined_results["domains"].append(domain_entry)
+        combined_results["domains"].append({**domain_entry, "domain": domain})
 
     # ---- Save combined status.json ----
     os.makedirs("status", exist_ok=True)
