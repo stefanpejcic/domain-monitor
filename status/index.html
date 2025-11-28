@@ -14,10 +14,19 @@
   <div class="pt-20 flex flex-col items-center">
 
 
-    <div class="flex gap-4 justify-between items-center" :class="allUp ? 'bg-emerald-100 dark:bg-emerald-400/20 dark:to-emerald-500/10' : 'bg-red-100 dark:bg-red-400/20 dark:to-red-500/10'">     
-      <div>
-        <h3 class="mt-2 text-lg font-medium text-gray-900 dark:text-gray-50" x-text="allUp ? 'No issues detected' : 'Issues detected'"></h3>
-        <p class="text-sm text-gray-700 dark:text-gray-300">Last updated on <span x-text="lastUpdated"></span></p>
+    <div class="flex gap-4 justify-between items-center w-full p-4" :class="allUp ? 'bg-emerald-100 dark:bg-emerald-400/20 dark:to-emerald-500/10' : 'bg-red-100 dark:bg-red-400/20 dark:to-red-500/10'">     
+      <div class="flex gap-2">
+        <span class="mx-auto inline-flex items-center justify-center rounded-full"
+              :class="allUp ? 'bg-emerald-100 dark:bg-emerald-400/20 dark:to-emerald-500/10' : 'bg-red-100 dark:bg-red-400/20 dark:to-red-500/10'">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" aria-hidden="true" class="remixicon text-green size-10"
+               :class="allUp ? 'text-emerald-500' : 'text-red-600'">
+            <path x-show="allUp" d="M12 22C17.523 22 22 17.523 22 12 22 6.477 17.523 2 12 2 6.477 2 2 6.477 2 12 2 17.523 6.477 22 12 22ZM17.457 9.457 11 15.914 6.793 11.707 8.207 10.293 11 13.086 16.043 8.043 17.457 9.457Z"></path><path x-show="!allUp" d="M12 22C17.523 22 22 17.523 22 12 22 6.477 17.523 2 12 2 6.477 2 2 6.477 2 12 2 17.523 6.477 22 12 22ZM15 9l-6 6M9 9l6 6"></path>
+          </svg>
+        </span>
+        <div>
+          <h3 class="text-xl font-medium text-gray-900 dark:text-gray-50" x-text="allUp ? 'No issues detected' : 'Issues detected'"></h3>
+          <p class="pt-1 text-sm text-gray-700 dark:text-gray-300">Last updated on <span x-text="lastUpdated"></span></p>
+        </div>
       </div>
       <a href="#" class="relative inline-flex items-center justify-center whitespace-nowrap rounded-md border px-3 py-2 text-center text-sm font-medium shadow-sm transition-all duration-100 ease-in-out disabled:pointer-events-none disabled:shadow-none outline outline-offset-2 outline-0 focus-visible:outline-2 outline-blue-500 dark:outline-blue-500 border-gray-300 dark:border-gray-800 text-gray-900 dark:text-gray-50 bg-white dark:bg-gray-950 hover:bg-gray-50 dark:hover:bg-gray-900/60 disabled:text-gray-400 disabled:dark:text-gray-600" href="domain.html?domain=pejcic.rs">
          Subscribe
