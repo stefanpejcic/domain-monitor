@@ -76,9 +76,10 @@
             </div>
 
             <div class="flex gap-2">
-                <button @click="showTable = true; showJSON = false; showXML = false" class="px-3 py-1 text-sm bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600" x-show="!showTable">Table</button>
-                <button @click="showJSON = true; showTable = false; showXML = false" class="px-3 py-1 text-sm bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600" x-show="!showJSON">JSON</button>
-                <button @click="showXML = true; showTable = false; showJSON = false; loadXML()" class="px-3 py-1 text-sm bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600" x-show="!showXML">XML</button>
+                <button @click="showTable = true; showAPI = false; showJSON = false; showXML = false" class="px-3 py-1 text-sm bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600" x-show="!showTable">Table</button>
+                <button @click="showJSON = true; showAPI = false; showTable = false; showXML = false" class="px-3 py-1 text-sm bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600" x-show="!showJSON">JSON</button>
+                <button @click="showXML = true; showAPI = false; showTable = false; showJSON = false; loadXML()" class="px-3 py-1 text-sm bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600" x-show="!showXML">XML</button>
+                <button @click="showAPI = true; showXML = false; showTable = false; showJSON = false;" class="px-3 py-1 text-sm bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600" x-show="!showAPI">XML</button>
 
                 <button title="Copy to clipboard"
                     class="px-3 py-1 text-sm bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600"
@@ -147,7 +148,14 @@
         <div x-show="showXML" x-transition class="mt-4">
             <pre class="bg-gray-100 dark:bg-gray-800 p-3 rounded text-xs overflow-x-auto" x-text="xmlContent"></pre>
         </div>
-      
+  
+        <!-- XML -->
+        <div x-show="showAPI" x-transition class="mt-4">
+          <h2 class="mx-auto inline-flex items-center justify-center mt-3 text-md font-semibold">API</h2>
+          <p x-show="domain" class="bg-gray-100 dark:bg-gray-800 p-3 rounded text-xs overflow-x-auto">You can use our API to integrate the information and updates from this status page into your own website or application. Simply make a <code>GET</code> request to the following URL:
+            <code x-text="`${window.location.origin}/status/history/${domain}.json`"></code>
+          </p>
+        </div>
     </div>
 </div>
 
@@ -162,6 +170,7 @@ function domainHistory() {
         showTable: true,
         showJSON: false,
         showXML: false,
+        showAPI: false,
         xmlContent: "",
         isUp: true,
         uptimePercentage: 0,
@@ -227,7 +236,7 @@ function domainHistory() {
             } catch (err) {
                 this.xmlContent = "Failed to load XML.";
             }
-        }
+        },
       
         // format to human readable date
         timeAgo(timestamp) {
