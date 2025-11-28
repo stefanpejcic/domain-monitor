@@ -81,7 +81,7 @@
 
     <div class="relative w-full rounded-lg border p-6 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900" >
         <dt class="text-sm font-medium text-gray-500 dark:text-gray-500">Response time</dt>
-        <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="domain.http_response_time_ms"></dd>
+        <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="Number(domain.http_response_time_ms).toFixed(2)"></dd>
         <dd class="mt-4 inline-flex items-center gap-x-1.5 rounded-md px-2 py-1.5 text-xs font-medium"
             :class="responseTimeInfo(domain.http_response_time_ms).class"
             x-html="responseTimeInfo(domain.http_response_time_ms).icon + ' ' + responseTimeInfo(domain.http_response_time_ms).text">
