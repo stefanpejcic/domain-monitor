@@ -77,8 +77,15 @@ async function loadDomainHistory() {
     for (const file of jsonFiles.reverse()) { // oldest first
       const snapshotRes = await fetch(file.download_url);
       const snapshot = await snapshotRes.json();
-
-      timestamps.push(file.name); // or use snapshot date if available
+      
+      const match = file.name.match(/(\d{4})(\d{2})(\d{2})-(\d{2})(\d{2})(\d{2})\.json/);
+      if (match) {
+        const [_, year, month, day, hour, min, sec] = match;
+        const formatted = `${year}-${month}-${day} ${hour}:${min}:${sec}`;
+        timestamps.push(formatted);
+      } else {
+        timestamps.push(file.name);
+      }
       responseTimes.push(snapshot.http_response_time_ms);
       httpStatuses.push(snapshot.http_status);
 
