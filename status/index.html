@@ -113,8 +113,28 @@
            text-gray-900 dark:text-gray-100 hover:bg-gray-300 dark:hover:bg-gray-600 w-full text-center"
     x-text="domains.some(d => !d.open) ? 'Expand All' : 'Close All'">
   </button>
+
+  <button 
+    @click="showHidden = !showHidden"
+    class="px-3 py-1.5 text-sm rounded bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 w-full text-center">
+    Badge
+  </button>
+  
 </div>
 
+
+<!-- Hidden -->
+<div x-data="{ origin: window.location.origin, showHidden: false }" x-transition x-cloak class="mt-2 p-4 bg-gray-100 dark:bg-gray-800 rounded text-gray-900 dark:text-gray-50">
+  <p class="text-gray-700 dark:text-gray-300 mb-4">
+    You can copy the following code to embed the status badge into your own website or application:
+  </p>
+  <p class="bg-gray-100 dark:bg-gray-800 p-2 rounded text-gray-900 dark:text-gray-50 break-words">
+    <code x-text="`<iframe src='${origin}/status/iframe.html' width='250' height='30' frameborder='0' scrolling='no'></iframe>`"></code>
+  </p>
+ <p class="mt-2 text-gray-700 dark:text-gray-300 mb-4">
+   Live preview: <iframe :src="`${origin}/status/iframe.html`" width="250" height="30" frameborder="0" scrolling="no" class="border rounded"></iframe>
+ </p> 
+</div>    
     
   </div>
 
@@ -236,6 +256,7 @@ function domainMonitor() {
     ip_address: '',
     lastUpdated: '',
     domains: [],
+    showHidden: false,
     get allUp() {
       return this.domains.every(d => d.http_ok && d.whois_ok && d.ssl_ok);
     },
