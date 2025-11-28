@@ -116,13 +116,13 @@
     </div>
 </div>
 
+
 <script>
 function domainHistory() {
     return {
-        // Domain will be set from URL
         domain: '',
         screenshotUrl: '',
-        history: [],                 // Loaded dynamically from JSON
+        history: [],
         tooltip: { show: false, text: "", x: 0, y: 0 },
         showTable: true,
         showJSON: false,
@@ -134,27 +134,33 @@ function domainHistory() {
 
         async init() {
             try {
-                // Get domain from URL query parameter
                 const domainParam = new URLSearchParams(window.location.search).get('domain');
                 if (!domainParam) {
-                    window.location.href = "index.html"; // fallback if no domain
+                    window.location.href = "index.html";
                     return;
                 }
 
                 this.domain = domainParam;
                 this.screenshotUrl = `https://screenshots-v2.openpanel.com/api/screenshot/${this.domain}`;
 
-                // Fetch the JSON history for the domain
                 const res = await fetch(`history/${this.domain}.json`);
                 if (!res.ok) throw new Error("Failed to load domain JSON");
 
-                this.history = await res.json();
+                const data = await res.json();
+                this.history = (data.history || []).map(e => ({
+                    time: e.timestamp,
+                    statusCode: e.http_status,
+                    response: e.http_response_time_ms,
+                    up: e.http_ok,
+                    whois_ok: e.whois_ok,
+                    whois_expiry: e.whois_expiry,
+                    ssl_ok: e.ssl_ok,
+                    ssl_expiry: e.ssl_expiry
+                }));
 
                 if (this.history.length > 0) {
-                    // Determine if the site is up based on last entry
                     this.isUp = this.history[this.history.length - 1].up;
 
-                    // Optional: compute summary stats
                     const totalChecks = this.history.length;
                     const outages = this.history.filter(e => !e.up).length;
                     const avgResponse = (this.history.reduce((sum, e) => sum + e.response, 0) / totalChecks).toFixed(2);
@@ -163,10 +169,9 @@ function domainHistory() {
                     this.uptimePercentage = (((totalChecks - outages) / totalChecks) * 100).toFixed(2);
 
                     this.statusSummary = `
-                        Website was checked <strong>${totalChecks}</strong> times 
-                        over the period shown.<br>
-                        There were <strong>${outages}</strong> outages.<br>
-                        Average response time: <strong>${avgResponse} ms</strong>.
+                        Website was checked <strong>${totalChecks}</strong> times.
+                        <br>There were <strong>${outages}</strong> outages.
+                        <br>Average response time: <strong>${avgResponse} ms</strong>.
                     `;
                 }
             } catch (err) {
