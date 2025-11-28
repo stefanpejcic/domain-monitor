@@ -1,157 +1,208 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" x-data="domainHistory()" x-init="init()">
 <head>
   <meta charset="UTF-8">
   <title>Domain History</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/flowbite@1.7.0/dist/flowbite.js"></script>
+  <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
-<body class="text-gray-900">
-  <div class="container mx-auto p-6">
-    <h1 class="text-3xl font-bold mb-6 text-center" id="domain-name"></h1>
-    <p class="text-center mb-6">Showing latest <span id="snapshot-count"></span> snapshots</p>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-50 p-6">
 
-    <!-- Status summary -->
-    <div id="domain-status" class="mb-6"></div>
-
-    <!-- Sections -->
-    <div id="sections" class="space-y-8">
-      <div id="http-section">
-        <h2 class="text-2xl font-semibold mb-4">24-hour response time</h2>
-        <div class="space-y-2" id="http-content"></div>
-      </div>
+<div class="max-w-5xl mx-auto space-y-10">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row items-center gap-4">
+        <div class="flex justify-center p-4">
+            <img :src="screenshotUrl" 
+                 class="border-4 border-gray-300 rounded-xl p-2 shadow-lg min-h-[240px] min-w-[400px]"
+                 alt="Screenshot">
+        </div>
+        <div class="flex flex-col justify-center">
+            <span class="mx-auto inline-flex items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-400/20 p-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="text-emerald-500">
+                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM17.4571 9.45711L11 15.9142L6.79289 11.7071L8.20711 10.2929L11 13.0858L16.0429 8.04289L17.4571 9.45711Z"></path>
+                </svg>
+            </span>
+            <h1 class="mx-auto inline-flex items-center justify-center mt-3 text-lg font-semibold">
+                <a :href="`http://${domain}`" target="_blank" x-text="domain"></a>&nbsp; is <span :class="isUp ? 'text-emerald-600' : 'text-red-600'" x-text="isUp ? 'up!' : 'down!'"></span>
+            </h1>
+            <p class="text-gray-700 dark:text-gray-300 mt-2" x-html="statusSummary"></p>
+        </div>
     </div>
 
-    <p class="mt-6 text-center">
-      <a href="index.html" class="text-blue-600 hover:underline">← Back to main status page</a>
-    </p>
-  </div>
+    <!-- Graph -->
+    <div class="relative w-full rounded-lg border p-6 shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900">
+        <p class="flex justify-between text-sm font-medium mb-3">
+            <span class="flex items-center gap-2 font-medium">
+                <img :src="`https://www.google.com/s2/favicons?domain=${domain}`" alt="" class="h-4 w-4 rounded-full">
+                <span x-text="domain"></span>
+            </span>
+            <span x-text="uptimePercentage + '% uptime'"></span>
+        </p>
+
+        <div class="flex gap-0.5 overflow-x-auto relative" x-ref="graphContainer">
+            <template x-for="(entry, index) in history" :key="index">
+                <div class="w-2 rounded-[1px] cursor-pointer flex-shrink-0"
+                     :class="getColor(entry)"
+                     :style="`height: ${Math.min(Math.max(entry.response / 50, 4), 32)}px`"
+                     @mouseenter="showTooltip($event, entry)"
+                     @mouseleave="hideTooltip()"></div>
+            </template>
+
+            <!-- Tooltip -->
+            <div x-show="tooltip.show" x-text="tooltip.text"
+                 :style="`position: fixed; top: ${tooltip.y}px; left: ${tooltip.x}px; white-space: pre-line;`"
+                 class="bg-gray-800 text-white text-xs rounded px-2 py-1 pointer-events-none z-50 transition-opacity"
+                 x-transition.opacity></div>
+        </div>
+
+        <div class="mt-3 flex items-center justify-between text-sm text-gray-500 dark:text-gray-500">
+            <span x-text="'First checked: ' + firstChecked"></span>
+            <span x-text="'Last checked: ' + lastChecked"></span>
+        </div>
+
+        <!-- Legend and View Switch -->
+        <div class="flex justify-between mt-3">
+            <div class="flex flex-wrap items-center gap-2">
+                <span class="inline-flex items-center gap-x-2 rounded-md bg-gray-100 px-2 py-0.5 text-sm text-gray-600 dark:bg-gray-800 dark:text-gray-300">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>Operational</span>
+                <span class="inline-flex items-center gap-x-2 rounded-md bg-gray-100 px-2 py-0.5 text-sm text-gray-600 dark:bg-gray-800 dark:text-gray-300">
+                    <span class="w-2 h-2 rounded-full bg-red-500"></span>Downtime</span>
+                <span class="inline-flex items-center gap-x-2 rounded-md bg-gray-100 px-2 py-0.5 text-sm text-gray-600 dark:bg-gray-800 dark:text-gray-300">
+                    <span class="w-2 h-2 rounded-full bg-gray-500"></span>Maintenance</span>
+            </div>
+
+            <div class="flex gap-2">
+                <button @click="showTable = true; showJSON = false" class="px-3 py-1 rounded bg-blue-500 text-white hover:bg-blue-600" x-show="!showTable">View Table</button>
+                <button @click="showJSON = true; showTable = false" class="px-3 py-1 rounded bg-gray-700 text-white hover:bg-gray-800" x-show="!showJSON">View JSON</button>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div x-show="showTable" x-transition class="mt-4 overflow-x-auto">
+            <table class="min-w-full border border-gray-300 dark:border-gray-700 text-sm">
+                <thead class="bg-gray-100 dark:bg-gray-800">
+                    <tr>
+                        <th class="px-3 py-1 border-b border-gray-300 dark:border-gray-700 text-left">Checked</th>
+                        <th class="px-3 py-1 border-b border-gray-300 dark:border-gray-700 text-left">Status</th>
+                        <th class="px-3 py-1 border-b border-gray-300 dark:border-gray-700 text-left">Response (ms)</th>
+                        <th class="px-3 py-1 border-b border-gray-300 dark:border-gray-700 text-left">Up?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template x-for="(entry, index) in [...history].slice().reverse()" :key="index">
+                        <tr class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800">
+                            <td class="px-3 py-1" x-text="entry.time"></td>
+                            <td class="px-3 py-1">
+                                <span :class="`inline-flex items-center gap-x-1 whitespace-nowrap px-2 py-1 text-xs font-medium ring-1 ring-inset rounded-full ${statusColor(entry.statusCode).bg} ${statusColor(entry.statusCode).text} ${statusColor(entry.statusCode).ring}`">
+                                    <span :class="`w-1.5 h-1.5 shrink-0 rounded-full ${statusColor(entry.statusCode).dot}`" aria-hidden="true"></span>
+                                    <span x-text="entry.statusCode"></span>
+                                </span>
+                            </td>
+                            <td class="px-3 py-1" x-text="entry.response"></td>
+                            <td class="px-3 py-1 flex items-center gap-1">
+                                <span x-html="entry.up ? '&#10003;' : '&#10007;'"></span>
+                                <span x-text="entry.up ? 'Yes' : 'No'"></span>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- JSON -->
+        <div x-show="showJSON" x-transition class="mt-4">
+            <pre class="bg-gray-100 dark:bg-gray-800 p-3 rounded text-xs overflow-x-auto" x-text="JSON.stringify(history, null, 2)"></pre>
+        </div>
+    </div>
+</div>
 
 <script>
-async function getQueryParam(name, defaultValue = null) {
-  const urlParams = new URLSearchParams(window.location.search);
-  return urlParams.get(name) || defaultValue;
-}
+function domainHistory() {
+    return {
+        // Domain will be set from URL
+        domain: '',
+        screenshotUrl: '',
+        history: [],                 // Loaded dynamically from JSON
+        tooltip: { show: false, text: "", x: 0, y: 0 },
+        showTable: true,
+        showJSON: false,
+        isUp: true,
+        uptimePercentage: 0,
+        firstChecked: '',
+        lastChecked: '',
+        statusSummary: '',
 
-async function loadDomainHistory() {
-  const domain = await getQueryParam("domain");
-  const count = parseInt(await getQueryParam("count", "288"));
-  if (!domain) {
-      window.location.href = "index.html";
-      return;
-  }
+        async init() {
+            try {
+                // Get domain from URL query parameter
+                const domainParam = new URLSearchParams(window.location.search).get('domain');
+                if (!domainParam) {
+                    window.location.href = "index.html"; // fallback if no domain
+                    return;
+                }
 
-  document.title = `Domain History: ${domain}`;
-  document.getElementById("domain-name").textContent = domain;
-  
-  let config;
-  try {
-    const configRes = await fetch("config.json?_=" + Date.now());
-    config = await configRes.json();
-  } catch (err) {
-    console.error("Failed to load config.json", err);
-    document.getElementById("sections").textContent = "Failed to load configuration.";
-    return;
-  }
+                this.domain = domainParam;
+                this.screenshotUrl = `https://screenshots-v2.openpanel.com/api/screenshot/${this.domain}`;
 
-  const domainStatusDiv = document.getElementById("domain-status");
-  const httpContent = document.getElementById("http-content");
-  domainStatusDiv.innerHTML = "";
-  httpContent.innerHTML = "";
+                // Fetch the JSON history for the domain
+                const res = await fetch(`history/${this.domain}.json`);
+                if (!res.ok) throw new Error("Failed to load domain JSON");
 
-  try {
-    const filePath = `history/${domain}.json`;
-    const fileRes = await fetch(filePath);
-    if (!fileRes.ok) throw new Error("Failed to fetch domain JSON");
+                this.history = await res.json();
 
-    const domainData = await fileRes.json();
-    const snapshots = domainData.history.slice(-count); // last `count` entries
+                if (this.history.length > 0) {
+                    // Determine if the site is up based on last entry
+                    this.isUp = this.history[this.history.length - 1].up;
 
-    if (snapshots.length === 0) {
-      domainStatusDiv.innerHTML = `<p class="text-center text-gray-500">No snapshots available for this domain.</p>`;
-      return;
+                    // Optional: compute summary stats
+                    const totalChecks = this.history.length;
+                    const outages = this.history.filter(e => !e.up).length;
+                    const avgResponse = (this.history.reduce((sum, e) => sum + e.response, 0) / totalChecks).toFixed(2);
+                    this.firstChecked = this.history[0].time;
+                    this.lastChecked = this.history[this.history.length - 1].time;
+                    this.uptimePercentage = (((totalChecks - outages) / totalChecks) * 100).toFixed(2);
+
+                    this.statusSummary = `
+                        Website was checked <strong>${totalChecks}</strong> times 
+                        over the period shown.<br>
+                        There were <strong>${outages}</strong> outages.<br>
+                        Average response time: <strong>${avgResponse} ms</strong>.
+                    `;
+                }
+            } catch (err) {
+                console.error('Failed to load domain history', err);
+                this.statusSummary = "Failed to load domain history.";
+            }
+        },
+
+        statusColor(code) {
+            if (code >= 200 && code <= 299) return { bg: "bg-emerald-50 dark:bg-emerald-400/10", text: "text-emerald-900 dark:text-emerald-400", ring: "ring-emerald-600/30 dark:ring-emerald-400/20", dot: "bg-emerald-600 dark:bg-emerald-400" };
+            if (code >= 300 && code <= 399) return { bg: "bg-orange-50 dark:bg-orange-400/10", text: "text-orange-900 dark:text-orange-400", ring: "ring-orange-600/30 dark:ring-orange-400/20", dot: "bg-orange-600 dark:bg-orange-400" };
+            if (code >= 400 && code <= 499) return { bg: "bg-black dark:bg-gray-800", text: "text-white dark:text-gray-50", ring: "ring-gray-800/50 dark:ring-gray-700/50", dot: "bg-black dark:bg-gray-500" };
+            if (code >= 500) return { bg: "bg-red-50 dark:bg-red-400/10", text: "text-red-900 dark:text-red-400", ring: "ring-red-600/30 dark:ring-red-400/20", dot: "bg-red-600 dark:bg-red-400" };
+            return { bg: "bg-gray-100 dark:bg-gray-700/10", text: "text-gray-900 dark:text-gray-200", ring: "ring-gray-300/30 dark:ring-gray-500/20", dot: "bg-gray-400 dark:bg-gray-600" };
+        },
+
+        getColor(entry) {
+            if (entry.response > 3000) return "bg-orange-500";
+            return (entry.statusCode >= 200 && entry.statusCode < 500) ? "bg-emerald-500" : "bg-red-500";
+        },
+
+        showTooltip(e, entry) {
+            this.tooltip.show = true;
+            const dateTime = new Date(entry.time).toLocaleString();
+            this.tooltip.text = `${dateTime}\nStatus: ${entry.statusCode} | Response: ${entry.response} ms`;
+            this.tooltip.x = e.clientX + 10;
+            this.tooltip.y = e.clientY + 10;
+        },
+
+        hideTooltip() {
+            this.tooltip.show = false;
+        }
     }
-
-    const latest = snapshots[snapshots.length - 1];
-    const failedChecks = [];
-    if (!latest.http_ok) failedChecks.push("HTTP");
-    if (!latest.ssl_ok) failedChecks.push("SSL");
-    if (!latest.whois_ok) failedChecks.push("WHOIS");
-    
-    const isUp = failedChecks.length === 0;
-    let statusMessage = isUp ? "No problems detected" :
-        (failedChecks.length === 1 ? `${failedChecks[0]} check failed` : `${failedChecks.join(", ")} checks failed`);
-
-    domainStatusDiv.innerHTML = `
-      <div class="flex flex-col items-center mb-6">
-        <span class="mx-auto inline-flex items-center justify-center rounded-full ${isUp ? 'bg-emerald-100' : 'bg-red-100'} p-4">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" aria-hidden="true" class="${isUp ? 'text-emerald-500' : 'text-red-500'}">
-            ${isUp 
-              ? '<path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM17.4571 9.45711L11 15.9142L6.79289 11.7071L8.20711 10.2929L11 13.0858L16.0429 8.04289L17.4571 9.45711Z"></path>' 
-              : '<path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM15 9L9 15M9 9L15 15"></path>'}
-          </svg>
-        </span>
-        <h1 class="mt-3 text-lg font-semibold text-gray-900">${statusMessage}</h1>  
-        <div class="mt-2 flex flex-wrap items-center gap-2">
-          <span class="inline-flex items-center gap-1.5 rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" aria-hidden="true" class="remixicon -ml-0.5 size-4 shrink-0">
-            <path d="M18.364 17.364L12 23.7279L5.63604 17.364C2.12132 13.8492 2.12132 8.15076 5.63604 4.63604C9.15076 1.12132 14.8492 1.12132 18.364 4.63604C21.8787 8.15076 21.8787 13.8492 18.364 17.364ZM12 13C13.1046 13 14 12.1046 14 11C14 9.89543 13.1046 9 12 9C10.8954 9 10 9.89543 10 11C10 12.1046 10.8954 13 12 13Z"></path></svg> WHOIS: Expiry ${latest.whois_expiry} | ${latest.whois_ok ? "OK" : "Issue"}</span>
-          <span class="inline-flex items-center gap-1.5 rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" aria-hidden="true" class="remixicon -ml-0.5 size-4 shrink-0">
-            <path d="M17 7C13.5705 7 10.6449 9.15804 9.50734 12.1903L11.3805 12.8927C12.2337 10.6185 14.4278 9 17 9C17.6983 9 18.3687 9.11928 18.992 9.33857C21.3265 10.16 23 12.3846 23 15C23 18.3137 20.3137 21 17 21H7C3.68629 21 1 18.3137 1 15C1 12.3846 2.67346 10.16 5.00804 9.33857C5.0027 9.22639 5 9.11351 5 9C5 5.13401 8.13401 2 12 2C15.242 2 17.9693 4.20399 18.7652 7.19539C18.1973 7.0675 17.6065 7 17 7Z"></path></svg> SSL: Expiry ${latest.ssl_expiry} | ${latest.ssl_ok ? "OK" : "Issue"}</span>
-          <span class="inline-flex items-center gap-1.5 rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" aria-hidden="true" class="remixicon -ml-0.5 size-4 shrink-0">
-            <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM13 12V7H11V14H17V12H13Z"></path></svg> Last run: ${latest.timestamp}</span>
-        </div>
-      </div>
-    `;
-
-    document.getElementById("snapshot-count").textContent = snapshots.length;
-
-    // Build HTTP section as horizontal bar with hover info
-    httpContent.innerHTML = ''; // clear previous
-    const barContainer = document.createElement('div');
-    barContainer.className = "items-center group h-8 mt-3 hidden w-full lg:flex relative";
-
-    snapshots.forEach((s, index) => {
-      const segWrapper = document.createElement('div');
-      segWrapper.className = "relative size-full overflow-hidden px-[0.5px] transition first:rounded-l-[4px] first:pl-0 last:rounded-r-[4px] last:pr-0 sm:px-px";
-    
-      const segInner = document.createElement('div');
-      segInner.className = "size-full rounded-[1px]";
-    
-      // Set segment color
-      if (s.http_ok) segInner.classList.add('bg-emerald-500', 'dark:bg-emerald-500');
-      else if (!s.http_ok && s.http_response_time_ms > 1000) segInner.classList.add('bg-amber-500', 'dark:bg-amber-500');
-      else segInner.classList.add('bg-red-500', 'dark:bg-red-500');
-    
-      // Flowbite tooltip
-      const tooltipId = `tooltip-${index}`;
-      segInner.setAttribute('data-tooltip-target', tooltipId);
-      segInner.setAttribute('data-tooltip-placement', 'top');
-    
-      const tooltip = document.createElement('div');
-      tooltip.id = tooltipId;
-      tooltip.role = 'tooltip';
-      tooltip.className = "absolute z-50 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-800 rounded-lg shadow-sm opacity-0 transition-opacity duration-300";
-      tooltip.innerHTML = `
-        <div><strong>${s.date}</strong></div>
-        <div>Status: ${s.http_ok ? 'OK' : 'Issue'}</div>
-        <div>Response: ${s.http_response_time_ms.toFixed(2)} ms</div>
-      `;
-    
-      segWrapper.appendChild(segInner);
-      segWrapper.appendChild(tooltip);
-      barContainer.appendChild(segWrapper);
-    });
-
-
-    httpContent.appendChild(barContainer);
-
-  } catch (err) {
-    console.error(err);
-    document.getElementById("sections").textContent = `Failed to load domain history for ${domain}.`;
-  }
 }
-
-loadDomainHistory();
 </script>
+
+
 </body>
 </html>
