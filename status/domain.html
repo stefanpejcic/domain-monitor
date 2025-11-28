@@ -6,13 +6,11 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
-<body class="bg-gray-900 text-gray-50 p-6 flex flex-col min-h-screen">
-
-<p class="mb-2 text-center">
-    <a href="index.html" class="text-blue-600 hover:underline">← Back to main status page</a>
-</p>
+<body class="bg-gray-900 text-gray-50 px-6 flex flex-col min-h-screen">
   
 <div class="max-w-5xl w-full mx-auto space-y-10">
+    <p class="mt-2 text-xs text-center"><a href="index.html" class="text-blue-600 hover:underline">← Back to main status page</a></p>
+  
     <!-- Header -->
     <div class="flex flex-col md:flex-row items-center gap-4">
         <div class="flex justify-center p-4">
@@ -395,7 +393,7 @@ function domainHistory() {
 }
 </script>
 
-<small class="mt-auto text-center" x-show="domain">⚡ Subscribe via RSS — <a href="index.xml" target="_blank" class="no-underline">to all updates</a> or <a :href="`history/${domain}.xml`" target="_blank" class="no-underline"> only this feed (<span x-text="domain"></span>)</a></small>
+<small class="mt-auto text-center p-5" x-show="domain">⚡ Subscribe via RSS — <a href="index.xml" target="_blank" class="no-underline">to all updates</a> or <a :href="`history/${domain}.xml`" target="_blank" class="no-underline"> only this feed (<span x-text="domain"></span>)</a></small>
 
 </body>
 </html>
