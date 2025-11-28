@@ -2,17 +2,13 @@ name: Create Screenshots
 
 on:
   workflow_dispatch:
-    inputs:
-      resolution:
-        description: "Resolution for screenshots (e.g., 1920x1080)"
-        required: false
-        default: "1920x1080"
+
   schedule:
     - cron: "0 2 * * *"
 
 permissions:
   contents: write
-
+  
 jobs:
   run-screenshots:
     runs-on: ubuntu-latest
