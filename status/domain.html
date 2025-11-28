@@ -165,30 +165,54 @@
         
         <!-- JSON -->
         <div x-show="showJSON" x-transition class="mt-4 relative">
-            <button title="Copy to clipboard"
-                class="absolute top-2 right-2 px-2 py-1 text-xs bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600"
+            <button 
+                title="Copy to clipboard"
+                class="absolute top-2 right-2 px-2 py-1 text-xs bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600 flex items-center justify-center"
                 @click="copyLogs($event)">
-                Copy
+                <template x-if="!copied">
+                    <span>Copy</span>
+                </template>
+                <template x-if="copied">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="text-emerald-500">
+                        <path d="M13.485 3.929a1 1 0 0 1 0 1.414l-7 7a1 1 0 0 1-1.414 0l-3-3a1 1 0 1 1 1.414-1.414L6 10.586l6.293-6.293a1 1 0 0 1 1.414 0z"/>
+                    </svg>
+                </template>
             </button>
             <pre class="bg-gray-100 dark:bg-gray-800 p-3 rounded text-xs overflow-x-auto" x-text="JSON.stringify(history, null, 2)"></pre>
         </div>
         
         <!-- XML -->
         <div x-show="showXML" x-transition class="mt-4 relative">
-            <button title="Copy to clipboard"
-                class="absolute top-2 right-2 px-2 py-1 text-xs bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600"
+            <button 
+                title="Copy to clipboard"
+                class="absolute top-2 right-2 px-2 py-1 text-xs bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600 flex items-center justify-center"
                 @click="copyLogs($event)">
-                Copy
+                <template x-if="!copied">
+                    <span>Copy</span>
+                </template>
+                <template x-if="copied">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="text-emerald-500">
+                        <path d="M13.485 3.929a1 1 0 0 1 0 1.414l-7 7a1 1 0 0 1-1.414 0l-3-3a1 1 0 1 1 1.414-1.414L6 10.586l6.293-6.293a1 1 0 0 1 1.414 0z"/>
+                    </svg>
+                </template>
             </button>
             <pre class="bg-gray-100 dark:bg-gray-800 p-3 rounded text-xs overflow-x-auto" x-text="xmlContent"></pre>
         </div>
         
         <!-- CSV -->
         <div x-show="showCSV" x-transition class="mt-4 relative">
-            <button title="Copy to clipboard"
-                class="absolute top-2 right-2 px-2 py-1 text-xs bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600"
+            <button 
+                title="Copy to clipboard"
+                class="absolute top-2 right-2 px-2 py-1 text-xs bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600 flex items-center justify-center"
                 @click="copyLogs($event)">
-                Copy
+                <template x-if="!copied">
+                    <span>Copy</span>
+                </template>
+                <template x-if="copied">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="text-emerald-500">
+                        <path d="M13.485 3.929a1 1 0 0 1 0 1.414l-7 7a1 1 0 0 1-1.414 0l-3-3a1 1 0 1 1 1.414-1.414L6 10.586l6.293-6.293a1 1 0 0 1 1.414 0z"/>
+                    </svg>
+                </template>
             </button>
             <pre class="bg-gray-100 dark:bg-gray-800 p-3 rounded text-xs overflow-x-auto" x-text="tableToCSV()"></pre>
         </div>
@@ -369,21 +393,14 @@ function domainHistory() {
         
             navigator.clipboard.writeText(logsText)
                 .then(() => {
-                    const btn = event.currentTarget;
-                    const rect = btn.getBoundingClientRect();
-                    this.tooltip.text = "Copied!";
-                    this.tooltip.show = true;
-                    this.tooltip.x = rect.left + rect.width / 2;
-                    this.tooltip.y = rect.top - 30;
-                    setTimeout(() => this.tooltip.show = false, 1000);
+                    this.copied = true;
+                    setTimeout(() => this.copied = false, 1000); // revert
                 })
                 .catch(err => {
-                    this.tooltip.text = "Failed to copy";
-                    this.tooltip.show = true;
-                    setTimeout(() => this.tooltip.show = false, 1500);
+                    console.error("Failed to copy", err);
                 });
         }
-      
+
     }
 }
 </script>
