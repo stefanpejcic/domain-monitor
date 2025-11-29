@@ -172,11 +172,10 @@ def main():
             if exp_date.tzinfo is not None:
                 exp_date = exp_date.astimezone(timezone.utc).replace(tzinfo=None)
             days_left = (exp_date - now).days
-            issue = find_issue(repo, f"Domain {domain} expires in")
+            issue = find_issue(f"Domain {domain} expires in")
             if days_left <= days_threshold:
                 if not issue:
                     create_issue(
-                        repo,
                         f"⚠️ Domain {domain} expires in {days_left} days!",
                         f"**{domain}** will expire on {exp_date:%Y-%m-%d}.\nDays left: {days_left}"
                     )
@@ -189,13 +188,12 @@ def main():
         # ---- SSL Expiration ----
         ssl_exp = get_ssl_expiration(domain)
         ssl_days = None
-        issue = find_issue(repo, f"SSL for {domain}")
+        issue = find_issue(f"SSL for {domain}")
         if ssl_exp:
             ssl_days = (ssl_exp - now).days
             if ssl_days <= days_threshold:
                 if not issue:
                     create_issue(
-                        repo,
                         f"🔒 SSL for {domain} expires in {ssl_days} days!",
                         f"SSL cert for **{domain}** expires on {ssl_exp:%Y-%m-%d}.\nDays left: {ssl_days}"
                     )
@@ -205,18 +203,16 @@ def main():
 
         # ---- HTTP Status ----
         status, resp_time = get_http_status(domain, session)
-        issue = find_issue(repo, f"Slow response for {domain}")
+        issue = find_issue(f"Slow response for {domain}")
         if status is None or status >= 400:
             if not issue:
                 create_issue(
-                    repo,
                     f"❌ Status check failed for {domain}",
                     f"Latest HTTP response: `{status}`, response time: {resp_time:.0f} ms"
                 )
         elif resp_time and resp_time > response_threshold:
             if not issue:
                 create_issue(
-                    repo,
                     f"⚠️ Slow response for {domain}",
                     f"HTTP response time is {resp_time:.0f} ms (threshold {response_threshold} ms)."
                 )
@@ -250,7 +246,6 @@ def main():
         if resolved_ip and last_reported_ip != resolved_ip:
             if not ip_issue:
                 create_issue(
-                    repo,
                     f"🚨 IP change detected for {domain} (was {previous_ip})",
                     f"Domain **{domain}** IP changed from `{previous_ip}` to `{resolved_ip}`"
                 )
