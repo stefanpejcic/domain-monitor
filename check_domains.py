@@ -55,25 +55,31 @@ def get_http_status(domain, headers):
         print(f"[HTTP] Error checking {domain}: {e}")
         return None, None
 
-def find_issue(repo, keyword):
-    issues = repo.get_issues(state="open")
-    for issue in issues:
-        if keyword in issue.title:
+# ---- Get all GitHub issues ----
+open_issues = {issue.title: issue for issue in repo.get_issues(state="open")}
+
+def find_issue(keyword):
+    for title, issue in open_issues.items():
+        if keyword in title:
             return issue
     return None
 
-def create_issue(repo, title, body):
-    repo.create_issue(title=title, body=body)
+def create_issue(title, body):
+    issue = repo.create_issue(title=title, body=body)
+    open_issues[title] = issue  # update cache
     print(f"Issue created: {title}")
+    return issue
 
 def close_issue(issue, msg):
     issue.create_comment(msg)
     issue.edit(state="closed")
     print(f"Issue closed: {issue.title}")
+    open_issues.pop(issue.title, None)  # remove from cache
 
 def comment_on_issue(issue, msg):
     issue.create_comment(msg)
     print(f"Comment added to issue: {issue.title}")
+    
 
 def load_domain_history(domain):
     history_file = f"status/history/{domain}.json"
@@ -127,11 +133,13 @@ def main():
     gh_actions_ip = get_outgoing_ip()
     print(f"Outgoing IP: {gh_actions_ip}")
 
-    # ---- Set custom header for curl ----
-    HEADERS = {
+    # ---- HTTP session ----
+    session = requests.Session()
+    session.headers.update({
         "User-Agent": "Github Actions - stefanpejcic/domain-monitor/1.0",
         "X-Github-Repository": repo.full_name
-    }
+    })
+
 
     combined_results = {
         "domains": [],
@@ -192,7 +200,7 @@ def main():
                     close_issue(issue, f"✅ SSL for {domain} renewed (expires {ssl_exp:%Y-%m-%d}, {ssl_days} days left).")
 
         # ---- HTTP Status ----
-        status, resp_time = get_http_status(domain, HEADERS)
+        status, resp_time = get_http_status(domain, session)
         issue = find_issue(repo, f"Slow response for {domain}")
         if status is None or status >= 400:
             if not issue:
