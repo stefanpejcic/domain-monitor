@@ -45,41 +45,16 @@ def get_ssl_expiration(domain):
         print(f"[SSL] Error checking {domain}: {e}")
         return None
 
-def get_http_status(domain, headers):
+def get_http_status(domain, session):
     try:
         url = f"https://{domain}"
-        r = requests.get(url, headers=headers, timeout=10)
+        r = session.get(url, timeout=10)
         response_time_ms = r.elapsed.total_seconds() * 1000
         return r.status_code, response_time_ms
     except Exception as e:
         print(f"[HTTP] Error checking {domain}: {e}")
         return None, None
 
-# ---- Get all GitHub issues ----
-open_issues = {issue.title: issue for issue in repo.get_issues(state="open")}
-
-def find_issue(keyword):
-    for title, issue in open_issues.items():
-        if keyword in title:
-            return issue
-    return None
-
-def create_issue(title, body):
-    issue = repo.create_issue(title=title, body=body)
-    open_issues[title] = issue  # update cache
-    print(f"Issue created: {title}")
-    return issue
-
-def close_issue(issue, msg):
-    issue.create_comment(msg)
-    issue.edit(state="closed")
-    print(f"Issue closed: {issue.title}")
-    open_issues.pop(issue.title, None)  # remove from cache
-
-def comment_on_issue(issue, msg):
-    issue.create_comment(msg)
-    print(f"Comment added to issue: {issue.title}")
-    
 
 def load_domain_history(domain):
     history_file = f"status/history/{domain}.json"
@@ -129,6 +104,34 @@ def main():
     g = Github(auth=Auth.Token(token))
     repo = g.get_repo(repo_name)
 
+    # ---- Get all GitHub issues ----
+    open_issues = {issue.title: issue for issue in repo.get_issues(state="open")}
+
+    def find_issue(keyword):
+        for title, issue in open_issues.items():
+            if keyword in title:
+                return issue
+        return None
+
+    def create_issue(title, body):
+        issue = repo.create_issue(title=title, body=body)
+        open_issues[title] = issue  # update cache
+        print(f"Issue created: {title}")
+        return issue
+
+    def close_issue(issue, msg):
+        issue.create_comment(msg)
+        issue.edit(state="closed")
+        print(f"Issue closed: {issue.title}")
+        open_issues.pop(issue.title, None)  # remove from cache
+
+    def comment_on_issue(issue, msg):
+        issue.create_comment(msg)
+        print(f"Comment added to issue: {issue.title}")
+    
+
+
+    
     # ---- Get github worker IP ----
     gh_actions_ip = get_outgoing_ip()
     print(f"Outgoing IP: {gh_actions_ip}")
@@ -162,6 +165,7 @@ def main():
         else:
             print(f"[WHOIS] For {domain} checking whois information from {apex}")
             exp_date = get_domain_expiration(apex)
+            whois_cache[apex] = exp_date
 
         days_left = None
         if exp_date:
