@@ -28,9 +28,9 @@ For demo view: [http://status.pejcic.rs/status/](http://status.pejcic.rs/status/
 
 The workflow will:
 
-* Run automatically **once per day** (or you can trigger it manually).
+* Run automatically **almost every mininute** (or you can trigger it manually).
 * Check the expiration dates of your listed domains.
-* If a domain expires soon, SSL expired or status code is >400, a GitHub issue will be opened:
+* If a domain expires soon, IP changes, SSL expired or status code is >400, a GitHub issue will be opened:
 
 <img width="997" height="576" alt="image" src="https://github.com/user-attachments/assets/72823c59-20bb-4b74-8b1e-4d8b17085beb" />  
 
@@ -40,5 +40,12 @@ The workflow will:
 
 
 ## TODO
-- detect namserver changes and open issues
+- detect nameserver changes and open issues
 - add ignore option for ip changes when cloudflare proxy is used
+- record whois data
+- create screenshot when response code >400
+- tag in comment or auto-assign isuses
+- setup assigments per domain
+- if multiple domains (sub dir or domain) of dame domain, reuse ecisting whois data
+- 
+- 
