@@ -6,10 +6,19 @@ from github import Github, Auth
 import os
 import json
 import xml.etree.ElementTree as ET
+import tldextract
+
+whois_cache = {}
 
 def read_domains():
     with open("domains.txt", "r") as f:
         return [line.strip() for line in f if line.strip()]
+
+def get_apex_domain(domain):
+    ext = tldextract.extract(domain)
+    if ext.suffix:
+        return f"{ext.domain}.{ext.suffix}"
+    return domain
 
 def get_domain_expiration(domain):
     # TODO: also detect ns change
@@ -133,11 +142,19 @@ def main():
     # ---- domains.txt ----
     domains = read_domains()
     for domain in domains:
+        print(f"[PREPARATION] checking domain: {domain}")
         now = datetime.utcnow()
         timestamp = now.strftime("%Y-%m-%d %H:%M:%S")
 
         # ---- WHOIS Expiration ----
-        exp_date = get_domain_expiration(domain)
+        apex = get_apex_domain(domain)
+        if apex in whois_cache:
+            exp_date = whois_cache[apex]
+            print(f"[WHOIS] For {domain} reusing existing whois information from {apex}")
+        else:
+            print(f"[WHOIS] For {domain} checking whois information from {apex}")
+            exp_date = get_domain_expiration(apex)
+
         days_left = None
         if exp_date:
             if exp_date.tzinfo is not None:
