@@ -234,7 +234,7 @@ def main():
         # temporary off
         last_entry = domain_history["history"][-1] if domain_history["history"] else None
         previous_ip = last_entry.get("resolved_ip") if last_entry else None
-        ip_issue = find_issue(repo, f"IP change for {domain}")
+        ip_issue = find_issue(f"IP change for {domain}")
         
         last_reported_ip = None
         if ip_issue:
