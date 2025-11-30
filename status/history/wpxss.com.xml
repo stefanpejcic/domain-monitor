@@ -5304,4 +5304,16 @@
     <resolved_ip>104.21.11.195</resolved_ip>
     <ip_address>68.220.61.163</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-11-30 21:29:56</timestamp>
+    <whois_expiry>2026-11-30</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>2026-01-03</ssl_expiry>
+    <ssl_ok>True</ssl_ok>
+    <http_status>415</http_status>
+    <http_ok>False</http_ok>
+    <http_response_time_ms>536.914</http_response_time_ms>
+    <resolved_ip>104.21.11.195</resolved_ip>
+    <ip_address>172.215.217.64</ip_address>
+  </entry>
 </domain_history>
