@@ -3810,6 +3810,18 @@
       "http_response_time_ms": 140.67,
       "resolved_ip": "216.198.79.1",
       "ip_address": "20.171.125.129"
+    },
+    {
+      "timestamp": "2025-11-30 17:12:04",
+      "whois_expiry": "2026-10-07",
+      "whois_ok": true,
+      "ssl_expiry": "2026-02-17",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 77.195,
+      "resolved_ip": "216.198.79.1",
+      "ip_address": "20.161.67.210"
     }
   ]
 }
