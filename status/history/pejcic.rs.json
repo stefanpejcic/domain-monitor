@@ -7278,6 +7278,18 @@
       "http_response_time_ms": 279.783,
       "resolved_ip": "216.198.79.1",
       "ip_address": "48.214.55.32"
+    },
+    {
+      "timestamp": "2025-11-30 22:53:20",
+      "whois_expiry": "2026-10-07",
+      "whois_ok": true,
+      "ssl_expiry": "2026-02-17",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 105.026,
+      "resolved_ip": "216.198.79.1",
+      "ip_address": "68.220.59.115"
     }
   ]
 }
