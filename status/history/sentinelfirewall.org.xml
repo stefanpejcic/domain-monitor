@@ -6168,4 +6168,16 @@
     <resolved_ip>216.198.79.1</resolved_ip>
     <ip_address>52.242.243.102</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-11-30 22:23:01</timestamp>
+    <whois_expiry>2026-09-28</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>2026-02-26</ssl_expiry>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>64.17299999999999</http_response_time_ms>
+    <resolved_ip>216.198.79.1</resolved_ip>
+    <ip_address>64.236.145.65</ip_address>
+  </entry>
 </domain_history>
