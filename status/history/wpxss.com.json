@@ -7518,6 +7518,18 @@
       "http_response_time_ms": 731.1370000000001,
       "resolved_ip": "172.67.150.58",
       "ip_address": "172.182.195.32"
+    },
+    {
+      "timestamp": "2025-11-30 23:16:21",
+      "whois_expiry": "2026-11-30",
+      "whois_ok": true,
+      "ssl_expiry": "2026-01-03",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 739.732,
+      "resolved_ip": "104.21.11.195",
+      "ip_address": "20.171.127.96"
     }
   ]
 }
