@@ -1,4 +1,4 @@
 python-whois
 PyGithub
 requests
-tldextract==4.5.3
+tldextract==4.0.0
