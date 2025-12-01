@@ -1596,4 +1596,16 @@
     <resolved_ip>66.33.60.193</resolved_ip>
     <ip_address>172.178.119.38</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-12-01 19:16:12</timestamp>
+    <whois_expiry>2027-03-10</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>2026-01-25</ssl_expiry>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>67.83200000000001</http_response_time_ms>
+    <resolved_ip>76.76.21.164</resolved_ip>
+    <ip_address>135.232.208.145</ip_address>
+  </entry>
 </domain_history>
