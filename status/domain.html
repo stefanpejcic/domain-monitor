@@ -364,7 +364,7 @@ function domainHistory() {
                 }
 
                 this.domain = domainParam;
-                document.title = `${this.domain} — Domain History`;                       // browser tab title
+                document.title = `${this.domain} — Checking..`;                       // browser tab title
               
                 const res = await fetch(`history/${this.domain}.json`);
                 if (!res.ok) throw new Error("Failed to load domain JSON");
@@ -390,6 +390,8 @@ function domainHistory() {
                   
                     // RESPONSE
                     this.isUp = latestEntry.up;
+                    document.title = `${this.domain} — is ${statusText}!`;                 // update in browser tab
+
                     this.lastResponse = latestEntry.response;
 
                     const now = new Date();
