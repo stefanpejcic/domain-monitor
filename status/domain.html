@@ -364,6 +364,8 @@ function domainHistory() {
                 const res = await fetch(`history/${this.domain}.json`);
                 if (!res.ok) throw new Error("Failed to load domain JSON");
 
+                const options = { year: 'numeric', month: 'short', day: 'numeric' };      // used by whois and ssl
+              
                 const data = await res.json();
                 this.history = (data.history || []).map(e => ({
                     //time: e.timestamp,                                                   // as is
@@ -386,7 +388,7 @@ function domainHistory() {
                     this.lastResponse = latestEntry.response;
 
                     const now = new Date();
-                  
+
                     // SSL
                     /*
                     const now = new Date();
@@ -394,18 +396,21 @@ function domainHistory() {
                     this.sslExpiringSoon = latestEntry.ssl_ok === false || (sslExpiryDate - now) / (1000 * 60 * 60 * 24) < 7;
                     */
                     this.sslExpiringSoon = latestEntry.ssl_ok === false;
-                    this.lastssl = latestEntry.ssl_expiry || "N/A";
-        
+                    this.lastssl = latestEntry.ssl_expiry
+                        ? new Date(latestEntry.ssl_expiry + 'T00:00:00Z').toLocaleDateString(undefined, options)
+                        : "N/A";
+
                     //  COMBINED STATS
                     this.firstChecked = this.history[0].time;
                     this.lastChecked = latestEntry.time;
                     this.uptimePercentage = (((this.history.length - this.history.filter(e => !e.up).length) / this.history.length) * 100).toFixed(2);
-         
-                  
+
                     // WHOIS
                     const domainExpiryDate = new Date(latestEntry.whois_expiry);
                     this.domainExpiringSoon = latestEntry.whois_ok === false || (domainExpiryDate - now) / (1000 * 60 * 60 * 24) < 30;
-                    this.lastwhois = latestEntry.whois_expiry || "N/A";
+                    this.lastwhois = latestEntry.whois_expiry
+                        ? new Date(latestEntry.whois_expiry + 'T00:00:00Z').toLocaleDateString(undefined, options)
+                        : "N/A";
 
                     // UPTIME
                     const totalChecks = this.history.length;
