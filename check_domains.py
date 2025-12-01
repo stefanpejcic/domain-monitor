@@ -21,6 +21,13 @@ def get_apex_domain(domain):
         return f"{ext.domain}.{ext.suffix}"
     return domain
 
+
+def get_hostname(domain_or_url):
+    if "://" not in domain_or_url:
+        domain_or_url = "https://" + domain_or_url
+    parsed = urlparse(domain_or_url)
+    return parsed.hostname
+
 def get_domain_expiration(domain):
     # TODO: also detect ns change
     try:
