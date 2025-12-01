@@ -356,6 +356,8 @@ function domainHistory() {
         },
 
 
+
+      
       
         async init() {
             try {
@@ -441,6 +443,11 @@ function domainHistory() {
                     this.firstChecked = this.history[0].time;
                     this.lastChecked = this.history[this.history.length - 1].time;
                     this.uptimePercentage = (((totalChecks - outages) / totalChecks) * 100).toFixed(2);
+
+                    this.$nextTick(() => {
+                        this.scrollGraphToEnd();
+                    });
+                  
                 }
             } catch (err) {
                 console.error('Failed to load domain history', err);
@@ -477,6 +484,15 @@ function domainHistory() {
             return `${diffDay} day${diffDay > 1 ? 's' : ''} ago`;
         },
 
+
+        scrollGraphToEnd() {
+            const container = this.$refs.graphContainer;
+            const isAtEnd = container.scrollLeft + container.clientWidth >= container.scrollWidth - 1;
+            if (isAtEnd) {
+                container.scrollLeft = container.scrollWidth;
+            }
+        },
+              
         tableToCSV() {
             if (!this.history || this.history.length === 0) return "";
             const headers = ["Checked", "Status", "Response (ms)", "Up?"];
