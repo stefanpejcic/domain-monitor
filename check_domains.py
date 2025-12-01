@@ -54,7 +54,6 @@ def get_http_status(domain, session):
         print(f"[HTTP] Error checking {domain}: {e}")
         return None, None
 
-
 def load_domain_history(domain):
     history_file = f"status/history/{domain}.json"
     if os.path.exists(history_file):
@@ -168,7 +167,7 @@ def main():
     }
 
     # ---- domains.txt ----
-    domains = read_domains()
+    domains = list(dict.fromkeys(read_domains()))  # deduplicate 
     for domain in domains:
         print(f"[PREPARATION] checking domain: {domain}")
         now = datetime.utcnow()
