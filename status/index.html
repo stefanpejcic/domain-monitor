@@ -205,7 +205,7 @@
 
     <div class="relative w-full rounded-lg border p-6 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900" >
         <dt class="text-sm font-medium text-gray-500 dark:text-gray-500">WHOIS status</dt>
-        <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50"  x-text="domain.whois_eok ? 'OK' : 'Expiring'"></dd>
+        <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50"  x-text="domain.whois_ok ? 'OK' : 'Expiring'"></dd>
         <dd class="mt-4 inline-flex items-center gap-x-1.5 rounded-md px-2 py-1.5 text-xs font-medium"
             :class="whoisStatusInfo(domain.whois_ok).class">
             <span x-html="whoisStatusInfo(domain.whois_ok).icon"></span> Expires on: <span x-text="domain.whois_expiry"></span>
