@@ -193,8 +193,8 @@ def main():
 
         if "://" not in domain:
             url = f"https://{domain}"
-            if port != 443:
-                url += f":{port}"
+            #if port != 443:
+            #    url += f":{port}"
         else:
             url = domain
 
