@@ -1,7 +1,6 @@
 openpanel.com
 https://sentinelfirewall.org
 openpanel.org
-openpanel.com
 ip.openpanel.com
 my.openpanel.com
 dev.openpanel.com
