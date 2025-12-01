@@ -372,7 +372,7 @@ function domainHistory() {
                 this.safeDomain = sanitizeFilename(this.domain);
                 document.title = `${this.domain} — Checking..`;                           // browser tab title
 
-                const res = wait fetch(`history/${this.safeDomain}.json`);
+                const res = await fetch(`history/${this.safeDomain}.json`);
 
                 if (!res.ok) {
                     throw new Error("Failed to load domain JSON, redirecting..");         // domain does not exist or invalid file
