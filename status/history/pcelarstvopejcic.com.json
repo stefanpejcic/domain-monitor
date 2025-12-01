@@ -11358,6 +11358,18 @@
       "http_response_time_ms": 559.289,
       "resolved_ip": "185.119.89.240",
       "ip_address": "104.209.7.224"
+    },
+    {
+      "timestamp": "2025-12-01 11:11:35",
+      "whois_expiry": "2026-11-12",
+      "whois_ok": true,
+      "ssl_expiry": "2026-02-02",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 392.723,
+      "resolved_ip": "185.119.89.240",
+      "ip_address": "20.55.87.51"
     }
   ]
 }
