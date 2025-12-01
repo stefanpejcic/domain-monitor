@@ -294,7 +294,7 @@
         <div x-show="showAPI" x-transition class="mt-4 overflow-x-auto max-h-96 overflow-y-auto border border-gray-700 rounded">
           <p x-show="domain" class="bg-gray-100 dark:bg-gray-800 p-3 rounded text-sm overflow-x-auto">You can use our API to integrate the information and updates from this status page into your own website or application. Simply make a <code>GET</code> request to the following URL:
           </br>
-          <code x-text="`${window.location.origin}/status/history/${domain}.json`"></code>
+          <code x-text="`${window.location.origin}/status/history/${sanitizeFilename(domain)}.json`"></code>
           </p>
         </div>
     </div>
@@ -355,10 +355,10 @@ function domainHistory() {
             return parts.join(', ');
         },
 
+        function sanitizeFilename(name) {
+            return name.replace(/[^a-zA-Z0-9.-]/g, '_');
+        },    
 
-
-      
-      
         async init() {
             try {
                 const domainParam = new URLSearchParams(window.location.search).get('domain');
@@ -369,8 +369,9 @@ function domainHistory() {
 
                 this.domain = domainParam;
                 document.title = `${this.domain} — Checking..`;                           // browser tab title
-              
-                const res = await fetch(`history/${this.domain}.json`);
+                const safeDomain = sanitizeFilename(this.domain);                         // replace with _
+
+                const res = wait fetch(`history/${safeDomain}.json`);
 
                 if (!res.ok) {
                     throw new Error("Failed to load domain JSON, redirecting..");         // domain does not exist or invalid file
@@ -461,7 +462,7 @@ function domainHistory() {
         // load xml file on btn click
         async loadXML() {
             try {
-                const res = await fetch(`history/${this.domain}.xml`);
+                const res = await fetch(`history/${safeDomain}.xml`);
                 if (!res.ok) throw new Error("Failed to load XML");
                 const text = await res.text();
                 this.xmlContent = text;
