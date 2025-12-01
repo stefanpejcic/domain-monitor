@@ -39,13 +39,13 @@ The workflow will:
 
 <table border="0">
  <tr>
-    <td><b style="font-size:30px">All monitors</b></td>
-    <td><b style="font-size:30px">Single page</b></td>
+    <td>If a domain expires soon, IP changes, SSL expired or status code is >400, a GitHub issue will be opened: </td>
+    <td>If the domain is later renewed, SSL renewed or status code changes, the issue will be <b>automatically closed</b>:</td>
  </tr>
  <tr>
-    <td>If a domain expires soon, IP changes, SSL expired or status code is >400, a GitHub issue will be opened: <br>
+    <td><br>
      <img width="400" alt="image" src="https://github.com/user-attachments/assets/f9c53697-15c6-4c46-9ef3-00e663f62e7d" /></td>
-    <td>If the domain is later renewed, SSL renewed or status code changes, the issue will be <b>automatically closed</b>:
+    <td>
      <img width="400" alt="image" src="https://github.com/user-attachments/assets/14fe1bcd-068f-4ecb-b2ff-f1e568708ce1" /></td>
  </tr>
 </table>
