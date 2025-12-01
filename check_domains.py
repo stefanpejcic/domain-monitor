@@ -18,6 +18,7 @@ def read_domains():
 
 def sanitize_filename(name):
     name = re.sub(r'^https?://', '', name)
+    name = re.sub(r':\d+$', '', name)
     name = re.sub(r'[^a-zA-Z0-9.-]', '_', name)
     return name
 
