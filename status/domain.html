@@ -367,7 +367,12 @@ function domainHistory() {
                 document.title = `${this.domain} — Checking..`;                       // browser tab title
               
                 const res = await fetch(`history/${this.domain}.json`);
-                if (!res.ok) throw new Error("Failed to load domain JSON");
+
+                if (!res.ok) {
+                    throw new Error("Failed to load domain JSON, redirecting to homepage..");
+                    window.location.href = "index.html";
+                    return;
+                }
 
                 const options = { year: 'numeric', month: 'short', day: 'numeric' };      // used by whois and ssl
               
