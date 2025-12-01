@@ -390,10 +390,16 @@ function domainHistory() {
                   
                     // RESPONSE
                     this.isUp = latestEntry.up;
-                    document.title = `${this.domain} — is ${isUp}!`;                 // update in browser tab
-
                     this.lastResponse = latestEntry.response;
 
+                    let statusText;                                                         // update browser tab
+                    if (this.isUp) {
+                        statusText = this.lastResponse > 1000 ? 'slow!' : 'up!';
+                    } else {
+                        statusText = 'down!';
+                    }
+                    document.title = `${this.domain} — ${statusText}`;
+                
                     const now = new Date();
 
                     // SSL
