@@ -63,6 +63,27 @@
         </div>
     </div>
 
+
+    <!-- Summary -->
+    <dl class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="relative w-full rounded-lg border p-6 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900">
+        <dt class="text-sm font-medium text-gray-500 dark:text-gray-500">Monitor is up for</dt>
+        <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="uptimeDuration"></dd>
+      </div>
+    
+      <div class="relative w-full rounded-lg border p-6 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900">
+        <dt class="text-sm font-medium text-gray-500 dark:text-gray-500">Last checked</dt>
+        <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="timeAgo(lastChecked)"></dd>
+      </div>
+    
+      <div class="relative w-full rounded-lg border p-6 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900">
+        <dt class="text-sm font-medium text-gray-500 dark:text-gray-500">Incidents</dt>
+        <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="incidents"></dd>
+      </div>
+    </dl>
+
+
+  
     <!-- Graph -->
     <div class="relative w-full rounded-lg border p-6 shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900">
         <p class="flex justify-between text-sm font-medium mb-3">
@@ -267,6 +288,40 @@ function domainHistory() {
         statusSummary: '',
         copied: false,
 
+        get incidents() {
+            if (!this.history || this.history.length === 0) return 0;
+            return this.history.filter(e => !e.up).length;
+        },
+          
+        get uptimeDuration() {
+            if (!this.firstChecked || !this.lastChecked) return "N/A";
+    
+            const start = new Date(this.firstChecked);
+            const end = new Date(this.lastChecked);
+            let diffMs = end - start; // difference in milliseconds
+    
+            const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            diffMs -= days * 1000 * 60 * 60 * 24;
+    
+            const hours = Math.floor(diffMs / (1000 * 60 * 60));
+            diffMs -= hours * 1000 * 60 * 60;
+    
+            const minutes = Math.floor(diffMs / (1000 * 60));
+            diffMs -= minutes * 1000 * 60;
+    
+            const seconds = Math.floor(diffMs / 1000);
+    
+            let str = "";
+            if (days > 0) str += `${days} day${days > 1 ? 's' : ''}, `;
+            if (hours > 0 || days > 0) str += `${hours} hour${hours > 1 ? 's' : ''}, `;
+            if (minutes > 0 || hours > 0 || days > 0) str += `${minutes} min, `;
+            str += `${seconds} sec`;
+    
+            return str;
+        },
+
+
+      
         async init() {
             try {
                 const domainParam = new URLSearchParams(window.location.search).get('domain');
@@ -308,6 +363,7 @@ function domainHistory() {
 
                 if (this.history.length > 0) {
                     const latestEntry = this.history[this.history.length - 1];
+                  
                     // RESPONSE
                     this.isUp = latestEntry.up;
                     this.lastResponse = latestEntry.response;
@@ -322,6 +378,14 @@ function domainHistory() {
                     */
                     this.sslExpiringSoon = latestEntry.ssl_ok === false;
 
+
+        
+                    //  COMBINED STATS
+                    this.firstChecked = this.history[0].time;
+                    this.lastChecked = latestEntry.time;
+                    this.uptimePercentage = (((this.history.length - this.history.filter(e => !e.up).length) / this.history.length) * 100).toFixed(2);
+         
+                  
                     // WHOIS
                     const domainExpiryDate = new Date(latestEntry.whois_expiry);
                     this.domainExpiringSoon = latestEntry.whois_ok === false || (domainExpiryDate - now) / (1000 * 60 * 60 * 24) < 30;
