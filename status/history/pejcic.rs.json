@@ -8910,6 +8910,18 @@
       "http_response_time_ms": 196.499,
       "resolved_ip": "216.198.79.1",
       "ip_address": "128.24.163.96"
+    },
+    {
+      "timestamp": "2025-12-01 04:54:56",
+      "whois_expiry": "2026-10-07",
+      "whois_ok": true,
+      "ssl_expiry": "2026-02-17",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 215.042,
+      "resolved_ip": "216.198.79.1",
+      "ip_address": "20.51.198.196"
     }
   ]
 }
