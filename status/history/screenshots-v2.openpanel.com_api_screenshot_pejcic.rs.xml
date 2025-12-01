@@ -420,4 +420,16 @@
     <resolved_ip>64.29.17.1</resolved_ip>
     <ip_address>48.214.55.53</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-12-01 17:20:41</timestamp>
+    <whois_expiry>2027-03-10</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>2026-01-27</ssl_expiry>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>85.517</http_response_time_ms>
+    <resolved_ip>216.198.79.1</resolved_ip>
+    <ip_address>20.55.87.180</ip_address>
+  </entry>
 </domain_history>
