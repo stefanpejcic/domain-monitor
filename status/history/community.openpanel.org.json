@@ -4560,6 +4560,18 @@
       "http_response_time_ms": 731.8829999999999,
       "resolved_ip": "172.67.182.109",
       "ip_address": "52.159.244.73"
+    },
+    {
+      "timestamp": "2025-12-01 23:07:13",
+      "whois_expiry": "2027-02-27",
+      "whois_ok": true,
+      "ssl_expiry": "2026-03-01",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 805.409,
+      "resolved_ip": "172.67.182.109",
+      "ip_address": "64.236.135.116"
     }
   ]
 }
