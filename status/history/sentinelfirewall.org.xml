@@ -15192,4 +15192,16 @@
     <resolved_ip>216.198.79.1</resolved_ip>
     <ip_address>135.119.239.52</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-12-01 19:56:14</timestamp>
+    <whois_expiry>2026-09-28</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>None</ssl_expiry>
+    <ssl_ok>False</ssl_ok>
+    <http_status>None</http_status>
+    <http_ok>False</http_ok>
+    <http_response_time_ms>None</http_response_time_ms>
+    <resolved_ip>216.198.79.1</resolved_ip>
+    <ip_address>20.55.213.123</ip_address>
+  </entry>
 </domain_history>
