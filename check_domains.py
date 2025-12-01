@@ -6,6 +6,7 @@ import os
 import json
 import xml.etree.ElementTree as ET
 import tldextract
+from urllib.parse import url
 
 whois_cache = {}
 
@@ -44,14 +45,13 @@ def get_ssl_expiration(domain):
         print(f"[SSL] Error checking {domain}: {e}")
         return None
 
-def get_http_status(domain, session):
+def get_http_status(url, session):
     try:
-        url = f"https://{domain}"
         r = session.get(url, timeout=10)
         response_time_ms = r.elapsed.total_seconds() * 1000
         return r.status_code, response_time_ms
     except Exception as e:
-        print(f"[HTTP] Error checking {domain}: {e}")
+        print(f"[HTTP] Error checking {url}: {e}")
         return None, None
 
 def load_domain_history(domain):
@@ -170,6 +170,12 @@ def main():
     domains = list(dict.fromkeys(read_domains()))  # deduplicate 
     for domain in domains:
         print(f"[PREPARATION] checking domain: {domain}")
+
+        if "://" not in domain:
+            url = "https://" + domain
+        else:
+            url = domain
+
         now = datetime.utcnow()
         timestamp = now.strftime("%Y-%m-%d %H:%M:%S")
 
@@ -202,7 +208,7 @@ def main():
                     close_issue(issue, f"✅ Domain {domain} renewed (expires {exp_date:%Y-%m-%d}, {days_left} days left).")
 
         # ---- SSL Expiration ----
-        ssl_exp = get_ssl_expiration(domain)
+        ssl_exp = get_ssl_expiration(hostname)
         ssl_days = None
         issue = find_issue(f"SSL for {domain}")
         if ssl_exp:
@@ -218,7 +224,7 @@ def main():
                     close_issue(issue, f"✅ SSL for {domain} renewed (expires {ssl_exp:%Y-%m-%d}, {ssl_days} days left).")
 
         # ---- HTTP Status ----
-        status, resp_time = get_http_status(domain, session)
+        status, resp_time = get_http_status(url, session)
         issue = find_issue(f"Slow response for {domain}")
         if status is None or status >= 400:
             if not issue:
@@ -239,12 +245,15 @@ def main():
         # ---- Update per-domain JSON ----
         domain_history = load_domain_history(domain)
 
+        # ---- get domain if path ----
+        hostname = get_hostname(domain)
+
         # ---- Resolve domain IP ----
         # we need domain_history for this!
         try:
-            resolved_ip = socket.gethostbyname(domain)
+            resolved_ip = socket.gethostbyname(hostname)
         except Exception as e:
-            print(f"[DNS] Error resolving {domain}: {e}")
+            print(f"[DNS] Error resolving {hostname}: {e}")
             resolved_ip = None
         """
         # temporary off
