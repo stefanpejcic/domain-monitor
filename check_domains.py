@@ -192,7 +192,7 @@ def main():
         hostname, port = get_hostname_port(domain)
 
         if "://" not in domain:
-            url = f"https://{hostname}"
+            url = f"https://{domain}"
             if port != 443:
                 url += f":{port}"
         else:
