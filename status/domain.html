@@ -366,8 +366,9 @@ function domainHistory() {
 
                 const data = await res.json();
                 this.history = (data.history || []).map(e => ({
-                    //time: e.timestamp,
-                    time: new Date(e.timestamp).toLocaleString(),
+                    //time: e.timestamp,                                                   // as is
+                    //time: new Date(e.timestamp).toLocaleString(),                        // just pm/am
+                    time: new Date(e.timestamp.replace(' ', 'T') + 'Z').toLocaleString(),  // changes timezone
                     statusCode: e.http_status,
                     response: parseFloat(e.http_response_time_ms.toFixed(2)),
                     up: e.http_ok,
