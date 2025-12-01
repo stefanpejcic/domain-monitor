@@ -13,11 +13,6 @@
   
     <!-- Header -->
     <div class="flex flex-col md:flex-row items-center gap-4">
-        <div class="flex justify-center p-4">
-            <img :src="screenshotUrl" 
-                 class="border-4 border-gray-300 rounded-xl p-2 shadow-lg min-h-[240px] min-w-[400px] max-w-[400px]"
-                 alt="Screenshot">
-        </div>
         <div class="flex flex-col justify-center w-full">
             <span :class="isUp 
                            ? (lastResponse > 1000 
@@ -272,7 +267,6 @@
 function domainHistory() {
     return {
         domain: '',
-        screenshotUrl: '',
         history: [],
         tooltip: { show: false, text: "", x: 0, y: 0 },
         showTable: true,
@@ -331,20 +325,6 @@ function domainHistory() {
                 }
 
                 this.domain = domainParam;
-
-                // screenshots
-                const localPath = `../screenshots/${this.domain}.png`;
-                try {
-                    const res = await fetch(localPath, { method: 'HEAD' });
-                    if (res.ok) {
-                        this.screenshotUrl = localPath;                                                            // local (generated daily with workflow)
-                    } else {
-                        this.screenshotUrl = `https://screenshots-v4.openpanel.com/api/screenshot/${this.domain}`; // fallback remote screenshots api
-                    }
-                } catch (err) {
-                    this.screenshotUrl = `https://screenshots-v3.openpanel.com/api/screenshot/${this.domain}`;     // fallback, our api
-                }
-
               
                 const res = await fetch(`history/${this.domain}.json`);
                 if (!res.ok) throw new Error("Failed to load domain JSON");
