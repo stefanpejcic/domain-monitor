@@ -9732,4 +9732,16 @@
     <resolved_ip>216.198.79.1</resolved_ip>
     <ip_address>52.173.237.208</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-12-01 08:56:55</timestamp>
+    <whois_expiry>2026-09-28</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>2026-02-26</ssl_expiry>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>123.094</http_response_time_ms>
+    <resolved_ip>216.198.79.1</resolved_ip>
+    <ip_address>172.212.164.24</ip_address>
+  </entry>
 </domain_history>
