@@ -25,7 +25,7 @@
 <div class="max-w-5xl w-full mx-auto space-y-10">
   
     <p class="flex mt-2 text-xs">
-      <a href="index.html" class="text-blue-600 hover:underline">← Back to main status page</a>
+      <a href="index.html" class="hover:underline">← Back to main status page</a>
       <span></span>
     </p>
   
@@ -66,7 +66,7 @@
                 </svg>
             </span>
             <h1 class="mx-auto inline-flex items-center justify-center mt-3 text-lg font-semibold">
-                <a :href="`http://${domain}`" target="_blank" x-text="domain"></a>&nbsp; is &nbsp;
+                <span x-text="domain"></span>&nbsp; is &nbsp;
                 <span :class="isUp 
                          ? (lastResponse > 1000 ? 'text-yellow-500' : 'text-emerald-600') 
                          : 'text-red-600'" 
