@@ -1488,4 +1488,16 @@
     <resolved_ip>104.21.75.224</resolved_ip>
     <ip_address>64.236.153.154</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-12-01 19:02:23</timestamp>
+    <whois_expiry>2027-02-27</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>2026-03-01</ssl_expiry>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>696.1030000000001</http_response_time_ms>
+    <resolved_ip>104.21.75.224</resolved_ip>
+    <ip_address>172.182.226.23</ip_address>
+  </entry>
 </domain_history>
