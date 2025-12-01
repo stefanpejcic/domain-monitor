@@ -44,6 +44,7 @@ def get_domain_expiration(domain):
         exp = w.expiration_date
         if isinstance(exp, list):  # sometimes a list
             exp = exp[0]
+        print(f"[WHOIS] For {domain} | exp: {exp}")
         return exp
     except Exception as e:
         print(f"[WHOIS] Error checking {domain}: {e}")
@@ -57,6 +58,7 @@ def get_ssl_expiration(domain, port=443):
                 cert = ssock.getpeercert()
                 exp_str = cert['notAfter']
                 exp_date = datetime.strptime(exp_str, "%b %d %H:%M:%S %Y %Z")
+                print(f"[SSL] For {domain}:{port} | exp_date: {exp_date}")
                 return exp_date
     except Exception as e:
         print(f"[SSL] Error checking {domain}:{port}: {e}")
@@ -66,6 +68,7 @@ def get_http_status(url, session):
     try:
         r = session.get(url, timeout=10)
         response_time_ms = r.elapsed.total_seconds() * 1000
+        print(f"[HTTP] For {url} | status: {r.status_code} | response_time: {response_time_ms}")
         return r.status_code, response_time_ms
     except Exception as e:
         print(f"[HTTP] Error checking {url}: {e}")
@@ -74,8 +77,10 @@ def get_http_status(url, session):
 def load_domain_history(domain):
     history_file = f"status/history/{sanitize_filename(domain)}.json"
     if os.path.exists(history_file):
+        print(f"[load_domain_history] For {domain} | reading JSON from file: {history_file}")
         with open(history_file, "r") as f:
             return json.load(f)
+    print(f"[load_domain_history] For {domain} | JSON file does not exist: {history_file}")
     return {"domain": domain, "history": []}
 
 def save_domain_history(domain, history):
@@ -83,24 +88,26 @@ def save_domain_history(domain, history):
     history_file = f"status/history/{sanitize_filename(domain)}.json"
     with open(history_file, "w") as f:
         json.dump(history, f, indent=2)
-    print(f"Saved history for {domain} in {history_file}")
+    print(f"[save_domain_history] For {domain} | Saved JSON to {history_file}")
 
 def load_domain_xml(domain):
     xml_file = f"status/history/{sanitize_filename(domain)}.xml"
     if os.path.exists(xml_file):
         tree = ET.parse(xml_file)
+        print(f"[load_domain_xml] For {domain} | reading from XML file: {history_file}")
         return tree, tree.getroot()
 
     root = ET.Element("domain_history")
     root.set("domain", domain)
     tree = ET.ElementTree(root)
+    print(f"[load_domain_xml] For {domain} | XML file does not exist: {history_file}")
     return tree, root
 
 def save_domain_xml(domain, tree):
     xml_file = f"status/history/{sanitize_filename(domain)}.xml"
     ET.indent(tree, space="  ")
     tree.write(xml_file, encoding="utf-8", xml_declaration=True)
-    print(f"Saved XML history for {domain} → {xml_file}")
+    print(f"[save_domain_xml] Saved XML history for {domain} → {xml_file}")
 
 def get_outgoing_ip():
     try:
