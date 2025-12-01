@@ -77,7 +77,7 @@
 
       <div class="relative w-full rounded-lg border p-6 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900">
         <dt class="text-sm font-medium text-gray-500 dark:text-gray-500">Incidents</dt>
-        <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="outages. === 0 ? 'No' : incidents"></dd>
+        <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="outages === 0 ? 'No' : incidents"></dd>
       </div>
 
       <div class="relative w-full rounded-lg border p-6 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900">
@@ -388,7 +388,9 @@ function domainHistory() {
                     // UPTIME
                     const totalChecks = this.history.length;
                     const outages = this.history.filter(e => !e.up).length;
+                    this.outages = outages;
                     const avgResponse = (this.history.reduce((sum, e) => sum + e.response, 0) / totalChecks).toFixed(2);
+                    this.avgResponse = avgResponse;
                     this.firstChecked = this.history[0].time;
                     this.lastChecked = this.history[this.history.length - 1].time;
                     this.uptimePercentage = (((totalChecks - outages) / totalChecks) * 100).toFixed(2);
