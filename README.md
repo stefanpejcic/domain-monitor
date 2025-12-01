@@ -15,8 +15,16 @@ relies entirely on **GitHub Actions** and **GitHub Issues**—no external servic
 
 For demo view: [http://status.pejcic.rs/status/](http://status.pejcic.rs/status/)
 
-<img width="1067" height="932" alt="image" src="https://github.com/user-attachments/assets/37055249-38e7-4d88-9803-a7371a9be65f" />
-
+<table border="0">
+ <tr>
+    <td><b style="font-size:30px">All monitors</b></td>
+    <td><b style="font-size:30px">Single page</b></td>
+ </tr>
+ <tr>
+    <td><a href="http://status.pejcic.rs/status/"><img src="https://github.com/user-attachments/assets/14fe1bcd-068f-4ecb-b2ff-f1e568708ce1" width="400" /></a></td>
+    <td><a href="https://status.pejcic.rs/status/domain.html?domain=openpanel.com"><img src="https://github.com/user-attachments/assets/9ca1d2bb-5c3a-47ef-aabb-666a375ccae5" width="400" /></a></td>
+ </tr>
+</table>
 
 ---
 ## 🚀 Usage
@@ -36,16 +44,8 @@ The workflow will:
 
 * If the domain is later renewed, SSL renewed or status code changes, the issue will be **automatically closed**:
 
-<table border="0">
- <tr>
-    <td><b style="font-size:30px">All monitors</b></td>
-    <td><b style="font-size:30px">Single page</b></td>
- </tr>
- <tr>
-    <td> <img src="https://github.com/user-attachments/assets/14fe1bcd-068f-4ecb-b2ff-f1e568708ce1" width="400" /> </td>
-    <td> <img src="https://github.com/user-attachments/assets/9ca1d2bb-5c3a-47ef-aabb-666a375ccae5" width="400" /> </td>
- </tr>
-</table>
+<img width="997" height="576" alt="image" src="https://github.com/user-attachments/assets/14fe1bcd-068f-4ecb-b2ff-f1e568708ce1" />  
+
 
 ## TODO
 - detect nameserver changes and open issues
