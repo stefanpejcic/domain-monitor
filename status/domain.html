@@ -364,6 +364,7 @@ function domainHistory() {
                 }
 
                 this.domain = domainParam;
+                document.title = `${this.domain} — Domain History`;                       // browser tab title
               
                 const res = await fetch(`history/${this.domain}.json`);
                 if (!res.ok) throw new Error("Failed to load domain JSON");
