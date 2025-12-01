@@ -4044,6 +4044,18 @@
       "http_response_time_ms": 105.177,
       "resolved_ip": "193.181.23.225",
       "ip_address": "20.42.42.210"
+    },
+    {
+      "timestamp": "2025-12-01 22:27:59",
+      "whois_expiry": "2027-02-27",
+      "whois_ok": true,
+      "ssl_expiry": "2026-02-12",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 116.774,
+      "resolved_ip": "193.181.23.225",
+      "ip_address": "172.200.23.74"
     }
   ]
 }
