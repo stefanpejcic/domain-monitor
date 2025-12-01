@@ -12726,6 +12726,18 @@
       "http_response_time_ms": 162.258,
       "resolved_ip": "216.198.79.1",
       "ip_address": "52.154.19.226"
+    },
+    {
+      "timestamp": "2025-12-01 12:37:38",
+      "whois_expiry": "2026-10-07",
+      "whois_ok": true,
+      "ssl_expiry": "2026-02-17",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 190.962,
+      "resolved_ip": "216.198.79.1",
+      "ip_address": "135.232.184.211"
     }
   ]
 }
