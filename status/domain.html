@@ -7,6 +7,20 @@
   <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
 <body class="bg-gray-900 text-gray-50 px-6 flex flex-col min-h-screen">
+
+<div 
+    x-show="loading"
+    class="fixed inset-0 flex items-center justify-center bg-gray-900/80 z-50"
+    x-transition
+>
+    <div class="flex flex-col items-center gap-3 text-gray-200">
+        <svg class="animate-spin h-10 w-10 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+        </svg>
+        <span class="text-sm opacity-80">Loading data…</span>
+    </div>
+</div>
   
 <div class="max-w-5xl w-full mx-auto space-y-10">
     <p class="mt-2 text-xs text-center"><a href="index.html" class="text-blue-600 hover:underline">← Back to main status page</a></p>
@@ -275,6 +289,7 @@
 <script>
 function domainHistory() {
     return {
+        loading: true,
         domain: '',
         history: [],
         tooltip: { show: false, text: "", x: 0, y: 0 },
@@ -392,6 +407,8 @@ function domainHistory() {
             } catch (err) {
                 console.error('Failed to load domain history', err);
                 this.statusSummary = "Failed to load domain history.";
+            } finally {
+                this.loading = false;
             }
         },
 
