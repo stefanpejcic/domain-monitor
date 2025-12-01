@@ -366,7 +366,8 @@ function domainHistory() {
 
                 const data = await res.json();
                 this.history = (data.history || []).map(e => ({
-                    time: e.timestamp,
+                    //time: e.timestamp,
+                    time: new Date(e.timestamp).toLocaleString(),
                     statusCode: e.http_status,
                     response: parseFloat(e.http_response_time_ms.toFixed(2)),
                     up: e.http_ok,
