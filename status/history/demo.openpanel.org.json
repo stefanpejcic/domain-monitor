@@ -1,0 +1,17 @@
+{
+  "domain": "demo.openpanel.org",
+  "history": [
+    {
+      "timestamp": "2025-12-01 15:57:07",
+      "whois_expiry": "2027-02-27",
+      "whois_ok": true,
+      "ssl_expiry": "2026-02-12",
+      "ssl_ok": true,
+      "http_status": 502,
+      "http_ok": false,
+      "http_response_time_ms": 570.8870000000001,
+      "resolved_ip": "193.181.23.225",
+      "ip_address": "20.55.223.176"
+    }
+  ]
+}
