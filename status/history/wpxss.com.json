@@ -10530,6 +10530,18 @@
       "http_response_time_ms": 663.85,
       "resolved_ip": "172.67.150.58",
       "ip_address": "52.165.251.245"
+    },
+    {
+      "timestamp": "2025-12-01 09:51:58",
+      "whois_expiry": "2026-11-30",
+      "whois_ok": true,
+      "ssl_expiry": "2026-01-03",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 705.957,
+      "resolved_ip": "172.67.150.58",
+      "ip_address": "172.208.153.224"
     }
   ]
 }
