@@ -27,7 +27,18 @@
   
     <!-- Header -->
     <div class="flex flex-col md:flex-row items-center gap-4">
-        <div class="flex flex-col justify-center w-full">
+    
+        <!-- loading -->
+        <div x-show="loading" class="flex flex-col justify-center w-full items-center animate-pulse">
+            <span class="mx-auto inline-flex items-center justify-center rounded-full p-4 bg-gray-700/40 h-[56px] w-[56px]"></span>
+    
+            <h1 class="mx-auto inline-flex items-center justify-center mt-3 text-lg font-semibold">
+                <span class="h-5 w-40 bg-gray-700/40 rounded"></span>
+            </h1>
+        </div>
+
+        <!-- real data -->
+        <div x-show="!loading" class="flex flex-col justify-center w-full">
             <span :class="isUp 
                            ? (lastResponse > 1000 
                                ? 'bg-orange-100 dark:bg-orange-400/20' 
