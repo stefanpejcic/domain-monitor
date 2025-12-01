@@ -403,12 +403,12 @@ function domainHistory() {
 
                     let statusText;                                                         // update browser tab
                     if (this.isUp) {
-                        statusText = this.lastResponse > 1000 ? 'slow!' : 'up!';
+                        statusText = this.lastResponse > 1000 ? '🟠 slow!' : '🟢 up!';
                     } else {
-                        statusText = 'down!';
+                        statusText = '🔴 down!';
                     }
                     document.title = `${this.domain} — ${statusText}`;
-                
+                  
                     const now = new Date();
 
                     // SSL
