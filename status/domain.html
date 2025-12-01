@@ -445,9 +445,10 @@ function domainHistory() {
                     this.uptimePercentage = (((totalChecks - outages) / totalChecks) * 100).toFixed(2);
 
                     this.$nextTick(() => {
-                        this.scrollGraphToEnd();
+                        const container = this.$refs.graphContainer;
+                        container.scrollLeft = container.scrollWidth; // scroll to the end
                     });
-                  
+                                  
                 }
             } catch (err) {
                 console.error('Failed to load domain history', err);
@@ -482,15 +483,6 @@ function domainHistory() {
             if (diffHour < 24) return `${diffHour} hour${diffHour > 1 ? 's' : ''} ago`;
             const diffDay = Math.floor(diffHour / 24);
             return `${diffDay} day${diffDay > 1 ? 's' : ''} ago`;
-        },
-
-
-        scrollGraphToEnd() {
-            const container = this.$refs.graphContainer;
-            const isAtEnd = container.scrollLeft + container.clientWidth >= container.scrollWidth - 1;
-            if (isAtEnd) {
-                container.scrollLeft = container.scrollWidth;
-            }
         },
               
         tableToCSV() {
