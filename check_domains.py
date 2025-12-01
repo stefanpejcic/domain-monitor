@@ -3,6 +3,7 @@ import requests
 import socket, ssl
 from datetime import datetime, timezone
 import os
+import re
 import json
 import xml.etree.ElementTree as ET
 import tldextract
@@ -14,6 +15,9 @@ whois_cache = {}
 def read_domains():
     with open("domains.txt", "r") as f:
         return [line.strip() for line in f if line.strip()]
+
+def sanitize_filename(name):
+    return re.sub(r'[^a-zA-Z0-9.-]', '_', name)
 
 def get_apex_domain(domain):
     ext = tldextract.extract(domain)
@@ -63,7 +67,7 @@ def get_http_status(url, session):
         return None, None
 
 def load_domain_history(domain):
-    history_file = f"status/history/{domain}.json"
+    history_file = f"status/history/{sanitize_filename(domain)}.json"
     if os.path.exists(history_file):
         with open(history_file, "r") as f:
             return json.load(f)
@@ -71,13 +75,13 @@ def load_domain_history(domain):
 
 def save_domain_history(domain, history):
     os.makedirs("status/history", exist_ok=True)
-    history_file = f"status/history/{domain}.json"
+    history_file = f"status/history/{sanitize_filename(domain)}.json"
     with open(history_file, "w") as f:
         json.dump(history, f, indent=2)
     print(f"Saved history for {domain} in {history_file}")
 
 def load_domain_xml(domain):
-    xml_file = f"status/history/{domain}.xml"
+    xml_file = f"status/history/{sanitize_filename(domain)}.xml"
     if os.path.exists(xml_file):
         tree = ET.parse(xml_file)
         return tree, tree.getroot()
