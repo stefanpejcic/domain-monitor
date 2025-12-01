@@ -14532,4 +14532,16 @@
     <resolved_ip>76.76.21.21</resolved_ip>
     <ip_address>20.109.38.182</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-12-01 19:00:34</timestamp>
+    <whois_expiry>2027-03-10</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>2026-01-25</ssl_expiry>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>118.729</http_response_time_ms>
+    <resolved_ip>76.76.21.21</resolved_ip>
+    <ip_address>20.168.6.177</ip_address>
+  </entry>
 </domain_history>
