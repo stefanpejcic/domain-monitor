@@ -4920,6 +4920,18 @@
       "http_response_time_ms": 54.43,
       "resolved_ip": "66.33.60.193",
       "ip_address": "48.211.210.112"
+    },
+    {
+      "timestamp": "2025-12-01 23:27:51",
+      "whois_expiry": "2027-03-10",
+      "whois_ok": true,
+      "ssl_expiry": "2026-01-25",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 53.949,
+      "resolved_ip": "76.76.21.98",
+      "ip_address": "4.236.173.21"
     }
   ]
 }
