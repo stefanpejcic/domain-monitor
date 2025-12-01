@@ -179,7 +179,7 @@
         </div>
 
         <!-- Table -->
-        <div x-show="showTable" x-transition class="mt-4 overflow-x-auto">
+        <div x-show="showTable" x-transition class="mt-4 overflow-x-auto max-h-96 overflow-y-auto border border-gray-700 rounded">
             <table class="min-w-full border border-gray-300 dark:border-gray-700 text-sm">
               <thead class="bg-gray-100 dark:bg-gray-800">
                   <tr>
@@ -239,7 +239,7 @@
         </div>
         
 
-        <div x-show="showJSON || showXML || showCSV" x-transition class="mt-4 relative">
+        <div x-show="showJSON || showXML || showCSV" x-transition class="mt-4 overflow-x-auto max-h-96 overflow-y-auto border border-gray-700 rounded">
             <button 
                 title="Copy to clipboard"
                 class="absolute top-2 right-2 px-2 py-1 text-xs bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600 flex items-center justify-center"
@@ -262,7 +262,7 @@
 
       
         <!-- API -->
-        <div x-show="showAPI" x-transition class="mt-4">
+        <div x-show="showAPI" x-transition class="mt-4 overflow-x-auto max-h-96 overflow-y-auto border border-gray-700 rounded">
           <p x-show="domain" class="bg-gray-100 dark:bg-gray-800 p-3 rounded text-sm overflow-x-auto">You can use our API to integrate the information and updates from this status page into your own website or application. Simply make a <code>GET</code> request to the following URL:
           </br>
           <code x-text="`${window.location.origin}/status/history/${domain}.json`"></code>
