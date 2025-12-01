@@ -7,8 +7,6 @@ Easily monitor your domains and get alerts when:
 
 relies entirely on **GitHub Actions** and **GitHub Issues**—no external services required.
 
-<img width="807" height="393" alt="image" src="https://github.com/user-attachments/assets/f9c53697-15c6-4c46-9ef3-00e663f62e7d" />  
-
 ---
 
 ## Demo
@@ -38,13 +36,20 @@ The workflow will:
 
 * Run automatically **almost every mininute** (or you can trigger it manually).
 * Check the expiration dates of your listed domains.
-* If a domain expires soon, IP changes, SSL expired or status code is >400, a GitHub issue will be opened:
 
-<img width="997" height="576" alt="image" src="https://github.com/user-attachments/assets/72823c59-20bb-4b74-8b1e-4d8b17085beb" />  
-
-* If the domain is later renewed, SSL renewed or status code changes, the issue will be **automatically closed**:
-
-<img width="997" height="576" alt="image" src="https://github.com/user-attachments/assets/14fe1bcd-068f-4ecb-b2ff-f1e568708ce1" />  
+<table border="0">
+ <tr>
+    <td><b style="font-size:30px">All monitors</b></td>
+    <td><b style="font-size:30px">Single page</b></td>
+ </tr>
+ <tr>
+    <td>If a domain expires soon, IP changes, SSL expired or status code is >400, a GitHub issue will be opened: <br>
+     <img width="400" alt="image" src="https://github.com/user-attachments/assets/f9c53697-15c6-4c46-9ef3-00e663f62e7d" /></td>
+    <td>If the domain is later renewed, SSL renewed or status code changes, the issue will be <b>automatically closed</b>:
+     <img width="400" alt="image" src="https://github.com/user-attachments/assets/14fe1bcd-068f-4ecb-b2ff-f1e568708ce1" /></td>
+ </tr>
+</table>
+  
 
 
 ## TODO
