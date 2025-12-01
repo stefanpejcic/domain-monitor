@@ -353,6 +353,7 @@ function domainMonitor() {
       this.ip_address = data.ip_address;
       this.lastUpdated = data.last_updated;
       this.domains = data.domains.map(d => ({ ...d, open: !(d.http_ok && d.whois_ok && d.ssl_ok) }));
+      document.title = `Domain Monitor — (${this.domains.length} domain${this.domains.length !== 1 ? 's' : ''})`;  // update browser tab
     }
   }
 }
