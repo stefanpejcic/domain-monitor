@@ -10776,4 +10776,16 @@
     <resolved_ip>76.76.21.21</resolved_ip>
     <ip_address>132.196.80.129</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-12-01 11:05:41</timestamp>
+    <whois_expiry>2027-03-10</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>2026-01-25</ssl_expiry>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>48.342000000000006</http_response_time_ms>
+    <resolved_ip>76.76.21.21</resolved_ip>
+    <ip_address>52.234.43.179</ip_address>
+  </entry>
 </domain_history>
