@@ -303,7 +303,10 @@
 
 <script>
 function sanitizeFilename(name) {
-    return name.replace(/[^a-zA-Z0-9.-]/g, '_');
+    name = name.replace(/^https?:\/\//, '');
+    name = name.replace(/:\d+$/, '');
+    name = name.replace(/[^a-zA-Z0-9.-]/g, '_');
+    return name;
 }
 
 function domainHistory() {
