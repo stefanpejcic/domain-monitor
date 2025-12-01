@@ -28,11 +28,13 @@ def get_apex_domain(domain):
     return domain
 
 
-def get_hostname(domain_or_url):
+def get_hostname_port(domain_or_url, default_port=443):
     if "://" not in domain_or_url:
         domain_or_url = "https://" + domain_or_url
     parsed = urlparse(domain_or_url)
-    return parsed.hostname
+    hostname = parsed.hostname
+    port = parsed.port if parsed.port else default_port
+    return hostname, port
 
 def get_domain_expiration(domain):
     # TODO: also detect ns change
@@ -46,17 +48,17 @@ def get_domain_expiration(domain):
         print(f"[WHOIS] Error checking {domain}: {e}")
         return None
 
-def get_ssl_expiration(domain):
+def get_ssl_expiration(domain, port=443):
     try:
         ctx = ssl.create_default_context()
-        with socket.create_connection((domain, 443), timeout=5) as sock:
+        with socket.create_connection((domain, port), timeout=5) as sock:
             with ctx.wrap_socket(sock, server_hostname=domain) as ssock:
                 cert = ssock.getpeercert()
                 exp_str = cert['notAfter']
                 exp_date = datetime.strptime(exp_str, "%b %d %H:%M:%S %Y %Z")
                 return exp_date
     except Exception as e:
-        print(f"[SSL] Error checking {domain}: {e}")
+        print(f"[SSL] Error checking {domain}:{port}: {e}")
         return None
 
 def get_http_status(url, session):
@@ -186,10 +188,12 @@ def main():
         print(f"[PREPARATION] checking domain: {domain}")
 
         # ---- get hostname and url ----
-        hostname = get_hostname(domain)
+        hostname, port = get_hostname_port(domain)
 
         if "://" not in domain:
-            url = "https://" + domain
+            url = f"https://{hostname}"
+            if port != 443:
+                url += f":{port}"
         else:
             url = domain
 
@@ -226,7 +230,7 @@ def main():
                     close_issue(issue, f"✅ Domain {domain} renewed (expires {exp_date:%Y-%m-%d}, {days_left} days left).")
 
         # ---- SSL Expiration ----
-        ssl_exp = get_ssl_expiration(hostname)
+        ssl_exp = get_ssl_expiration(hostname, port)
         ssl_days = None
         issue = find_issue(f"SSL for {domain}")
         if ssl_exp:
