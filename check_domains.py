@@ -249,11 +249,11 @@ def main():
         # ---- HTTP Status ----
         status, resp_time = get_http_status(url, session)
         resp_time_text = f"{resp_time:.0f} ms" if resp_time is not None else "N/A"
-        issue = find_issue(f"Slow response for {domain}")
+        issue = find_issue(f"Slow response for {domain}") # todo: cover statuses!
         if status is None or status >= 400:
             if not issue:
                 create_issue(
-                    f"❌ Status check failed for {domain}",
+                    f"❌ Status check failed for {domain} | URL: {url}",
                     f"Latest HTTP response: `{status}`, response time: {resp_time_text} ms"
                 )
         elif resp_time and resp_time > response_threshold:
