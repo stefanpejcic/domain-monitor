@@ -75,39 +75,39 @@ def get_http_status(url, session):
         return None, None
 
 def load_domain_history(domain):
-    history_file = f"status/history/{sanitize_filename(domain)}.json"
-    if os.path.exists(history_file):
-        print(f"[load_domain_history] For {domain} | reading JSON from file: {history_file}")
-        with open(history_file, "r") as f:
+    file = f"status/history/{sanitize_filename(domain)}.json"
+    if os.path.exists(file):
+        print(f"[load_domain_history] For {domain} | reading JSON from file: {file}")
+        with open(file, "r") as f:
             return json.load(f)
-    print(f"[load_domain_history] For {domain} | JSON file does not exist: {history_file}")
+    print(f"[load_domain_history] For {domain} | JSON file does not exist: {file}")
     return {"domain": domain, "history": []}
 
 def save_domain_history(domain, history):
     os.makedirs("status/history", exist_ok=True)
-    history_file = f"status/history/{sanitize_filename(domain)}.json"
-    with open(history_file, "w") as f:
+    file = f"status/history/{sanitize_filename(domain)}.json"
+    with open(file, "w") as f:
         json.dump(history, f, indent=2)
-    print(f"[save_domain_history] For {domain} | Saved JSON to {history_file}")
+    print(f"[save_domain_history] For {domain} | Saved JSON to {file}")
 
 def load_domain_xml(domain):
-    xml_file = f"status/history/{sanitize_filename(domain)}.xml"
-    if os.path.exists(xml_file):
-        tree = ET.parse(xml_file)
-        print(f"[load_domain_xml] For {domain} | reading from XML file: {history_file}")
+    file = f"status/history/{sanitize_filename(domain)}.xml"
+    if os.path.exists(file):
+        tree = ET.parse(file)
+        print(f"[load_domain_xml] For {domain} | reading from XML file: {file}")
         return tree, tree.getroot()
 
     root = ET.Element("domain_history")
     root.set("domain", domain)
     tree = ET.ElementTree(root)
-    print(f"[load_domain_xml] For {domain} | XML file does not exist: {history_file}")
+    print(f"[load_domain_xml] For {domain} | XML file does not exist: {file}")
     return tree, root
 
 def save_domain_xml(domain, tree):
-    xml_file = f"status/history/{sanitize_filename(domain)}.xml"
+    file = f"status/history/{sanitize_filename(domain)}.xml"
     ET.indent(tree, space="  ")
-    tree.write(xml_file, encoding="utf-8", xml_declaration=True)
-    print(f"[save_domain_xml] Saved XML history for {domain} → {xml_file}")
+    tree.write(file, encoding="utf-8", xml_declaration=True)
+    print(f"[save_domain_xml] Saved XML history for {domain} → {file}")
 
 def get_outgoing_ip():
     try:
