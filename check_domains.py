@@ -10,8 +10,6 @@ import tldextract
 from urllib.parse import urlparse
 
 
-whois_cache = {}
-
 def read_domains():
     with open("domains.txt", "r") as f:
         return [line.strip() for line in f if line.strip()]
@@ -210,6 +208,7 @@ def main():
         timestamp = now.strftime("%Y-%m-%d %H:%M:%S")
 
         # ---- WHOIS Expiration ----
+        whois_cache = {}       
         apex = get_apex_domain(domain)
         if apex in whois_cache:
             exp_date = whois_cache[apex]
