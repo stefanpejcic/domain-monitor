@@ -6,7 +6,8 @@ import os
 import json
 import xml.etree.ElementTree as ET
 import tldextract
-from urllib.parse import url
+from urllib.parse import urlparse
+
 
 whois_cache = {}
 
