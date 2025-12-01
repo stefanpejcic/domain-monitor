@@ -45,14 +45,6 @@
                         ? (lastResponse > 1000 ? 'slow!' : 'up!') 
                         : 'down!'"></span>
 
-                <template x-if="sslExpiringSoon">
-                    <span class="ml-2 px-2 py-1 text-xs font-medium text-white bg-red-500 rounded-full">SSL Expiring soon!</span>
-                </template>
-
-                <template x-if="domainExpiringSoon">
-                    <span class="ml-2 px-2 py-1 text-xs font-medium text-white bg-red-700 rounded-full">Domain Expiring soon!</span>
-                </template>
-
             </h1>
         </div>
     </div>
@@ -81,12 +73,14 @@
       </div>
 
       <div class="relative w-full rounded-lg border p-6 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900">
-        <dt class="text-sm font-medium text-gray-500 dark:text-gray-500">SSL status checked</dt>
+        <dt x-show="sslExpiringSoon" class="text-sm font-medium text-gray-500 dark:text-gray-500">SSL expires soon</dt>
+        <dt x-show="!sslExpiringSoon" class="text-sm font-medium text-gray-500 dark:text-gray-500">SSL expires on</dt>
         <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="lastssl"></dd>
       </div>
 
       <div class="relative w-full rounded-lg border p-6 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900">
-        <dt class="text-sm font-medium text-gray-500 dark:text-gray-500">WHOIS </dt>
+        <dt x-show="domainExpiringSoon" class="text-sm font-medium text-gray-500 dark:text-gray-500">Domain expires soon</dt>
+        <dt x-show="!domainExpiringSoon" class="text-sm font-medium text-gray-500 dark:text-gray-500">Domain expires on</dt>
         <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="lastwhois"></dd>
       </div>
 
