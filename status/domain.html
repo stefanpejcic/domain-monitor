@@ -83,34 +83,34 @@
     <dl class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
       <div class="relative w-full rounded-lg border p-6 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900">
         <dt class="text-sm font-medium text-gray-500 dark:text-gray-500">Monitor is up for</dt>
-        <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="uptimeDuration"></dd>
+        <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="uptimeDuration">&nbsp;</dd>
       </div>
 
       <div class="relative w-full rounded-lg border p-6 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900">
         <dt class="text-sm font-medium text-gray-500 dark:text-gray-500">Average response</dt>
-        <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50"><span x-text="avgResponse"></span> ms</dd>
+        <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50"><span x-text="avgResponse">&nbsp;</span> ms</dd>
       </div>
 
       <div class="relative w-full rounded-lg border p-6 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900">
         <dt class="text-sm font-medium text-gray-500 dark:text-gray-500">Last checked</dt>
-        <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="timeAgo(lastChecked)"></dd>
+        <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="timeAgo(lastChecked)">&nbsp;</dd>
       </div>
 
       <div class="relative w-full rounded-lg border p-6 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900">
         <dt class="text-sm font-medium text-gray-500 dark:text-gray-500" x-text="outages === 0 ? 'No incidents detected' : 'Incidents'">Incidents</dt>
-        <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="outages === 0 ? '' : outages"></dd>
+        <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="outages === 0 ? '' : outages">&nbsp;</dd>
       </div>
 
       <div class="relative w-full rounded-lg border p-6 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900">
         <dt x-show="sslExpiringSoon" class="text-sm font-medium text-gray-500 dark:text-gray-500">SSL expires soon</dt>
         <dt x-show="!sslExpiringSoon" class="text-sm font-medium text-gray-500 dark:text-gray-500">SSL expires on</dt>
-        <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="lastssl"></dd>
+        <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="lastssl">&nbsp;</dd>
       </div>
 
       <div class="relative w-full rounded-lg border p-6 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900">
         <dt x-show="domainExpiringSoon" class="text-sm font-medium text-gray-500 dark:text-gray-500">Domain expires soon</dt>
         <dt x-show="!domainExpiringSoon" class="text-sm font-medium text-gray-500 dark:text-gray-500">Domain expires on</dt>
-        <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="lastwhois"></dd>
+        <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="lastwhois">&nbsp;</dd>
       </div>
 
     </dl>
