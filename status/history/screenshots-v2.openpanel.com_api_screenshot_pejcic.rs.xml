@@ -1608,4 +1608,16 @@
     <resolved_ip>64.29.17.1</resolved_ip>
     <ip_address>172.184.173.245</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-12-01 19:18:55</timestamp>
+    <whois_expiry>2027-03-10</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>2026-01-27</ssl_expiry>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>166.237</http_response_time_ms>
+    <resolved_ip>216.198.79.65</resolved_ip>
+    <ip_address>132.196.19.22</ip_address>
+  </entry>
 </domain_history>
