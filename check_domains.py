@@ -17,7 +17,9 @@ def read_domains():
         return [line.strip() for line in f if line.strip()]
 
 def sanitize_filename(name):
-    return re.sub(r'[^a-zA-Z0-9.-]', '_', name)
+    name = re.sub(r'^https?://', '', name)
+    name = re.sub(r'[^a-zA-Z0-9.-]', '_', name)
+    return name
 
 def get_apex_domain(domain):
     ext = tldextract.extract(domain)
