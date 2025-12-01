@@ -11112,4 +11112,16 @@
     <resolved_ip>185.119.89.240</resolved_ip>
     <ip_address>52.159.243.161</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-12-01 11:21:38</timestamp>
+    <whois_expiry>2026-11-12</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>2026-02-02</ssl_expiry>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>379.81399999999996</http_response_time_ms>
+    <resolved_ip>185.119.89.240</resolved_ip>
+    <ip_address>4.246.135.164</ip_address>
+  </entry>
 </domain_history>
