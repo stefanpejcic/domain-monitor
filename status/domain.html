@@ -364,12 +364,12 @@ function domainHistory() {
                 }
 
                 this.domain = domainParam;
-                document.title = `${this.domain} — Checking..`;                       // browser tab title
+                document.title = `${this.domain} — Checking..`;                           // browser tab title
               
                 const res = await fetch(`history/${this.domain}.json`);
 
                 if (!res.ok) {
-                    throw new Error("Failed to load domain JSON, redirecting to homepage..");
+                    throw new Error("Failed to load domain JSON, redirecting..");         // domain does not exist or invalid file
                     window.location.href = "index.html";
                     return;
                 }
