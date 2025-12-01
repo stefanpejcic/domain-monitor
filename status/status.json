@@ -1,78 +1,78 @@
 {
   "domains": [
     {
-      "timestamp": "2025-12-01 07:42:28",
+      "timestamp": "2025-12-01 07:43:02",
       "whois_expiry": "2026-10-07",
       "whois_ok": true,
       "ssl_expiry": "2026-02-17",
       "ssl_ok": true,
       "http_status": 200,
       "http_ok": true,
-      "http_response_time_ms": 123.098,
+      "http_response_time_ms": 58.306,
       "resolved_ip": "216.198.79.1",
       "domain": "pejcic.rs"
     },
     {
-      "timestamp": "2025-12-01 07:42:29",
+      "timestamp": "2025-12-01 07:43:03",
       "whois_expiry": "2026-11-12",
       "whois_ok": true,
       "ssl_expiry": "2026-02-02",
       "ssl_ok": true,
       "http_status": 200,
       "http_ok": true,
-      "http_response_time_ms": 501.738,
+      "http_response_time_ms": 621.586,
       "resolved_ip": "185.119.89.240",
       "domain": "pcelarstvopejcic.com"
     },
     {
-      "timestamp": "2025-12-01 07:42:31",
+      "timestamp": "2025-12-01 07:43:05",
       "whois_expiry": "2027-03-10",
       "whois_ok": true,
       "ssl_expiry": "2026-01-25",
       "ssl_ok": true,
       "http_status": 200,
       "http_ok": true,
-      "http_response_time_ms": 222.083,
+      "http_response_time_ms": 85.29299999999999,
       "resolved_ip": "76.76.21.21",
       "domain": "openpanel.com"
     },
     {
-      "timestamp": "2025-12-01 07:42:32",
+      "timestamp": "2025-12-01 07:43:06",
       "whois_expiry": "2027-02-27",
       "whois_ok": true,
       "ssl_expiry": "2026-02-28",
       "ssl_ok": true,
       "http_status": 200,
       "http_ok": true,
-      "http_response_time_ms": 70.74600000000001,
-      "resolved_ip": "172.67.182.109",
+      "http_response_time_ms": 216.698,
+      "resolved_ip": "104.21.75.224",
       "domain": "openpanel.org"
     },
     {
-      "timestamp": "2025-12-01 07:42:33",
+      "timestamp": "2025-12-01 07:43:07",
       "whois_expiry": "2026-09-28",
       "whois_ok": true,
       "ssl_expiry": "2026-02-26",
       "ssl_ok": true,
       "http_status": 200,
       "http_ok": true,
-      "http_response_time_ms": 307.15,
+      "http_response_time_ms": 229.324,
       "resolved_ip": "216.198.79.1",
       "domain": "sentinelfirewall.org"
     },
     {
-      "timestamp": "2025-12-01 07:42:34",
+      "timestamp": "2025-12-01 07:43:08",
       "whois_expiry": "2026-11-30",
       "whois_ok": true,
       "ssl_expiry": "2026-01-03",
       "ssl_ok": true,
       "http_status": 200,
       "http_ok": true,
-      "http_response_time_ms": 645.183,
+      "http_response_time_ms": 749.5110000000001,
       "resolved_ip": "104.21.11.195",
       "domain": "wpxss.com"
     }
   ],
-  "last_updated": "2025-12-01 07:42:28",
-  "ip_address": "52.176.138.200"
+  "last_updated": "2025-12-01 07:43:02",
+  "ip_address": "52.159.245.147"
 }
