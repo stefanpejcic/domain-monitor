@@ -8730,6 +8730,18 @@
       "http_response_time_ms": 95.72999999999999,
       "resolved_ip": "76.76.21.21",
       "ip_address": "20.161.70.166"
+    },
+    {
+      "timestamp": "2025-12-01 04:08:58",
+      "whois_expiry": "2027-03-10",
+      "whois_ok": true,
+      "ssl_expiry": "2026-01-25",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 77.29700000000001,
+      "resolved_ip": "76.76.21.21",
+      "ip_address": "4.227.173.113"
     }
   ]
 }
