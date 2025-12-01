@@ -16044,4 +16044,16 @@
     <resolved_ip>76.76.21.21</resolved_ip>
     <ip_address>132.196.32.49</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-12-01 20:53:00</timestamp>
+    <whois_expiry>2027-03-10</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>2026-01-25</ssl_expiry>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>81.136</http_response_time_ms>
+    <resolved_ip>76.76.21.21</resolved_ip>
+    <ip_address>20.55.214.64</ip_address>
+  </entry>
 </domain_history>
