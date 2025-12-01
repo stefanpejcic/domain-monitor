@@ -302,6 +302,10 @@
 
 
 <script>
+function sanitizeFilename(name) {
+    return name.replace(/[^a-zA-Z0-9.-]/g, '_');
+},
+  
 function domainHistory() {
     return {
         loading: true,
@@ -354,10 +358,6 @@ function domainHistory() {
         
             return parts.join(', ');
         },
-
-        function sanitizeFilename(name) {
-            return name.replace(/[^a-zA-Z0-9.-]/g, '_');
-        },    
 
         async init() {
             try {
