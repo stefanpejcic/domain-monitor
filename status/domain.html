@@ -289,29 +289,35 @@ function domainHistory() {
           
         get uptimeDuration() {
             if (!this.firstChecked || !this.lastChecked) return "N/A";
-    
+        
             const start = new Date(this.firstChecked);
             const end = new Date(this.lastChecked);
-            let diffMs = end - start; // difference in milliseconds
-    
+            let diffMs = end - start;
+        
             const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
             diffMs -= days * 1000 * 60 * 60 * 24;
-    
+        
             const hours = Math.floor(diffMs / (1000 * 60 * 60));
             diffMs -= hours * 1000 * 60 * 60;
-    
+        
             const minutes = Math.floor(diffMs / (1000 * 60));
-            diffMs -= minutes * 1000 * 60;
-    
-            const seconds = Math.floor(diffMs / 1000);
-    
-            let str = "";
-            if (days > 0) str += `${days} day${days > 1 ? 's' : ''}, `;
-            if (hours > 0 || days > 0) str += `${hours} hour${hours > 1 ? 's' : ''}, `;
-            if (minutes > 0 || hours > 0 || days > 0) str += `${minutes} min, `;
-            str += `${seconds} sec`;
-    
-            return str;
+            // seconds ignored
+        
+            let parts = [];
+        
+            if (days > 0) {
+                parts.push(`${days} day${days > 1 ? 's' : ''}`);
+                if (minutes > 0) parts.push(`${minutes} min`);
+            } else if (hours > 0) {
+                parts.push(`${hours} hour${hours > 1 ? 's' : ''}`);
+                if (minutes > 0) parts.push(`${minutes} min`);
+            } else if (minutes > 0) {
+                parts.push(`${minutes} min`);
+            } else {
+                parts.push("0 min");
+            }
+        
+            return parts.join(', ');
         },
 
 
