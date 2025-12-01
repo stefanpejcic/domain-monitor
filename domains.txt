@@ -1,6 +1,12 @@
-pejcic.rs
-pcelarstvopejcic.com
 openpanel.com
-openpanel.org
 sentinelfirewall.org
-wpxss.com
+openpanel.org
+openpanel.com
+ip.openpanel.com
+my.openpanel.com
+dev.openpanel.com
+demo.openpanel.org
+community.openpanel.org
+preview.openpanel.org
+php-versions-api.openpanel.org
+screenshots-api.openpanel.com/screenshot/pcx3.com
