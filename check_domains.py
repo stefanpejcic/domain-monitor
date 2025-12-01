@@ -172,10 +172,14 @@ def main():
     for domain in domains:
         print(f"[PREPARATION] checking domain: {domain}")
 
+        # ---- get hostname and url ----
+        hostname = get_hostname(domain)
+
         if "://" not in domain:
             url = "https://" + domain
         else:
             url = domain
+
 
         now = datetime.utcnow()
         timestamp = now.strftime("%Y-%m-%d %H:%M:%S")
@@ -245,9 +249,6 @@ def main():
 
         # ---- Update per-domain JSON ----
         domain_history = load_domain_history(domain)
-
-        # ---- get domain if path ----
-        hostname = get_hostname(domain)
 
         # ---- Resolve domain IP ----
         # we need domain_history for this!
