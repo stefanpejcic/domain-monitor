@@ -168,4 +168,16 @@
     <resolved_ip>104.21.75.224</resolved_ip>
     <ip_address>52.161.59.146</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-12-01 16:40:15</timestamp>
+    <whois_expiry>2027-02-27</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>2026-01-01</ssl_expiry>
+    <ssl_ok>False</ssl_ok>
+    <http_status>415</http_status>
+    <http_ok>False</http_ok>
+    <http_response_time_ms>287.07300000000004</http_response_time_ms>
+    <resolved_ip>172.67.182.109</resolved_ip>
+    <ip_address>172.178.118.81</ip_address>
+  </entry>
 </domain_history>
