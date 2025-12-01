@@ -14538,6 +14538,18 @@
       "http_response_time_ms": 66.481,
       "resolved_ip": "76.76.21.21",
       "ip_address": "52.238.26.245"
+    },
+    {
+      "timestamp": "2025-12-01 18:22:49",
+      "whois_expiry": "2027-03-10",
+      "whois_ok": true,
+      "ssl_expiry": "2026-01-25",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 96.915,
+      "resolved_ip": "76.76.21.21",
+      "ip_address": "172.182.201.160"
     }
   ]
 }
