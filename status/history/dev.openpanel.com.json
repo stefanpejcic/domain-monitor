@@ -3840,6 +3840,18 @@
       "http_response_time_ms": 45.002,
       "resolved_ip": "66.33.60.193",
       "ip_address": "13.83.162.1"
+    },
+    {
+      "timestamp": "2025-12-01 21:50:08",
+      "whois_expiry": "2027-03-10",
+      "whois_ok": true,
+      "ssl_expiry": null,
+      "ssl_ok": false,
+      "http_status": null,
+      "http_ok": false,
+      "http_response_time_ms": null,
+      "resolved_ip": "76.76.21.61",
+      "ip_address": "172.172.158.3"
     }
   ]
 }

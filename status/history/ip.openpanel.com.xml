@@ -3840,4 +3840,16 @@
     <resolved_ip>76.76.21.241</resolved_ip>
     <ip_address>13.83.162.1</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-12-01 21:50:01</timestamp>
+    <whois_expiry>2027-03-10</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>None</ssl_expiry>
+    <ssl_ok>False</ssl_ok>
+    <http_status>None</http_status>
+    <http_ok>False</http_ok>
+    <http_response_time_ms>None</http_response_time_ms>
+    <resolved_ip>76.76.21.22</resolved_ip>
+    <ip_address>172.172.158.3</ip_address>
+  </entry>
 </domain_history>
