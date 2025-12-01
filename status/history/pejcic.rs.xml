@@ -12720,4 +12720,16 @@
     <resolved_ip>216.198.79.1</resolved_ip>
     <ip_address>52.165.251.163</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-12-01 14:02:32</timestamp>
+    <whois_expiry>2026-10-07</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>2026-02-17</ssl_expiry>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>54.411</http_response_time_ms>
+    <resolved_ip>216.198.79.1</resolved_ip>
+    <ip_address>4.236.158.52</ip_address>
+  </entry>
 </domain_history>
