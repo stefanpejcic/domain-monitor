@@ -100,54 +100,71 @@ def main():
     repo_name = os.getenv("GITHUB_REPOSITORY")
     days_threshold = int(os.getenv("DAYS_THRESHOLD", "30"))
     response_threshold = int(os.getenv("RESPONSE_THRESHOLD", "1000"))
-
-    g = Github(auth=Auth.Token(token))
-    repo = g.get_repo(repo_name)
-
-    # ---- Get all GitHub issues ----
-    open_issues = {issue.title: issue for issue in repo.get_issues(state="open")}
-
-    def find_issue(keyword):
-        for title, issue in open_issues.items():
-            if keyword in title:
-                return issue
-        return None
-
-    def create_issue(title, body):
-        issue = repo.create_issue(title=title, body=body)
-        open_issues[title] = issue  # update cache
-        print(f"Issue created: {title}")
-        return issue
-
-    def close_issue(issue, msg):
-        issue.create_comment(msg)
-        issue.edit(state="closed")
-        print(f"Issue closed: {issue.title}")
-        open_issues.pop(issue.title, None)  # remove from cache
-
-    def comment_on_issue(issue, msg):
-        issue.create_comment(msg)
-        print(f"Comment added to issue: {issue.title}")
     
+    print("==============================================")
+    print("                Domain Monitor                ")
+    print("==============================================")
 
+    # ---- Get github worker or server IP ----
+    outgoing_ipv4 = get_outgoing_ip()
+    print(f"Outgoing IP: {outgoing_ipv4}")
 
+    # ---- if GH actions, check issues ----
+    running_on_github = token and repo_name
+    if running_on_github:
+        print("Running in: GitHub Actions")
+        g = Github(auth=Auth.Token(token))
+        repo = g.get_repo(repo_name)
+
+        open_issues = {issue.title: issue for issue in repo.get_issues(state="open")}
     
-    # ---- Get github worker IP ----
-    gh_actions_ip = get_outgoing_ip()
-    print(f"Outgoing IP: {gh_actions_ip}")
+        def find_issue(keyword):
+            for title, issue in open_issues.items():
+                if keyword in title:
+                    return issue
+            return None
+    
+        def create_issue(title, body):
+            issue = repo.create_issue(title=title, body=body)
+            open_issues[title] = issue  # update cache
+            print(f"Issue created: {title}")
+            return issue
+    
+        def close_issue(issue, msg):
+            issue.create_comment(msg)
+            issue.edit(state="closed")
+            print(f"Issue closed: {issue.title}")
+            open_issues.pop(issue.title, None)  # remove from cache
+    
+        def comment_on_issue(issue, msg):
+            issue.create_comment(msg)
+            print(f"Comment added to issue: {issue.title}")
 
-    # ---- HTTP session ----
-    session = requests.Session()
-    session.headers.update({
-        "User-Agent": "Github Actions - stefanpejcic/domain-monitor/1.0",
-        "X-Github-Repository": repo.full_name
-    })
+        # ---- HTTP session ----
+        session = requests.Session()
+        session.headers.update({
+            "User-Agent": "Github Actions - stefanpejcic/domain-monitor/1.0",
+            "X-Github-Repository": repo.full_name
+        })
+    
+    else:
+        # ---- not hosted on github, skip issues - will later add alerts ----
+        def find_issue(keyword): return None
+        def create_issue(title, body): return None
+        def close_issue(issue, msg): return None
+        def comment_on_issue(issue, msg): return None
+
+        # ---- HTTP session ----
+        session = requests.Session()
+        session.headers.update({
+            "User-Agent": "Selfhosted - stefanpejcic/domain-monitor/1.0"
+        })
 
 
     combined_results = {
         "domains": [],
         "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "ip_address": gh_actions_ip
+        "ip_address": outgoing_ipv4
     }
 
     # ---- domains.txt ----
@@ -268,12 +285,12 @@ def main():
         }
         
         # ---- Save JSON for domain ----
-        domain_history["history"].append({**domain_entry, "ip_address": gh_actions_ip})
+        domain_history["history"].append({**domain_entry, "ip_address": outgoing_ipv4})
         save_domain_history(domain, domain_history)
         # ---- Save XML for domain ----
         tree, root = load_domain_xml(domain)
         entry_xml = ET.SubElement(root, "entry")
-        for key, value in {**domain_entry, "ip_address": gh_actions_ip}.items():
+        for key, value in {**domain_entry, "ip_address": outgoing_ipv4}.items():
             el = ET.SubElement(entry_xml, key)
             el.text = str(value)
         save_domain_xml(domain, tree)
