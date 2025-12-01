@@ -8,4 +8,4 @@ demo.openpanel.org:2087
 community.openpanel.org
 preview.openpanel.org
 php-versions-api.openpanel.org
-screenshots-api.openpanel.com/screenshot/pcx3.com
+screenshots-v2.openpanel.com/api/screenshot/pejcic.rs
