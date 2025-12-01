@@ -2,7 +2,6 @@ import whois
 import requests
 import socket, ssl
 from datetime import datetime, timezone
-from github import Github, Auth
 import os
 import json
 import xml.etree.ElementTree as ET
@@ -112,6 +111,7 @@ def main():
     # ---- if GH actions, check issues ----
     running_on_github = token and repo_name
     if running_on_github:
+        from github import Github, Auth
         print("Running in: GitHub Actions")
         g = Github(auth=Auth.Token(token))
         repo = g.get_repo(repo_name)
