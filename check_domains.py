@@ -94,7 +94,7 @@ def load_domain_xml(domain):
     return tree, root
 
 def save_domain_xml(domain, tree):
-    xml_file = f"status/history/{domain}.xml"
+    xml_file = f"status/history/{sanitize_filename(domain)}.xml"
     ET.indent(tree, space="  ")
     tree.write(xml_file, encoding="utf-8", xml_declaration=True)
     print(f"Saved XML history for {domain} → {xml_file}")
