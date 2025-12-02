@@ -5412,6 +5412,18 @@
       "http_response_time_ms": 65.50200000000001,
       "resolved_ip": "76.76.21.61",
       "ip_address": "20.49.61.51"
+    },
+    {
+      "timestamp": "2025-12-02 00:01:33",
+      "whois_expiry": "2027-03-10",
+      "whois_ok": true,
+      "ssl_expiry": "2026-01-25",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 46.917,
+      "resolved_ip": "76.76.21.22",
+      "ip_address": "104.209.11.209"
     }
   ]
 }
