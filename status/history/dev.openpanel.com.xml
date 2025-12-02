@@ -19404,4 +19404,16 @@
     <resolved_ip>66.33.60.194</resolved_ip>
     <ip_address>172.183.89.69</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-12-02 22:18:49</timestamp>
+    <whois_expiry>2027-03-10</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>2026-01-25</ssl_expiry>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>70.462</http_response_time_ms>
+    <resolved_ip>66.33.60.129</resolved_ip>
+    <ip_address>4.227.173.116</ip_address>
+  </entry>
 </domain_history>
