@@ -8448,6 +8448,18 @@
       "http_response_time_ms": 686.157,
       "resolved_ip": "172.67.182.109",
       "ip_address": "172.182.193.101"
+    },
+    {
+      "timestamp": "2025-12-02 06:56:52",
+      "whois_expiry": "2027-02-27",
+      "whois_ok": true,
+      "ssl_expiry": "2026-03-01",
+      "ssl_ok": true,
+      "http_status": 415,
+      "http_ok": false,
+      "http_response_time_ms": 372.28099999999995,
+      "resolved_ip": "172.67.182.109",
+      "ip_address": "57.151.137.33"
     }
   ]
 }
