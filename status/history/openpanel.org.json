@@ -32838,6 +32838,18 @@
       "http_response_time_ms": 90.958,
       "resolved_ip": "104.21.75.224",
       "ip_address": "135.232.201.65"
+    },
+    {
+      "timestamp": "2025-12-02 22:13:38",
+      "whois_expiry": "2027-02-27",
+      "whois_ok": true,
+      "ssl_expiry": "2026-02-28",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 47.231,
+      "resolved_ip": "104.21.75.224",
+      "ip_address": "64.236.134.49"
     }
   ]
 }
