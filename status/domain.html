@@ -358,7 +358,10 @@
                         //time: new Date(e.timestamp).toLocaleString(),                        // just pm/am
                         time: new Date(e.timestamp.replace(' ', 'T') + 'Z').toLocaleString(),  // changes timezone
                         statusCode: e.http_status,
-                        response: parseFloat(e.http_response_time_ms.toFixed(2)),
+                        response: e.http_response_time_ms != null
+                          ? Number(Number(e.http_response_time_ms).toFixed(2))
+                          : 0,
+
                         up: e.http_ok,
                         whois_ok: e.whois_ok,
                         whois_expiry: e.whois_expiry,
@@ -486,7 +489,8 @@
                 this.tooltip.show = true;
                 if(entry.time){ 
                     const dateTime = new Date(entry.time).toLocaleString();
-                    this.tooltip.text = `${dateTime}\nStatus: ${entry.statusCode} | Response: ${entry.response.toFixed(2)} ms`;
+                    const resp = entry.response != null ? entry.response.toFixed(2) : "N/A";
+                    this.tooltip.text = `${dateTime}\nStatus: ${entry.statusCode} | Response: ${resp} ms`;
                 } else {
                     this.tooltip.text = `${entry.text}${entry.extra ? '\n' + entry.extra : ''}`;
                 }
