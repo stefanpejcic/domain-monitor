@@ -19872,4 +19872,16 @@
     <resolved_ip>185.193.66.252</resolved_ip>
     <ip_address>172.215.217.97</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-12-02 22:52:39</timestamp>
+    <whois_expiry>2027-03-10</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>2026-01-05</ssl_expiry>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>468.665</http_response_time_ms>
+    <resolved_ip>185.193.66.252</resolved_ip>
+    <ip_address>135.232.201.65</ip_address>
+  </entry>
 </domain_history>
