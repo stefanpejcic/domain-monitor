@@ -16488,6 +16488,18 @@
       "http_response_time_ms": 574.3249999999999,
       "resolved_ip": "185.193.66.252",
       "ip_address": "20.168.106.241"
+    },
+    {
+      "timestamp": "2025-12-02 17:25:22",
+      "whois_expiry": "2027-03-10",
+      "whois_ok": true,
+      "ssl_expiry": "2026-01-05",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 463.086,
+      "resolved_ip": "185.193.66.252",
+      "ip_address": "172.178.118.80"
     }
   ]
 }
