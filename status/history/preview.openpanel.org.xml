@@ -18960,4 +18960,16 @@
     <resolved_ip>104.21.75.224</resolved_ip>
     <ip_address>172.184.213.240</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-12-02 21:46:23</timestamp>
+    <whois_expiry>2027-02-27</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>2026-03-01</ssl_expiry>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>158.012</http_response_time_ms>
+    <resolved_ip>172.67.182.109</resolved_ip>
+    <ip_address>40.79.245.19</ip_address>
+  </entry>
 </domain_history>
