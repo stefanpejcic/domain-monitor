@@ -11388,6 +11388,18 @@
       "http_response_time_ms": 52.271,
       "resolved_ip": "76.76.21.123",
       "ip_address": "52.225.29.2"
+    },
+    {
+      "timestamp": "2025-12-02 10:06:57",
+      "whois_expiry": "2027-03-10",
+      "whois_ok": true,
+      "ssl_expiry": "2026-01-25",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 56.461,
+      "resolved_ip": "76.76.21.123",
+      "ip_address": "135.232.200.210"
     }
   ]
 }
