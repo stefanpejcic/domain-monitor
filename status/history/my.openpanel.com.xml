@@ -11784,4 +11784,16 @@
     <resolved_ip>185.193.66.252</resolved_ip>
     <ip_address>172.183.133.249</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-12-02 10:23:05</timestamp>
+    <whois_expiry>2027-03-10</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>2026-01-05</ssl_expiry>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>589.305</http_response_time_ms>
+    <resolved_ip>185.193.66.252</resolved_ip>
+    <ip_address>52.165.59.2</ip_address>
+  </entry>
 </domain_history>
