@@ -8,559 +8,527 @@
 </head>
 <body class="bg-gray-900 text-gray-50 px-6 flex flex-col min-h-screen">
 
-<div 
-    x-show="loading"
-    class="fixed inset-0 flex items-center justify-center bg-gray-900/80 z-50"
-    x-transition
->
-    <div class="flex flex-col items-center gap-3 text-gray-200">
-        <svg class="animate-spin h-10 w-10 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-        </svg>
-        <span class="text-sm opacity-80">Loading data…</span>
-    </div>
-</div>
-  
-<div class="max-w-5xl w-full mx-auto space-y-10">
-  
-    <p class="flex mt-2 text-xs">
-      <a href="index.html" class="hover:underline">← Back to main status page</a>
-      <span></span>
-    </p>
-  
-    <!-- Header -->
-    <div class="flex flex-col md:flex-row items-center gap-4">
-    
-        <!-- loading -->
-        <div x-show="loading" class="flex flex-col justify-center w-full items-center animate-pulse">
-            <span class="mx-auto inline-flex items-center justify-center rounded-full p-4 bg-gray-700/40 h-[56px] w-[56px]"></span>
-    
-            <h1 class="mx-auto inline-flex items-center justify-center mt-3 text-lg font-semibold">
-                <span class="h-5 w-40 bg-gray-700/40 rounded"></span>
-            </h1>
-        </div>
-
-        <!-- real data -->
-        <div x-show="!loading" class="flex flex-col justify-center w-full">
-            <span :class="isUp 
-                           ? (lastResponse > 1000 
-                               ? 'bg-orange-100 dark:bg-orange-400/20' 
-                               : 'bg-emerald-100 dark:bg-emerald-400/20') 
-                           : 'bg-red-100 dark:bg-red-400/20'" 
-                  class="mx-auto inline-flex items-center justify-center rounded-full p-4">
-                
-                <!-- Up (fast) -->
-                <svg x-show="isUp && lastResponse <= 1000" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="text-emerald-500">
-                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM17.4571 9.45711L11 15.9142L6.79289 11.7071L8.20711 10.2929L11 13.0858L16.0429 8.04289L17.4571 9.45711Z"></path>
-                </svg>
-            
-                <!-- Up (slow) -->
-                <svg x-show="isUp && lastResponse > 1000" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="text-orange-500">
-                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM17.4571 9.45711L11 15.9142L6.79289 11.7071L8.20711 10.2929L11 13.0858L16.0429 8.04289L17.4571 9.45711Z"></path>
-                </svg>
-            
-                <!-- Down -->
-                <svg x-show="!isUp" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="text-red-500">
-                    <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
-                </svg>
-            </span>
-            <h1 class="mx-auto inline-flex items-center justify-center mt-3 text-lg font-semibold">
-                <span x-text="domain"></span>&nbsp; is &nbsp;
-                <span :class="isUp 
-                         ? (lastResponse > 1000 ? 'text-yellow-500' : 'text-emerald-600') 
-                         : 'text-red-600'" 
-                x-text="isUp 
-                        ? (lastResponse > 1000 ? 'slow!' : 'up!') 
-                        : 'down!'"></span>
-
-            </h1>
+    <!-- Loader while we fetch json -->
+    <div x-show="loading" x-transition class="fixed inset-0 flex items-center justify-center bg-gray-900/80 z-50">
+        <div class="flex flex-col items-center gap-3 text-gray-200">
+            <svg class="animate-spin h-10 w-10 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
+            <span class="text-sm opacity-80">Loading data…</span>
         </div>
     </div>
 
 
-    <!-- Summary -->
-    <dl class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      <div class="relative w-full rounded-lg border p-6 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900">
-        <dt class="text-sm font-medium text-gray-500 dark:text-gray-500">Monitor is up for</dt>
-        <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="uptimeDuration">&nbsp;</dd>
-      </div>
+    <!-- Main section -->
+    <div class="max-w-5xl w-full mx-auto space-y-10">
 
-      <div class="relative w-full rounded-lg border p-6 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900">
-        <dt class="text-sm font-medium text-gray-500 dark:text-gray-500">Average response</dt>
-        <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50"><span x-text="avgResponse">&nbsp;</span> ms</dd>
-      </div>
-
-      <div class="relative w-full rounded-lg border p-6 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900">
-        <dt class="text-sm font-medium text-gray-500 dark:text-gray-500">Last checked</dt>
-        <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="timeAgo(lastChecked)">&nbsp;</dd>
-      </div>
-
-      <div class="relative w-full rounded-lg border p-6 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900">
-        <dt class="text-sm font-medium text-gray-500 dark:text-gray-500" x-text="outages === 0 ? 'No incidents detected' : 'Incidents'">Incidents</dt>
-        <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="outages === 0 ? '' : outages">&nbsp;</dd>
-      </div>
-
-      <div class="relative w-full rounded-lg border p-6 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900">
-        <dt x-show="sslExpiringSoon" class="text-sm font-medium text-gray-500 dark:text-gray-500">SSL expires soon</dt>
-        <dt x-show="!sslExpiringSoon" class="text-sm font-medium text-gray-500 dark:text-gray-500">SSL expires on</dt>
-        <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="lastssl">&nbsp;</dd>
-      </div>
-
-      <div class="relative w-full rounded-lg border p-6 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900">
-        <dt x-show="domainExpiringSoon" class="text-sm font-medium text-gray-500 dark:text-gray-500">Domain expires soon</dt>
-        <dt x-show="!domainExpiringSoon" class="text-sm font-medium text-gray-500 dark:text-gray-500">Domain expires on</dt>
-        <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="lastwhois">&nbsp;</dd>
-      </div>
-
-    </dl>
-
-  
-  
-    <!-- Graph -->
-    <div class="relative w-full rounded-lg border p-6 shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900">
-        <p class="flex justify-between text-sm font-medium mb-3">
-            <span class="flex items-center gap-2 font-medium">
-                <img :src="`https://www.google.com/s2/favicons?domain=${domain}`" alt="" class="h-4 w-4 rounded-full">
-                <span x-text="domain"></span>
-            </span>
-            <span x-text="uptimePercentage + '% uptime'"></span>
+        <p class="flex mt-2 text-xs">
+          <a href="index.html" class="hover:underline">← Back to main status page</a>
+          <span></span>
         </p>
-
-        <div class="flex gap-0.5 overflow-x-auto relative" x-ref="graphContainer">
-            <template x-for="(entry, index) in history" :key="index">
-                <div class="w-2 rounded-[1px] cursor-pointer flex-shrink-0"
-                     :class="getColor(entry)"
-                     :style="`height: ${Math.min(Math.max(entry.response / 25, 4), 32)}px`"
-                     @mouseenter="showTooltip($event, entry)"
-                     @mouseleave="hideTooltip()"></div>
-            </template>
-
-            <!-- Tooltip -->
-            <div x-show="tooltip.show" x-text="tooltip.text"
-                 :style="`position: fixed; top: ${tooltip.y}px; left: ${tooltip.x}px; white-space: pre-line;`"
-                 class="bg-gray-800 text-white text-xs rounded px-2 py-1 pointer-events-none z-50 transition-opacity"
-                 x-transition.opacity></div>
-        </div>
-
-        <div class="mt-3 flex items-center justify-between text-sm text-gray-500 dark:text-gray-500">
-          <span>First checked: <span x-text="timeAgo(firstChecked)"></span></span>
-          <span>Last checked: <span x-text="timeAgo(lastChecked)"></span></span>
-        </div>
-
-        <!-- Legend and View Switch -->
-        <div class="flex justify-between mt-3">
-            <div class="flex flex-wrap items-center gap-2">
-                <span class="inline-flex items-center gap-x-2 rounded-md bg-gray-100 px-2 py-0.5 text-sm text-gray-600 dark:bg-gray-800 dark:text-gray-300">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>Operational</span>
-                <span class="inline-flex items-center gap-x-2 rounded-md bg-gray-100 px-2 py-0.5 text-sm text-gray-600 dark:bg-gray-800 dark:text-gray-300">
-                    <span class="w-2 h-2 rounded-full bg-red-500"></span>Downtime</span>
-                <span class="inline-flex items-center gap-x-2 rounded-md bg-gray-100 px-2 py-0.5 text-sm text-gray-600 dark:bg-gray-800 dark:text-gray-300">
-                    <span class="w-2 h-2 rounded-full bg-gray-500"></span>Maintenance</span>
+    
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row items-center gap-4">
+        
+            <!-- loading -->
+            <div x-show="loading" class="flex flex-col justify-center w-full items-center animate-pulse">
+                <span class="mx-auto inline-flex items-center justify-center rounded-full p-4 bg-gray-700/40 h-[56px] w-[56px]"></span>
+        
+                <h1 class="mx-auto inline-flex items-center justify-center mt-3 text-lg font-semibold">
+                    <span class="h-5 w-40 bg-gray-700/40 rounded"></span>
+                </h1>
             </div>
 
-<div class="flex gap-2">
-  <div id="change-view-buttons" class="flex items-center gap-1 rounded-lg bg-gray-10 text-xs ring-1 ring-gray-500">
-      <button 
-          type="button"
-          @click="showTable = true; showJSON = false; showCSV = false; showXML = false; showAPI = false"
-          :class="showTable ? 'bg-white text-slate-900 shadow-sm ring-1 ring-slate-200' : 'text-slate-600 ring-1 ring-transparent'"
-          class="rounded-md px-2 py-1.5 sm:px-3 sm:py-1.5 font-medium flex items-center space-x-2">
-          <span class="hidden sm:block">HTML</span>
-      </button>
-  
-      <button 
-          type="button"
-          @click="showTable = false; showJSON = true; showCSV = false; showXML = false; showAPI = false"
-          :class="showJSON ? 'bg-white text-slate-900 shadow-sm ring-1 ring-slate-200' : 'text-slate-600 ring-1 ring-transparent'"
-          class="rounded-md px-2 py-1.5 sm:px-3 sm:py-1.5 font-medium flex items-center space-x-2">
-          <span class="hidden sm:block">JSON</span>
-      </button>
-  
-      <button 
-          type="button"
-          @click="showTable = false; showJSON = false; showCSV = true; showXML = false; showAPI = false"
-          :class="showCSV ? 'bg-white text-slate-900 shadow-sm ring-1 ring-slate-200' : 'text-slate-600 ring-1 ring-transparent'"
-          class="rounded-md px-2 py-1.5 sm:px-3 sm:py-1.5 font-medium flex items-center space-x-2">
-          <span class="hidden sm:block">CSV</span>
-      </button>
-  
-      <button 
-          type="button"
-          @click="showTable = false; showJSON = false; showCSV = false; showXML = true; showAPI = false; loadXML()"
-          :class="showXML ? 'bg-white text-slate-900 shadow-sm ring-1 ring-slate-200' : 'text-slate-600 ring-1 ring-transparent'"
-          class="rounded-md px-2 py-1.5 sm:px-3 sm:py-1.5 font-medium flex items-center space-x-2">
-          <span class="hidden sm:block">XML</span>
-      </button>
-  
-      <button 
-          type="button"
-          @click="showTable = false; showJSON = false; showCSV = false; showXML = false; showAPI = true"
-          :class="showAPI ? 'bg-white text-slate-900 shadow-sm ring-1 ring-slate-200' : 'text-slate-600 ring-1 ring-transparent'"
-          class="rounded-md px-2 py-1.5 sm:px-3 sm:py-1.5 font-medium flex items-center space-x-2">
-          <span class="hidden sm:block">API</span>
-      </button>
-  </div>
+            <!-- real data -->
+            <div x-show="!loading" class="flex flex-col justify-center w-full">
+                <span :class="isUp 
+                            ? (lastResponse > 1000 
+                                ? 'bg-orange-100 dark:bg-orange-400/20' 
+                                : 'bg-emerald-100 dark:bg-emerald-400/20') 
+                            : 'bg-red-100 dark:bg-red-400/20'" 
+                    class="mx-auto inline-flex items-center justify-center rounded-full p-4">
+                    
+                    <!-- Up (fast) -->
+                    <svg x-show="isUp && lastResponse <= 1000" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="text-emerald-500"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM17.4571 9.45711L11 15.9142L6.79289 11.7071L8.20711 10.2929L11 13.0858L16.0429 8.04289L17.4571 9.45711Z"></path></svg>
+                
+                    <!-- Up (slow) -->
+                    <svg x-show="isUp && lastResponse > 1000" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="text-orange-500"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM17.4571 9.45711L11 15.9142L6.79289 11.7071L8.20711 10.2929L11 13.0858L16.0429 8.04289L17.4571 9.45711Z"></path></svg>
+                
+                    <!-- Down -->
+                    <svg x-show="!isUp" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="text-red-500"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
+                </span>
+                <h1 class="mx-auto inline-flex items-center justify-center mt-3 text-lg font-semibold">
+                    <span x-text="domain"></span>&nbsp; is &nbsp;
+                    <span :class="isUp 
+                            ? (lastResponse > 1000 ? 'text-yellow-500' : 'text-emerald-600') 
+                            : 'text-red-600'" 
+                    x-text="isUp 
+                            ? (lastResponse > 1000 ? 'slow!' : 'up!') 
+                            : 'down!'"></span>
 
-</div>
-
-
+                </h1>
+            </div>
         </div>
 
-        <!-- Table -->
-        <div x-show="showTable" x-transition class="mt-4 overflow-x-auto max-h-96 overflow-y-auto border border-gray-700 rounded">
-            <table class="min-w-full border border-gray-300 dark:border-gray-700 text-sm">
-              <thead class="bg-gray-100 dark:bg-gray-800">
-                  <tr>
-                      <th class="px-3 py-1 border-b border-gray-300 dark:border-gray-700 text-left">Checked</th>
-                      <th class="px-3 py-1 border-b border-gray-300 dark:border-gray-700 text-left">Status</th>
-                      <th class="px-3 py-1 border-b border-gray-300 dark:border-gray-700 text-left">Response (ms)</th>
-                      <!--th class="px-3 py-1 border-b border-gray-300 dark:border-gray-700 text-left">WHOIS</th>
-                      <th class="px-3 py-1 border-b border-gray-300 dark:border-gray-700 text-left">SSL</th-->
-                      <th class="px-3 py-1 border-b border-gray-300 dark:border-gray-700 text-left">Up?</th>
-                  </tr>
-                </thead>
-                <tbody>
 
-                  <template x-if="history.length === 0">
-                    <template x-for="i in 20" :key="i">
-                      <tr class="border-b border-gray-200 dark:border-gray-700 animate-pulse">
-                        <td class="px-3 py-1">
-                          <div class="h-4 bg-gray-300 dark:bg-gray-700 rounded w-24"></div>
-                        </td>
-                        <td class="px-3 py-1">
-                          <div class="h-4 bg-gray-300 dark:bg-gray-700 rounded w-16"></div>
-                        </td>
-                        <td class="px-3 py-1">
-                          <div class="h-4 bg-gray-300 dark:bg-gray-700 rounded w-12"></div>
-                        </td>
-                        <td class="px-3 py-1">
-                          <div class="h-4 bg-gray-300 dark:bg-gray-700 rounded w-8"></div>
-                        </td>
-                      </tr>
+        <!-- Summary -->
+        <dl class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="relative w-full rounded-lg border p-6 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900">
+            <dt class="text-sm font-medium text-gray-500 dark:text-gray-500">Monitor is up for</dt>
+            <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="uptimeDuration">&nbsp;</dd>
+        </div>
+
+        <div class="relative w-full rounded-lg border p-6 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900">
+            <dt class="text-sm font-medium text-gray-500 dark:text-gray-500">Average response</dt>
+            <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50"><span x-text="avgResponse">&nbsp;</span> ms</dd>
+        </div>
+
+        <div class="relative w-full rounded-lg border p-6 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900">
+            <dt class="text-sm font-medium text-gray-500 dark:text-gray-500">Last checked</dt>
+            <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="timeAgo(lastChecked)">&nbsp;</dd>
+        </div>
+
+        <div class="relative w-full rounded-lg border p-6 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900">
+            <dt class="text-sm font-medium text-gray-500 dark:text-gray-500" x-text="outages === 0 ? 'No incidents detected' : 'Incidents'">Incidents</dt>
+            <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="outages === 0 ? '' : outages">&nbsp;</dd>
+        </div>
+
+        <div class="relative w-full rounded-lg border p-6 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900">
+            <dt x-show="sslExpiringSoon" class="text-sm font-medium text-gray-500 dark:text-gray-500">SSL expires soon</dt>
+            <dt x-show="!sslExpiringSoon" class="text-sm font-medium text-gray-500 dark:text-gray-500">SSL expires on</dt>
+            <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="lastssl">&nbsp;</dd>
+        </div>
+
+        <div class="relative w-full rounded-lg border p-6 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900">
+            <dt x-show="domainExpiringSoon" class="text-sm font-medium text-gray-500 dark:text-gray-500">Domain expires soon</dt>
+            <dt x-show="!domainExpiringSoon" class="text-sm font-medium text-gray-500 dark:text-gray-500">Domain expires on</dt>
+            <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="lastwhois">&nbsp;</dd>
+        </div>
+
+        </dl>
+
+    
+        <!-- Graph -->
+        <div class="relative w-full rounded-lg border p-6 shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900">
+            <p class="flex justify-between text-sm font-medium mb-3">
+                <span class="flex items-center gap-2 font-medium">
+                    <img :src="`https://www.google.com/s2/favicons?domain=${domain}`" alt="" class="h-4 w-4 rounded-full">
+                    <span x-text="domain"></span>
+                </span>
+                <span x-text="uptimePercentage + '% uptime'"></span>
+            </p>
+
+            <div class="flex gap-0.5 overflow-x-auto relative" x-ref="graphContainer">
+                <template x-for="(entry, index) in history" :key="index">
+                    <div class="w-2 rounded-[1px] cursor-pointer flex-shrink-0"
+                        :class="getColor(entry)"
+                        :style="`height: ${Math.min(Math.max(entry.response / 25, 4), 32)}px`"
+                        @mouseenter="showTooltip($event, entry)"
+                        @mouseleave="hideTooltip()"></div>
+                </template>
+
+                <!-- Tooltips -->
+                <div x-show="tooltip.show" x-text="tooltip.text"
+                    :style="`position: fixed; top: ${tooltip.y}px; left: ${tooltip.x}px; white-space: pre-line;`"
+                    class="bg-gray-800 text-white text-xs rounded px-2 py-1 pointer-events-none z-50 transition-opacity"
+                    x-transition.opacity></div>
+            </div>
+
+            <div class="mt-3 flex items-center justify-between text-sm text-gray-500 dark:text-gray-500">
+                <span>First checked: <span x-text="timeAgo(firstChecked)"></span></span>
+                <span>Last checked: <span x-text="timeAgo(lastChecked)"></span></span>
+            </div>
+
+            <!-- Legends and switch view -->
+            <div class="flex justify-between mt-3">
+
+                <div class="flex flex-wrap items-center gap-2">
+                    <span class="inline-flex items-center gap-x-2 rounded-md bg-gray-100 px-2 py-0.5 text-sm text-gray-600 dark:bg-gray-800 dark:text-gray-300">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>Operational</span>
+                    <span class="inline-flex items-center gap-x-2 rounded-md bg-gray-100 px-2 py-0.5 text-sm text-gray-600 dark:bg-gray-800 dark:text-gray-300">
+                        <span class="w-2 h-2 rounded-full bg-red-500"></span>Downtime</span>
+                    <span class="inline-flex items-center gap-x-2 rounded-md bg-gray-100 px-2 py-0.5 text-sm text-gray-600 dark:bg-gray-800 dark:text-gray-300">
+                        <span class="w-2 h-2 rounded-full bg-gray-500"></span>Maintenance</span>
+                </div>
+
+                <!-- switch buttons -->    
+                <div class="flex gap-2">
+                    <div id="change-view-buttons" class="flex items-center gap-1 rounded-lg bg-gray-10 text-xs ring-1 ring-gray-500">
+                        <button type="button" @click="showTable = true; showJSON = false; showCSV = false; showXML = false; showAPI = false" :class="showTable ? 'bg-white text-slate-900 shadow-sm ring-1 ring-slate-200' : 'text-slate-600 ring-1 ring-transparent'" class="rounded-md px-2 py-1.5 sm:px-3 sm:py-1.5 font-medium flex items-center space-x-2">
+                            <span class="hidden sm:block">HTML</span>
+                        </button>
+                    
+                        <button type="button" @click="showTable = false; showJSON = true; showCSV = false; showXML = false; showAPI = false" :class="showJSON ? 'bg-white text-slate-900 shadow-sm ring-1 ring-slate-200' : 'text-slate-600 ring-1 ring-transparent'" class="rounded-md px-2 py-1.5 sm:px-3 sm:py-1.5 font-medium flex items-center space-x-2">
+                            <span class="hidden sm:block">JSON</span>
+                        </button>
+                    
+                        <button type="button" @click="showTable = false; showJSON = false; showCSV = true; showXML = false; showAPI = false" :class="showCSV ? 'bg-white text-slate-900 shadow-sm ring-1 ring-slate-200' : 'text-slate-600 ring-1 ring-transparent'" class="rounded-md px-2 py-1.5 sm:px-3 sm:py-1.5 font-medium flex items-center space-x-2">
+                            <span class="hidden sm:block">CSV</span>
+                        </button>
+                    
+                        <button type="button" @click="showTable = false; showJSON = false; showCSV = false; showXML = true; showAPI = false; loadXML()" :class="showXML ? 'bg-white text-slate-900 shadow-sm ring-1 ring-slate-200' : 'text-slate-600 ring-1 ring-transparent'" class="rounded-md px-2 py-1.5 sm:px-3 sm:py-1.5 font-medium flex items-center space-x-2">
+                            <span class="hidden sm:block">XML</span>
+                        </button>
+                    
+                        <button type="button" @click="showTable = false; showJSON = false; showCSV = false; showXML = false; showAPI = true" :class="showAPI ? 'bg-white text-slate-900 shadow-sm ring-1 ring-slate-200' : 'text-slate-600 ring-1 ring-transparent'" class="rounded-md px-2 py-1.5 sm:px-3 sm:py-1.5 font-medium flex items-center space-x-2">
+                            <span class="hidden sm:block">API</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Table -->
+            <div x-show="showTable" x-transition class="mt-4 overflow-x-auto max-h-96 overflow-y-auto border border-gray-700 rounded">
+                <table class="min-w-full border border-gray-300 dark:border-gray-700 text-sm">
+                <thead class="bg-gray-100 dark:bg-gray-800">
+                    <tr>
+                        <th class="px-3 py-1 border-b border-gray-300 dark:border-gray-700 text-left">Checked</th>
+                        <th class="px-3 py-1 border-b border-gray-300 dark:border-gray-700 text-left">Status</th>
+                        <th class="px-3 py-1 border-b border-gray-300 dark:border-gray-700 text-left">Response (ms)</th>
+                        <!--th class="px-3 py-1 border-b border-gray-300 dark:border-gray-700 text-left">WHOIS</th>
+                        <th class="px-3 py-1 border-b border-gray-300 dark:border-gray-700 text-left">SSL</th-->
+                        <th class="px-3 py-1 border-b border-gray-300 dark:border-gray-700 text-left">Up?</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <template x-if="history.length === 0">
+                        <template x-for="i in 20" :key="i">
+                        <tr class="border-b border-gray-200 dark:border-gray-700 animate-pulse">
+                            <td class="px-3 py-1">
+                            <div class="h-4 bg-gray-300 dark:bg-gray-700 rounded w-24"></div>
+                            </td>
+                            <td class="px-3 py-1">
+                            <div class="h-4 bg-gray-300 dark:bg-gray-700 rounded w-16"></div>
+                            </td>
+                            <td class="px-3 py-1">
+                            <div class="h-4 bg-gray-300 dark:bg-gray-700 rounded w-12"></div>
+                            </td>
+                            <td class="px-3 py-1">
+                            <div class="h-4 bg-gray-300 dark:bg-gray-700 rounded w-8"></div>
+                            </td>
+                        </tr>
+                        </template>
                     </template>
-                  </template>
-                  
-                  <template x-for="(entry, index) in [...history].slice().reverse()" :key="index">
-                      <tr class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800">
-                          <td class="px-3 py-1" x-text="entry.time"></td>
-                          <td class="px-3 py-1">
-                              <span :class="`inline-flex items-center gap-x-1 whitespace-nowrap px-2 py-1 text-xs font-medium ring-1 ring-inset rounded-full ${statusColor(entry.statusCode).bg} ${statusColor(entry.statusCode).text} ${statusColor(entry.statusCode).ring}`">
-                                  <span :class="`w-1.5 h-1.5 shrink-0 rounded-full ${statusColor(entry.statusCode).dot}`" aria-hidden="true"></span>
-                                  <span x-text="entry.statusCode"></span>
-                              </span>
-                          </td>
-                          <td class="px-3 py-1" x-text="entry.response"></td>
-                          <!--td class="px-3 py-1 relative" @mouseenter="showTooltip($event, {text: entry.whois_ok ? 'OK' : 'Expiring Soon', extra: 'Expiry: ' + entry.whois_expiry})" @mouseleave="hideTooltip()">
-                              <span x-text="entry.whois_ok ? 'OK' : 'Issue'"></span>
-                          </td>
-                          <td class="px-3 py-1 relative"  @mouseenter="showTooltip($event, {text: entry.ssl_ok ? 'Valid' : 'Expiring', extra: 'Expiry: ' + entry.ssl_expiry})"  @mouseleave="hideTooltip()">
-                              <span x-text="entry.ssl_ok ? 'Valid' : 'X'"></span>
-                      </td-->
-                          <td class="px-3 py-1 flex items-center gap-1">
-                              <span x-html="entry.up ? '&#10003;' : '&#10007;'"></span>
-                              <span x-text="entry.up ? 'Yes' : 'No'"></span>
-                          </td>
-                      </tr>
-                  </template>
-                </tbody>
-            </table>
-        </div>
+                    
+                    <template x-for="(entry, index) in [...history].slice().reverse()" :key="index">
+                        <tr class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800">
+                            <td class="px-3 py-1" x-text="entry.time"></td>
+                            <td class="px-3 py-1">
+                                <span :class="`inline-flex items-center gap-x-1 whitespace-nowrap px-2 py-1 text-xs font-medium ring-1 ring-inset rounded-full ${statusColor(entry.statusCode).bg} ${statusColor(entry.statusCode).text} ${statusColor(entry.statusCode).ring}`">
+                                    <span :class="`w-1.5 h-1.5 shrink-0 rounded-full ${statusColor(entry.statusCode).dot}`" aria-hidden="true"></span>
+                                    <span x-text="entry.statusCode"></span>
+                                </span>
+                            </td>
+                            <td class="px-3 py-1" x-text="entry.response"></td>
+                            <!--td class="px-3 py-1 relative" @mouseenter="showTooltip($event, {text: entry.whois_ok ? 'OK' : 'Expiring Soon', extra: 'Expiry: ' + entry.whois_expiry})" @mouseleave="hideTooltip()">
+                                <span x-text="entry.whois_ok ? 'OK' : 'Issue'"></span>
+                            </td>
+                            <td class="px-3 py-1 relative"  @mouseenter="showTooltip($event, {text: entry.ssl_ok ? 'Valid' : 'Expiring', extra: 'Expiry: ' + entry.ssl_expiry})"  @mouseleave="hideTooltip()">
+                                <span x-text="entry.ssl_ok ? 'Valid' : 'X'"></span>
+                        </td-->
+                            <td class="px-3 py-1 flex items-center gap-1">
+                                <span x-html="entry.up ? '&#10003;' : '&#10007;'"></span>
+                                <span x-text="entry.up ? 'Yes' : 'No'"></span>
+                            </td>
+                        </tr>
+                    </template>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- JSON, XML and CSV pre tags -->
+            <div x-show="showJSON || showXML || showCSV" x-transition class="mt-4 overflow-x-auto max-h-96 overflow-y-auto border border-gray-700 rounded relative">
+                <button 
+                    title="Copy to clipboard"
+                    class="absolute top-2 right-2 px-2 py-1 text-xs bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600 flex items-center justify-center"
+                    @click="copyLogs($event)">
+                    <template x-if="!copied">
+                        <span>Copy</span>
+                    </template>
+                    <template x-if="copied">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="text-emerald-500"><path d="M13.485 3.929a1 1 0 0 1 0 1.414l-7 7a1 1 0 0 1-1.414 0l-3-3a1 1 0 1 1 1.414-1.414L6 10.586l6.293-6.293a1 1 0 0 1 1.414 0z"/></svg>
+                    </template>
+                </button>
+            
+                <pre class="bg-gray-100 dark:bg-gray-800 p-3 rounded text-xs overflow-x-auto"
+                    x-text="showJSON ? JSON.stringify(history, null, 2) 
+                            : showXML ? xmlContent 
+                            : showCSV ? tableToCSV() : ''"></pre>
+            </div>
         
-
-        <div x-show="showJSON || showXML || showCSV" x-transition class="mt-4 overflow-x-auto max-h-96 overflow-y-auto border border-gray-700 rounded relative">
-            <button 
-                title="Copy to clipboard"
-                class="absolute top-2 right-2 px-2 py-1 text-xs bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600 flex items-center justify-center"
-                @click="copyLogs($event)">
-                <template x-if="!copied">
-                    <span>Copy</span>
-                </template>
-                <template x-if="copied">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="text-emerald-500">
-                        <path d="M13.485 3.929a1 1 0 0 1 0 1.414l-7 7a1 1 0 0 1-1.414 0l-3-3a1 1 0 1 1 1.414-1.414L6 10.586l6.293-6.293a1 1 0 0 1 1.414 0z"/>
-                    </svg>
-                </template>
-            </button>
-        
-            <pre class="bg-gray-100 dark:bg-gray-800 p-3 rounded text-xs overflow-x-auto"
-                 x-text="showJSON ? JSON.stringify(history, null, 2) 
-                         : showXML ? xmlContent 
-                         : showCSV ? tableToCSV() : ''"></pre>
-        </div>
-
-      
-        <!-- API -->
-        <div x-show="showAPI" x-transition class="mt-4 overflow-x-auto max-h-96 overflow-y-auto border border-gray-700 rounded">
-          <p x-show="domain" class="bg-gray-100 dark:bg-gray-800 p-3 rounded text-sm overflow-x-auto">You can use our API to integrate the information and updates from this status page into your own website or application. Simply make a <code>GET</code> request to the following URL:
-          </br>
-          <code x-text="`${window.location.origin}/status/history/${sanitizeFilename(domain)}.json`"></code>
-          </p>
+            <!-- API -->
+            <div x-show="showAPI" x-transition class="mt-4 overflow-x-auto max-h-96 overflow-y-auto border border-gray-700 rounded">
+                <p x-show="domain" class="bg-gray-100 dark:bg-gray-800 p-3 rounded text-sm overflow-x-auto">
+                    You can use our API to integrate the information and updates from this status page into your own website or application. Simply make a <code>GET</code> request to the following URL:
+                    </br>
+                    <code x-text="`${window.location.origin}/status/history/${sanitizeFilename(domain)}.json`"></code>
+                </p>
+            </div>
         </div>
     </div>
-</div>
 
-
-<script>
-function sanitizeFilename(name) {
-    name = name.replace(/^https?:\/\//, '');
-    name = name.replace(/:\d+$/, '');
-    name = name.replace(/[^a-zA-Z0-9.-]/g, '_');
-    return name;
-}
-
-function domainHistory() {
-    return {
-        loading: true,
-        domain: '',
-        safeDomain: '',
-        history: [],
-        tooltip: { show: false, text: "", x: 0, y: 0 },
-        showTable: true,
-        showJSON: false,
-        showXML: false,
-        showAPI: false,
-        showCSV: false,
-        xmlContent: "",
-        isUp: true,
-        lastResponse: 0,
-        sslExpiringSoon: false,
-        uptimePercentage: 0,
-        firstChecked: '',
-        lastChecked: '',
-        copied: false,
-          
-        get uptimeDuration() {
-            if (!this.firstChecked || !this.lastChecked) return "N/A";
-        
-            const start = new Date(this.firstChecked);
-            const end = new Date(this.lastChecked);
-            let diffMs = end - start;
-        
-            const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-            diffMs -= days * 1000 * 60 * 60 * 24;
-        
-            const hours = Math.floor(diffMs / (1000 * 60 * 60));
-            diffMs -= hours * 1000 * 60 * 60;
-        
-            const minutes = Math.floor(diffMs / (1000 * 60));
-            // seconds ignored
-        
-            let parts = [];
-        
-            if (days > 0) {
-                parts.push(`${days} day${days > 1 ? 's' : ''}`);
-                if (minutes > 0) parts.push(`${minutes} min`);
-            } else if (hours > 0) {
-                parts.push(`${hours} hour${hours > 1 ? 's' : ''}`);
-                if (minutes > 0) parts.push(`${minutes} min`);
-            } else if (minutes > 0) {
-                parts.push(`${minutes} min`);
-            } else {
-                parts.push("0 min");
-            }
-        
-            return parts.join(', ');
-        },
-
-        async init() {
-            try {
-                const domainParam = new URLSearchParams(window.location.search).get('domain');
-                if (!domainParam) {
-                    window.location.href = "index.html";
-                    return;
-                }
-
-                this.domain = domainParam;
-                this.safeDomain = sanitizeFilename(this.domain);
-                document.title = `${this.domain} — Checking..`;                           // browser tab title
-
-                const res = await fetch(`history/${this.safeDomain}.json`);
-
-                if (!res.ok) {
-                    throw new Error("Failed to load domain JSON, redirecting..");         // domain does not exist or invalid file
-                    window.location.href = "index.html";
-                    return;
-                }
-
-                const options = { year: 'numeric', month: 'short', day: 'numeric' };      // used by whois and ssl
-              
-                const data = await res.json();
-                this.history = (data.history || []).map(e => ({
-                    //time: e.timestamp,                                                   // as is
-                    //time: new Date(e.timestamp).toLocaleString(),                        // just pm/am
-                    time: new Date(e.timestamp.replace(' ', 'T') + 'Z').toLocaleString(),  // changes timezone
-                    statusCode: e.http_status,
-                    response: parseFloat(e.http_response_time_ms.toFixed(2)),
-                    up: e.http_ok,
-                    whois_ok: e.whois_ok,
-                    whois_expiry: e.whois_expiry,
-                    ssl_ok: e.ssl_ok,
-                    ssl_expiry: e.ssl_expiry
-                }));
-
-                if (this.history.length > 0) {
-                    const latestEntry = this.history[this.history.length - 1];
-                  
-                    // RESPONSE
-                    this.isUp = latestEntry.up;
-                    this.lastResponse = latestEntry.response;
-
-                    let statusText;                                                         // update browser tab
-                    if (this.isUp) {
-                        statusText = this.lastResponse > 1000 ? '🟠 slow!' : '🟢 up!';
-                    } else {
-                        statusText = '🔴 down!';
-                    }
-                    document.title = `${this.domain} — ${statusText}`;
-                  
-                    const now = new Date();
-
-                    // SSL
-                    /*
-                    const now = new Date();
-                    const sslExpiryDate = new Date(latestEntry.ssl_expiry);
-                    this.sslExpiringSoon = latestEntry.ssl_ok === false || (sslExpiryDate - now) / (1000 * 60 * 60 * 24) < 7;
-                    */
-                    this.sslExpiringSoon = latestEntry.ssl_ok === false;
-                    this.lastssl = latestEntry.ssl_expiry
-                        ? new Date(latestEntry.ssl_expiry + 'T00:00:00Z').toLocaleDateString(undefined, options)
-                        : "N/A";
-
-                    //  COMBINED STATS
-                    this.firstChecked = this.history[0].time;
-                    this.lastChecked = latestEntry.time;
-                    this.uptimePercentage = (((this.history.length - this.history.filter(e => !e.up).length) / this.history.length) * 100).toFixed(2);
-
-                    // WHOIS
-                    const domainExpiryDate = new Date(latestEntry.whois_expiry);
-                    this.domainExpiringSoon = latestEntry.whois_ok === false || (domainExpiryDate - now) / (1000 * 60 * 60 * 24) < 30;
-                    this.lastwhois = latestEntry.whois_expiry
-                        ? new Date(latestEntry.whois_expiry + 'T00:00:00Z').toLocaleDateString(undefined, options)
-                        : "N/A";
-
-                    // UPTIME
-                    const totalChecks = this.history.length;
-                    const outages = this.history.filter(e => !e.up).length;
-                    this.outages = outages;
-                    const avgResponse = (this.history.reduce((sum, e) => sum + e.response, 0) / totalChecks).toFixed(2);
-                    this.avgResponse = avgResponse;
-                    this.firstChecked = this.history[0].time;
-                    this.lastChecked = this.history[this.history.length - 1].time;
-                    this.uptimePercentage = (((totalChecks - outages) / totalChecks) * 100).toFixed(2);
-
-                    this.$nextTick(() => {
-                        const container = this.$refs.graphContainer;
-                        container.scrollLeft = container.scrollWidth; // scroll to the end
-                    });
-                                  
-                }
-            } catch (err) {
-                console.error('Failed to load domain history', err);
-                this.statusSummary = "Failed to load domain history.";
-            } finally {
-                this.loading = false;
-            }
-        },
-
-        // load xml file on btn click
-        async loadXML() {
-            try {
-                const res = await fetch(`history/${this.safeDomain}.xml`);
-                if (!res.ok) throw new Error("Failed to load XML");
-                const text = await res.text();
-                this.xmlContent = text;
-            } catch (err) {
-                this.xmlContent = "Failed to load XML.";
-            }
-        },
-      
-        // format to human readable date
-        timeAgo(timestamp) {
-            const now = new Date();
-            const past = new Date(timestamp);
-            const diffSec = Math.floor((now - past) / 1000);
-        
-            if (diffSec < 60) return `${diffSec} sec ago`;
-            const diffMin = Math.floor(diffSec / 60);
-            if (diffMin < 60) return `${diffMin} min ago`;
-            const diffHour = Math.floor(diffMin / 60);
-            if (diffHour < 24) return `${diffHour} hour${diffHour > 1 ? 's' : ''} ago`;
-            const diffDay = Math.floor(diffHour / 24);
-            return `${diffDay} day${diffDay > 1 ? 's' : ''} ago`;
-        },
-              
-        tableToCSV() {
-            if (!this.history || this.history.length === 0) return "";
-            const headers = ["Checked", "Status", "Response (ms)", "Up?"];
-            const rows = this.history.map(e => [
-                `"${e.time}"`,
-                `"${e.statusCode}"`,
-                `"${e.response}"`,
-                `"${e.up ? 'Yes' : 'No'}"`
-            ]);
-            return [headers, ...rows].map(r => r.join(",")).join("\n");
-        },
-      
-        statusColor(code) {
-            if (code >= 200 && code <= 299) return { bg: "bg-emerald-50 dark:bg-emerald-400/10", text: "text-emerald-900 dark:text-emerald-400", ring: "ring-emerald-600/30 dark:ring-emerald-400/20", dot: "bg-emerald-600 dark:bg-emerald-400" };
-            if (code >= 300 && code <= 399) return { bg: "bg-orange-50 dark:bg-orange-400/10", text: "text-orange-900 dark:text-orange-400", ring: "ring-orange-600/30 dark:ring-orange-400/20", dot: "bg-orange-600 dark:bg-orange-400" };
-            if (code >= 400 && code <= 499) return { bg: "bg-black dark:bg-gray-800", text: "text-white dark:text-gray-50", ring: "ring-gray-800/50 dark:ring-gray-700/50", dot: "bg-black dark:bg-gray-500" };
-            if (code >= 500) return { bg: "bg-red-50 dark:bg-red-400/10", text: "text-red-900 dark:text-red-400", ring: "ring-red-600/30 dark:ring-red-400/20", dot: "bg-red-600 dark:bg-red-400" };
-            return { bg: "bg-gray-100 dark:bg-gray-700/10", text: "text-gray-900 dark:text-gray-200", ring: "ring-gray-300/30 dark:ring-gray-500/20", dot: "bg-gray-400 dark:bg-gray-600" };
-        },
-
-        getColor(entry) {
-            if (entry.response > 3000) return "bg-orange-500";
-            return (entry.statusCode >= 200 && entry.statusCode < 500) ? "bg-emerald-500" : "bg-red-500";
-        },
-
-        showTooltip(e, entry) {
-            this.tooltip.show = true;
-            if(entry.time){ 
-                const dateTime = new Date(entry.time).toLocaleString();
-                this.tooltip.text = `${dateTime}\nStatus: ${entry.statusCode} | Response: ${entry.response.toFixed(2)} ms`;
-            } else {
-                this.tooltip.text = `${entry.text}${entry.extra ? '\n' + entry.extra : ''}`;
-            }
-            this.tooltip.x = e.clientX + 10;
-            this.tooltip.y = e.clientY + 10;
-        },
-
-        hideTooltip() {
-            this.tooltip.show = false;
-        },
-                
-        copyLogs(event) {
-            let logsText = "";
-        
-            if (this.showXML) {
-                logsText = this.xmlContent || "";
-            } else if (this.showJSON) {
-                logsText = JSON.stringify(this.history, null, 2);
-            } else if (this.showCSV) {
-                logsText = this.tableToCSV();
-            } else if (this.showTable) {
-                logsText = this.tableToCSV();
-            }
-        
-            if (!logsText) return;
-        
-            navigator.clipboard.writeText(logsText)
-                .then(() => {
-                    this.copied = true;
-                    setTimeout(() => this.copied = false, 1000); // revert
-                })
-                .catch(err => {
-                    console.error("Failed to copy", err);
-                });
-        }
-
+    <!-- JS -->
+    <script>
+    function sanitizeFilename(name) {
+        name = name.replace(/^https?:\/\//, '');
+        name = name.replace(/:\d+$/, '');
+        name = name.replace(/[^a-zA-Z0-9.-]/g, '_');
+        return name;
     }
-}
-</script>
 
-<small class="mt-auto text-center p-5" x-show="domain">⚡ Subscribe via RSS — <a href="index.xml" target="_blank" class="no-underline">to all updates</a> or <a :href="`history/${safeDomain}.xml`" target="_blank" class="no-underline"> only this feed (<span x-text="domain"></span>)</a></small>
+    function domainHistory() {
+        return {
+            loading: true,
+            domain: '',
+            safeDomain: '',
+            history: [],
+            tooltip: { show: false, text: "", x: 0, y: 0 },
+            showTable: true,
+            showJSON: false,
+            showXML: false,
+            showAPI: false,
+            showCSV: false,
+            xmlContent: "",
+            isUp: true,
+            lastResponse: 0,
+            sslExpiringSoon: false,
+            uptimePercentage: 0,
+            firstChecked: '',
+            lastChecked: '',
+            copied: false,
+            
+            get uptimeDuration() {
+                if (!this.firstChecked || !this.lastChecked) return "N/A";
+            
+                const start = new Date(this.firstChecked);
+                const end = new Date(this.lastChecked);
+                let diffMs = end - start;
+            
+                const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+                diffMs -= days * 1000 * 60 * 60 * 24;
+            
+                const hours = Math.floor(diffMs / (1000 * 60 * 60));
+                diffMs -= hours * 1000 * 60 * 60;
+            
+                const minutes = Math.floor(diffMs / (1000 * 60));
+                // seconds ignored
+            
+                let parts = [];
+            
+                if (days > 0) {
+                    parts.push(`${days} day${days > 1 ? 's' : ''}`);
+                    if (minutes > 0) parts.push(`${minutes} min`);
+                } else if (hours > 0) {
+                    parts.push(`${hours} hour${hours > 1 ? 's' : ''}`);
+                    if (minutes > 0) parts.push(`${minutes} min`);
+                } else if (minutes > 0) {
+                    parts.push(`${minutes} min`);
+                } else {
+                    parts.push("0 min");
+                }
+            
+                return parts.join(', ');
+            },
+
+            async init() {
+                try {
+                    const domainParam = new URLSearchParams(window.location.search).get('domain');
+                    if (!domainParam) {
+                        window.location.href = "index.html";
+                        return;
+                    }
+
+                    this.domain = domainParam;
+                    this.safeDomain = sanitizeFilename(this.domain);
+                    document.title = `${this.domain} — Checking..`;                           // browser tab title
+
+                    const res = await fetch(`history/${this.safeDomain}.json`);
+
+                    if (!res.ok) {
+                        throw new Error("Failed to load domain JSON, redirecting..");         // domain does not exist or invalid file
+                        window.location.href = "index.html";
+                        return;
+                    }
+
+                    const options = { year: 'numeric', month: 'short', day: 'numeric' };      // used by whois and ssl
+                
+                    const data = await res.json();
+                    this.history = (data.history || []).map(e => ({
+                        //time: e.timestamp,                                                   // as is
+                        //time: new Date(e.timestamp).toLocaleString(),                        // just pm/am
+                        time: new Date(e.timestamp.replace(' ', 'T') + 'Z').toLocaleString(),  // changes timezone
+                        statusCode: e.http_status,
+                        response: parseFloat(e.http_response_time_ms.toFixed(2)),
+                        up: e.http_ok,
+                        whois_ok: e.whois_ok,
+                        whois_expiry: e.whois_expiry,
+                        ssl_ok: e.ssl_ok,
+                        ssl_expiry: e.ssl_expiry
+                    }));
+
+                    if (this.history.length > 0) {
+                        const latestEntry = this.history[this.history.length - 1];
+                    
+                        // RESPONSE
+                        this.isUp = latestEntry.up;
+                        this.lastResponse = latestEntry.response;
+
+                        let statusText;                                                         // update browser tab
+                        if (this.isUp) {
+                            statusText = this.lastResponse > 1000 ? '🟠 slow!' : '🟢 up!';
+                        } else {
+                            statusText = '🔴 down!';
+                        }
+                        document.title = `${this.domain} — ${statusText}`;
+                    
+                        const now = new Date();
+
+                        // SSL
+                        /*
+                        const now = new Date();
+                        const sslExpiryDate = new Date(latestEntry.ssl_expiry);
+                        this.sslExpiringSoon = latestEntry.ssl_ok === false || (sslExpiryDate - now) / (1000 * 60 * 60 * 24) < 7;
+                        */
+                        this.sslExpiringSoon = latestEntry.ssl_ok === false;
+                        this.lastssl = latestEntry.ssl_expiry
+                            ? new Date(latestEntry.ssl_expiry + 'T00:00:00Z').toLocaleDateString(undefined, options)
+                            : "N/A";
+
+                        //  COMBINED STATS
+                        this.firstChecked = this.history[0].time;
+                        this.lastChecked = latestEntry.time;
+                        this.uptimePercentage = (((this.history.length - this.history.filter(e => !e.up).length) / this.history.length) * 100).toFixed(2);
+
+                        // WHOIS
+                        const domainExpiryDate = new Date(latestEntry.whois_expiry);
+                        this.domainExpiringSoon = latestEntry.whois_ok === false || (domainExpiryDate - now) / (1000 * 60 * 60 * 24) < 30;
+                        this.lastwhois = latestEntry.whois_expiry
+                            ? new Date(latestEntry.whois_expiry + 'T00:00:00Z').toLocaleDateString(undefined, options)
+                            : "N/A";
+
+                        // UPTIME
+                        const totalChecks = this.history.length;
+                        const outages = this.history.filter(e => !e.up).length;
+                        this.outages = outages;
+                        const avgResponse = (this.history.reduce((sum, e) => sum + e.response, 0) / totalChecks).toFixed(2);
+                        this.avgResponse = avgResponse;
+                        this.firstChecked = this.history[0].time;
+                        this.lastChecked = this.history[this.history.length - 1].time;
+                        this.uptimePercentage = (((totalChecks - outages) / totalChecks) * 100).toFixed(2);
+
+                        this.$nextTick(() => {
+                            const container = this.$refs.graphContainer;
+                            container.scrollLeft = container.scrollWidth; // scroll to the end
+                        });
+                                    
+                    }
+                } catch (err) {
+                    console.error('Failed to load domain history', err);
+                    this.statusSummary = "Failed to load domain history.";
+                } finally {
+                    this.loading = false;
+                }
+            },
+
+            // load xml file on btn click
+            async loadXML() {
+                try {
+                    const res = await fetch(`history/${this.safeDomain}.xml`);
+                    if (!res.ok) throw new Error("Failed to load XML");
+                    const text = await res.text();
+                    this.xmlContent = text;
+                } catch (err) {
+                    this.xmlContent = "Failed to load XML.";
+                }
+            },
+        
+            // format to human readable date
+            timeAgo(timestamp) {
+                const now = new Date();
+                const past = new Date(timestamp);
+                const diffSec = Math.floor((now - past) / 1000);
+            
+                if (diffSec < 60) return `${diffSec} sec ago`;
+                const diffMin = Math.floor(diffSec / 60);
+                if (diffMin < 60) return `${diffMin} min ago`;
+                const diffHour = Math.floor(diffMin / 60);
+                if (diffHour < 24) return `${diffHour} hour${diffHour > 1 ? 's' : ''} ago`;
+                const diffDay = Math.floor(diffHour / 24);
+                return `${diffDay} day${diffDay > 1 ? 's' : ''} ago`;
+            },
+                
+            tableToCSV() {
+                if (!this.history || this.history.length === 0) return "";
+                const headers = ["Checked", "Status", "Response (ms)", "Up?"];
+                const rows = this.history.map(e => [
+                    `"${e.time}"`,
+                    `"${e.statusCode}"`,
+                    `"${e.response}"`,
+                    `"${e.up ? 'Yes' : 'No'}"`
+                ]);
+                return [headers, ...rows].map(r => r.join(",")).join("\n");
+            },
+        
+            statusColor(code) {
+                if (code >= 200 && code <= 299) return { bg: "bg-emerald-50 dark:bg-emerald-400/10", text: "text-emerald-900 dark:text-emerald-400", ring: "ring-emerald-600/30 dark:ring-emerald-400/20", dot: "bg-emerald-600 dark:bg-emerald-400" };
+                if (code >= 300 && code <= 399) return { bg: "bg-orange-50 dark:bg-orange-400/10", text: "text-orange-900 dark:text-orange-400", ring: "ring-orange-600/30 dark:ring-orange-400/20", dot: "bg-orange-600 dark:bg-orange-400" };
+                if (code >= 400 && code <= 499) return { bg: "bg-black dark:bg-gray-800", text: "text-white dark:text-gray-50", ring: "ring-gray-800/50 dark:ring-gray-700/50", dot: "bg-black dark:bg-gray-500" };
+                if (code >= 500) return { bg: "bg-red-50 dark:bg-red-400/10", text: "text-red-900 dark:text-red-400", ring: "ring-red-600/30 dark:ring-red-400/20", dot: "bg-red-600 dark:bg-red-400" };
+                return { bg: "bg-gray-100 dark:bg-gray-700/10", text: "text-gray-900 dark:text-gray-200", ring: "ring-gray-300/30 dark:ring-gray-500/20", dot: "bg-gray-400 dark:bg-gray-600" };
+            },
+
+            getColor(entry) {
+                if (entry.response > 3000) return "bg-orange-500";
+                return (entry.statusCode >= 200 && entry.statusCode < 500) ? "bg-emerald-500" : "bg-red-500";
+            },
+
+            showTooltip(e, entry) {
+                this.tooltip.show = true;
+                if(entry.time){ 
+                    const dateTime = new Date(entry.time).toLocaleString();
+                    this.tooltip.text = `${dateTime}\nStatus: ${entry.statusCode} | Response: ${entry.response.toFixed(2)} ms`;
+                } else {
+                    this.tooltip.text = `${entry.text}${entry.extra ? '\n' + entry.extra : ''}`;
+                }
+                this.tooltip.x = e.clientX + 10;
+                this.tooltip.y = e.clientY + 10;
+            },
+
+            hideTooltip() {
+                this.tooltip.show = false;
+            },
+                    
+            copyLogs(event) {
+                let logsText = "";
+            
+                if (this.showXML) {
+                    logsText = this.xmlContent || "";
+                } else if (this.showJSON) {
+                    logsText = JSON.stringify(this.history, null, 2);
+                } else if (this.showCSV) {
+                    logsText = this.tableToCSV();
+                } else if (this.showTable) {
+                    logsText = this.tableToCSV();
+                }
+            
+                if (!logsText) return;
+            
+                navigator.clipboard.writeText(logsText)
+                    .then(() => {
+                        this.copied = true;
+                        setTimeout(() => this.copied = false, 1000); // revert
+                    })
+                    .catch(err => {
+                        console.error("Failed to copy", err);
+                    });
+            }
+
+        }
+    }
+    </script>
+
+    <!-- FOOTER -->
+    <small class="mt-auto text-center p-5" x-show="domain">⚡ Subscribe via RSS — <a href="index.xml" target="_blank" class="no-underline">to all updates</a> or <a :href="`history/${safeDomain}.xml`" target="_blank" class="no-underline"> only this feed (<span x-text="domain"></span>)</a></small>
 
 </body>
 </html>
