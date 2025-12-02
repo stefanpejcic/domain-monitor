@@ -17880,4 +17880,16 @@
     <resolved_ip>216.198.79.1</resolved_ip>
     <ip_address>132.196.32.64</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-12-02 19:41:21</timestamp>
+    <whois_expiry>2027-03-10</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>2026-01-27</ssl_expiry>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>112.85199999999999</http_response_time_ms>
+    <resolved_ip>216.198.79.1</resolved_ip>
+    <ip_address>74.249.78.161</ip_address>
+  </entry>
 </domain_history>
