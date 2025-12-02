@@ -16860,6 +16860,18 @@
       "http_response_time_ms": 695.158,
       "resolved_ip": "172.67.182.109",
       "ip_address": "135.119.235.81"
+    },
+    {
+      "timestamp": "2025-12-02 18:03:53",
+      "whois_expiry": "2027-02-27",
+      "whois_ok": true,
+      "ssl_expiry": "2026-03-01",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 916.23,
+      "resolved_ip": "104.21.75.224",
+      "ip_address": "172.182.212.5"
     }
   ]
 }
