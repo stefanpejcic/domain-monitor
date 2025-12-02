@@ -13308,4 +13308,16 @@
     <resolved_ip>104.21.75.224</resolved_ip>
     <ip_address>172.184.220.154</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-12-02 12:02:37</timestamp>
+    <whois_expiry>2027-02-27</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>2026-03-01</ssl_expiry>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>732.859</http_response_time_ms>
+    <resolved_ip>104.21.75.224</resolved_ip>
+    <ip_address>132.196.82.8</ip_address>
+  </entry>
 </domain_history>
