@@ -8280,6 +8280,18 @@
       "http_response_time_ms": 54.562,
       "resolved_ip": "66.33.60.34",
       "ip_address": "52.159.226.251"
+    },
+    {
+      "timestamp": "2025-12-02 06:32:20",
+      "whois_expiry": "2027-03-10",
+      "whois_ok": true,
+      "ssl_expiry": "2026-01-25",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 59.265,
+      "resolved_ip": "66.33.60.34",
+      "ip_address": "135.232.201.226"
     }
   ]
 }
