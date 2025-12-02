@@ -5400,4 +5400,16 @@
     <resolved_ip>216.198.79.1</resolved_ip>
     <ip_address>20.168.110.178</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-12-02 01:42:39</timestamp>
+    <whois_expiry>2027-03-10</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>2026-01-27</ssl_expiry>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>2377.219</http_response_time_ms>
+    <resolved_ip>64.29.17.1</resolved_ip>
+    <ip_address>20.109.92.212</ip_address>
+  </entry>
 </domain_history>
