@@ -15288,4 +15288,16 @@
     <resolved_ip>185.193.66.252</resolved_ip>
     <ip_address>172.182.196.54</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-12-02 16:00:00</timestamp>
+    <whois_expiry>2027-03-10</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>2026-01-05</ssl_expiry>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>1593.8410000000001</http_response_time_ms>
+    <resolved_ip>185.193.66.252</resolved_ip>
+    <ip_address>172.215.209.177</ip_address>
+  </entry>
 </domain_history>
