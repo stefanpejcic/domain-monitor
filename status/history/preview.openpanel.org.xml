@@ -9696,4 +9696,16 @@
     <resolved_ip>104.21.75.224</resolved_ip>
     <ip_address>135.232.201.224</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-12-02 07:56:37</timestamp>
+    <whois_expiry>2027-02-27</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>2026-03-01</ssl_expiry>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>199.237</http_response_time_ms>
+    <resolved_ip>104.21.75.224</resolved_ip>
+    <ip_address>13.83.162.0</ip_address>
+  </entry>
 </domain_history>
