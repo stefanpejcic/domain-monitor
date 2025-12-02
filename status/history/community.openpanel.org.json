@@ -12384,6 +12384,18 @@
       "http_response_time_ms": 699.7280000000001,
       "resolved_ip": "172.67.182.109",
       "ip_address": "13.83.166.245"
+    },
+    {
+      "timestamp": "2025-12-02 11:04:15",
+      "whois_expiry": "2027-02-27",
+      "whois_ok": true,
+      "ssl_expiry": "2026-03-01",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 730.9590000000001,
+      "resolved_ip": "104.21.75.224",
+      "ip_address": "172.184.214.213"
     }
   ]
 }
