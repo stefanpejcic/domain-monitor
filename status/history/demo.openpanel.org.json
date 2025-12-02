@@ -7800,6 +7800,18 @@
       "http_response_time_ms": 171.506,
       "resolved_ip": "193.181.23.225",
       "ip_address": "52.190.140.99"
+    },
+    {
+      "timestamp": "2025-12-02 06:00:45",
+      "whois_expiry": "2027-02-27",
+      "whois_ok": true,
+      "ssl_expiry": "2026-02-12",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 129.478,
+      "resolved_ip": "193.181.23.225",
+      "ip_address": "64.236.145.89"
     }
   ]
 }
