@@ -23580,4 +23580,16 @@
     <resolved_ip>172.67.182.109</resolved_ip>
     <ip_address>172.178.119.22</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-12-03 09:08:36</timestamp>
+    <whois_expiry>2027-02-27</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>2026-03-01</ssl_expiry>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>197.216</http_response_time_ms>
+    <resolved_ip>172.67.182.109</resolved_ip>
+    <ip_address>40.65.61.40</ip_address>
+  </entry>
 </domain_history>
