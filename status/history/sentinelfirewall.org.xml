@@ -34140,4 +34140,16 @@
     <resolved_ip>216.198.79.1</resolved_ip>
     <ip_address>172.178.119.33</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-12-03 03:09:29</timestamp>
+    <whois_expiry>2026-09-28</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>2026-02-26</ssl_expiry>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>232.56</http_response_time_ms>
+    <resolved_ip>216.198.79.1</resolved_ip>
+    <ip_address>52.159.229.162</ip_address>
+  </entry>
 </domain_history>
