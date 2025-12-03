@@ -27432,4 +27432,16 @@
     <resolved_ip>64.29.17.1</resolved_ip>
     <ip_address>172.184.204.100</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-12-03 17:49:19</timestamp>
+    <whois_expiry>2027-03-10</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>2026-01-27</ssl_expiry>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>210.088</http_response_time_ms>
+    <resolved_ip>64.29.17.65</resolved_ip>
+    <ip_address>52.160.166.64</ip_address>
+  </entry>
 </domain_history>
