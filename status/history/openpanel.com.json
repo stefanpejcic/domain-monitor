@@ -35214,6 +35214,18 @@
       "http_response_time_ms": 67.297,
       "resolved_ip": "76.76.21.21",
       "ip_address": "20.55.214.114"
+    },
+    {
+      "timestamp": "2025-12-03 03:40:45",
+      "whois_expiry": "2027-03-10",
+      "whois_ok": true,
+      "ssl_expiry": "2026-01-25",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 103.299,
+      "resolved_ip": "76.76.21.21",
+      "ip_address": "64.236.200.98"
     }
   ]
 }
