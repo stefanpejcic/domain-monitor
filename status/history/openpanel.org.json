@@ -37398,6 +37398,18 @@
       "http_response_time_ms": 32.594,
       "resolved_ip": "104.21.75.224",
       "ip_address": "172.214.47.49"
+    },
+    {
+      "timestamp": "2025-12-03 09:44:11",
+      "whois_expiry": "2027-02-27",
+      "whois_ok": true,
+      "ssl_expiry": "2026-02-28",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 67.786,
+      "resolved_ip": "104.21.75.224",
+      "ip_address": "52.176.125.114"
     }
   ]
 }
