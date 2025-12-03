@@ -23388,4 +23388,16 @@
     <resolved_ip>76.76.21.61</resolved_ip>
     <ip_address>52.173.219.151</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-12-03 08:57:10</timestamp>
+    <whois_expiry>2027-03-10</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>2026-01-27</ssl_expiry>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>80.391</http_response_time_ms>
+    <resolved_ip>76.76.21.98</resolved_ip>
+    <ip_address>20.161.44.227</ip_address>
+  </entry>
 </domain_history>
