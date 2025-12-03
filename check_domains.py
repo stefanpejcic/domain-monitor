@@ -35,7 +35,7 @@ def get_hostname_port(domain_or_url, default_port=443):
     port = parsed.port if parsed.port else default_port
     return hostname, port
 
-def get_domain_expiration(domain):
+def get_whois_info(domain):
     # TODO: also detect ns change
     try:
         w = whois.whois(domain)
@@ -43,10 +43,16 @@ def get_domain_expiration(domain):
         if isinstance(exp, list):  # sometimes a list
             exp = exp[0]
         print(f"[WHOIS] For {domain} | exp: {exp}")
-        return exp
+
+        ns = w.nameservers if hasattr(w, "nameservers") else []
+        if ns:
+            ns = [n.lower().strip(".") for n in ns]
+        
+        print(f"[WHOIS] For {domain} | exp: {exp} | NS: {ns}")
+        return {"expiration_date": exp, "nameservers": ns}
     except Exception as e:
         print(f"[WHOIS] Error checking {domain}: {e}")
-        return None
+        return {"expiration_date": None, "nameservers": []}
 
 def get_ssl_expiration(domain, port=443):
     try:
@@ -129,58 +135,42 @@ def main():
     outgoing_ipv4 = get_outgoing_ip()
     print(f"Outgoing IP: {outgoing_ipv4}")
 
-    # ---- if GH actions, check issues ----
-    running_on_github = token and repo_name
-    if running_on_github:
-        from github import Github, Auth
-        print("Running in: GitHub Actions")
-        g = Github(auth=Auth.Token(token))
-        repo = g.get_repo(repo_name)
+    # ---- GH actions, check issues ----
+    from github import Github, Auth
+    print("Running in: GitHub Actions")
+    g = Github(auth=Auth.Token(token))
+    repo = g.get_repo(repo_name)
 
-        open_issues = {issue.title: issue for issue in repo.get_issues(state="open")}
-    
-        def find_issue(keyword):
-            for title, issue in open_issues.items():
-                if keyword in title:
-                    return issue
-            return None
-    
-        def create_issue(title, body):
-            issue = repo.create_issue(title=title, body=body)
-            open_issues[title] = issue  # update cache
-            print(f"Issue created: {title}")
-            return issue
-    
-        def close_issue(issue, msg):
-            issue.create_comment(msg)
-            issue.edit(state="closed")
-            print(f"Issue closed: {issue.title}")
-            open_issues.pop(issue.title, None)  # remove from cache
-    
-        def comment_on_issue(issue, msg):
-            issue.create_comment(msg)
-            print(f"Comment added to issue: {issue.title}")
+    open_issues = {issue.title: issue for issue in repo.get_issues(state="open")}
 
-        # ---- HTTP session ----
-        session = requests.Session()
-        session.headers.update({
-            "User-Agent": "Github Actions - stefanpejcic/domain-monitor/1.0",
-            "X-Github-Repository": repo.full_name
-        })
-    
-    else:
-        # ---- not hosted on github, skip issues - will later add alerts ----
-        def find_issue(keyword): return None
-        def create_issue(title, body): return None
-        def close_issue(issue, msg): return None
-        def comment_on_issue(issue, msg): return None
+    def find_issue(keyword):
+        for title, issue in open_issues.items():
+            if keyword in title:
+                return issue
+        return None
 
-        # ---- HTTP session ----
-        session = requests.Session()
-        session.headers.update({
-            "User-Agent": "Selfhosted - stefanpejcic/domain-monitor/1.0"
-        })
+    def create_issue(title, body):
+        issue = repo.create_issue(title=title, body=body)
+        open_issues[title] = issue  # update cache
+        print(f"Issue created: {title}")
+        return issue
 
+    def close_issue(issue, msg):
+        issue.create_comment(msg)
+        issue.edit(state="closed")
+        print(f"Issue closed: {issue.title}")
+        open_issues.pop(issue.title, None)  # remove from cache
+
+    def comment_on_issue(issue, msg):
+        issue.create_comment(msg)
+        print(f"Comment added to issue: {issue.title}")
+
+    # ---- HTTP session ----
+    session = requests.Session()
+    session.headers.update({
+        "User-Agent": "Github Actions - stefanpejcic/domain-monitor/1.0",
+        "X-Github-Repository": repo.full_name
+    })
 
     combined_results = {
         "domains": [],
@@ -211,13 +201,15 @@ def main():
         whois_cache = {}       
         apex = get_apex_domain(domain)
         if apex in whois_cache:
-            exp_date = whois_cache[apex]
-            print(f"[WHOIS] For {domain} reusing existing whois information from {apex}")
+            info = whois_cache[apex]
+            print(f"[WHOIS] For {domain} reusing existing info from {apex}")
         else:
-            print(f"[WHOIS] For {domain} checking whois information from {apex}")
-            exp_date = get_domain_expiration(apex)
-            whois_cache[apex] = exp_date
+            info = get_whois_info(apex)
+            whois_cache[apex] = info
 
+        exp_date = info["expiration_date"]
+        nameservers = info["nameservers"]
+        
         days_left = None
         if exp_date:
             if exp_date.tzinfo is not None:
@@ -275,8 +267,30 @@ def main():
         # ---- Update per-domain JSON ----
         domain_history = load_domain_history(domain)
 
-        # ---- Resolve domain IP ----
-        # we need domain_history for this!
+        # ---- Check if NS changed ----
+        last_entry = domain_history["history"][-1] if domain_history["history"] else None
+        previous_ns = last_entry.get("nameservers") if last_entry else None
+        ip_issue = find_issue(f"Nameservers change detected for {domain}")
+        
+        last_reported_ns = None
+        if ip_issue:
+            import re
+            m = re.search(r"\(was ([\d\.]+)\)", ip_issue.title)
+            if m:
+                last_reported_ns = m.group(1)
+        
+        if last_reported_ns:
+            if nameservers and last_reported_ns != resolved_ns:
+                if not ip_issue:
+                    create_issue(
+                        f"🚨 Nameservers change detected for {domain} (was {previous_ns})",
+                        f"Domain **{domain}** NS changed from `{previous_ns}` to `{nameservers}`"
+                    )
+                else:
+                    comment_on_issue(ip_issue, f"NS updated to `{nameservers}`")
+                    ip_issue.edit(title=f"🚨 Nameservers change detected for {domain} (was {previous_ns})")
+
+        # ---- Check if IPv4 changed ---- #
         try:
             resolved_ip = socket.gethostbyname(hostname)
         except Exception as e:
@@ -311,6 +325,7 @@ def main():
             "timestamp": timestamp,
             "whois_expiry": exp_date.strftime("%Y-%m-%d") if exp_date else None,
             "whois_ok": days_left > days_threshold if days_left is not None else False,
+            "nameservers": nameservers if nameservers else None,
             "ssl_expiry": ssl_exp.strftime("%Y-%m-%d") if ssl_exp else None,
             "ssl_ok": ssl_days > days_threshold if ssl_days is not None else False,
             "http_status": status,
