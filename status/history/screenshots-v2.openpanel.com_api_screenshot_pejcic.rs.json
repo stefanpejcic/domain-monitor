@@ -28608,6 +28608,18 @@
       "http_response_time_ms": 230.99800000000002,
       "resolved_ip": "64.29.17.1",
       "ip_address": "135.232.224.99"
+    },
+    {
+      "timestamp": "2025-12-03 19:27:35",
+      "whois_expiry": "2027-03-10",
+      "whois_ok": true,
+      "ssl_expiry": "2026-01-27",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 81.106,
+      "resolved_ip": "216.198.79.1",
+      "ip_address": "20.55.127.228"
     }
   ]
 }
