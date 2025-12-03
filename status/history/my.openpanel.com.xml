@@ -26868,4 +26868,16 @@
     <resolved_ip>185.193.66.252</resolved_ip>
     <ip_address>135.119.38.33</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-12-03 16:07:09</timestamp>
+    <whois_expiry>2027-03-10</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>2026-01-05</ssl_expiry>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>521.996</http_response_time_ms>
+    <resolved_ip>185.193.66.252</resolved_ip>
+    <ip_address>64.236.200.226</ip_address>
+  </entry>
 </domain_history>
