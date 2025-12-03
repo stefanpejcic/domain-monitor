@@ -322,19 +322,30 @@ def main():
         }
 
         # ---- Save JSON for domain --- #
-        domain_history["history"].append({**domain_entry, **extra_fields})
+        domain_history["history"].append(domain_entry)
+        domain_history.update(extra_fields)
         save_domain_history(domain, domain_history)
 
         # ---- Save XML for domain ----
         tree, root = load_domain_xml(domain)
         entry_xml = ET.SubElement(root, "entry")
         
-        for key, value in {**domain_entry, **extra_fields}.items():
+        for key, value in domain_entry.items():
             el = ET.SubElement(entry_xml, key)
             el.text = str(value)
+        
+        extra_xml = ET.SubElement(root, "extra")
+        for key, value in extra_fields.items():
+            el = ET.SubElement(extra_xml, key)
+            el.text = str(value)
+        
         save_domain_xml(domain, tree)
-        # ---- Add domain to the dictionary for combined JSON/XML files ----
-        combined_results["domains"].append({**domain_entry, **extra_fields, "domain": domain})
+        
+        combined_results["domains"].append({
+            "domain": domain,
+            "history_entry": domain_entry,
+            **extra_fields
+        })
 
     # ---- Save combined data to status.json ----
     os.makedirs("status", exist_ok=True)
