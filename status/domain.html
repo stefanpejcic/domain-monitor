@@ -356,7 +356,7 @@
                     this.history = (data.history || []).map(e => ({
                         //time: e.timestamp,                                                   // as is
                         //time: new Date(e.timestamp).toLocaleString(),                        // just pm/am
-                        time: new Date(e.timestamp).toLocaleString(),  // Use local timezone
+                        time: new Date(e.timestamp.replace(' ', 'T') + 'Z').toLocaleString(),  // changes timezone
                         statusCode: e.http_status,
                         response: e.http_response_time_ms != null
                           ? Number(Number(e.http_response_time_ms).toFixed(2))
