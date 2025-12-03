@@ -27624,4 +27624,16 @@
     <resolved_ip>216.198.79.1</resolved_ip>
     <ip_address>172.182.225.201</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-12-03 18:24:37</timestamp>
+    <whois_expiry>2027-03-10</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>2026-01-27</ssl_expiry>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>103.147</http_response_time_ms>
+    <resolved_ip>216.198.79.65</resolved_ip>
+    <ip_address>172.183.133.243</ip_address>
+  </entry>
 </domain_history>
