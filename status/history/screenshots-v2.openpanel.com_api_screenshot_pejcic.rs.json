@@ -27120,6 +27120,18 @@
       "http_response_time_ms": 599.371,
       "resolved_ip": "216.198.79.1",
       "ip_address": "64.236.142.154"
+    },
+    {
+      "timestamp": "2025-12-03 16:44:49",
+      "whois_expiry": "2027-03-10",
+      "whois_ok": true,
+      "ssl_expiry": "2026-01-27",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 178.875,
+      "resolved_ip": "64.29.17.1",
+      "ip_address": "52.176.139.90"
     }
   ]
 }
