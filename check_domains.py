@@ -196,9 +196,10 @@ def main():
         last_entry = domain_history["history"][-1] if domain_history["history"] else None
         checked_in_last_24h = False
         if last_entry and "timestamp" in last_entry:
-            previous_timestamp = last_entry["timestamp"]
+            timestamp = datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
+            previous_timestamp = datetime.strptime(last_entry["timestamp"], "%Y-%m-%d %H:%M:%S")
             if timestamp - previous_timestamp < timedelta(hours=24):
-                checked_in_last_24h = True
+                checked_in_last_24h = True  
 
         if not checked_in_last_24h:            # use data from previous check
             info = get_whois_info(apex)
