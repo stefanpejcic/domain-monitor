@@ -40818,6 +40818,18 @@
       "http_response_time_ms": 59.903,
       "resolved_ip": "76.76.21.21",
       "ip_address": "4.227.173.113"
+    },
+    {
+      "timestamp": "2025-12-03 17:02:17",
+      "whois_expiry": "2027-03-10",
+      "whois_ok": true,
+      "ssl_expiry": "2026-01-25",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 139.423,
+      "resolved_ip": "76.76.21.21",
+      "ip_address": "172.182.193.133"
     }
   ]
 }
