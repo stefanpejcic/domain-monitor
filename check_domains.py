@@ -8,7 +8,9 @@ import json
 import xml.etree.ElementTree as ET
 import tldextract
 from urllib.parse import urlparse
+import ipaddress
 
+cf_ranges_cache = None  # global cache for Cloudflare IPs
 
 def read_domains():
     with open("domains.txt", "r") as f:
@@ -34,6 +36,35 @@ def get_hostname_port(domain_or_url, default_port=443):
     hostname = parsed.hostname
     port = parsed.port if parsed.port else default_port
     return hostname, port
+
+def get_cloudflare_ips_cached():
+    global cf_ranges_cache
+    if cf_ranges_cache is not None:
+        return cf_ranges_cache
+
+    try:
+        r = requests.get("https://www.cloudflare.com/ips-v4", timeout=5)
+        if r.status_code == 200:
+            cf_list = [line.strip() for line in r.text.splitlines() if line.strip()]
+            cf_ranges_cache = {cidr: ipaddress.IPv4Network(cidr) for cidr in cf_list}
+            print(f"[Cloudflare IPs] Fetched and cached {len(cf_ranges_cache)} ranges")
+            return cf_ranges_cache
+    except Exception as e:
+        print(f"[Cloudflare IPs] Error fetching Cloudflare IP ranges: {e}")
+
+    cf_ranges_cache = {}
+    return cf_ranges_cache
+
+def is_ip_in_cloudflare_cached(ip):
+    cf_dict = get_cloudflare_ips_cached()
+    if not cf_dict:
+        return False
+
+    ip_addr = ipaddress.IPv4Address(ip)
+    for network in cf_dict.values():
+        if ip_addr in network:
+            return True
+    return False
 
 def get_whois_info(domain):
     try:
@@ -291,17 +322,21 @@ def main():
             resolved_ip = None
 
         previous_ip = last_entry.get("resolved_ip") if last_entry else None
-        ip_issue = find_issue(f"IP change for {domain}")
 
         if resolved_ip and previous_ip != resolved_ip:
-            if not ip_issue:
-                create_issue(
-                    f"🚨 IP change detected for {domain} (was {previous_ip})",
-                    f"Domain **{domain}** IP changed from `{previous_ip}` to `{resolved_ip}`"
-                )
+
+            if is_ip_in_cloudflare_cached(resolved_ip):
+                print(f"[DNS] {hostname} resolves to Cloudflare IP {resolved_ip}, ignoring for IP change detection.")
             else:
-                comment_on_issue(ip_issue, f"IP updated to `{resolved_ip}`")
-                ip_issue.edit(title=f"🚨 IP change detected for {domain} (was {previous_ip})")
+                ip_issue = find_issue(f"IP change for {domain}")
+                if not ip_issue:
+                    create_issue(
+                        f"🚨 IP change detected for {domain} (was {previous_ip})",
+                        f"Domain **{domain}** IP changed from `{previous_ip}` to `{resolved_ip}`"
+                    )
+                else:
+                    comment_on_issue(ip_issue, f"IP updated to `{resolved_ip}`")
+                    ip_issue.edit(title=f"🚨 IP change detected for {domain} (was {previous_ip})")
 
         # ---- Checks completed for domain, saving.. ----
         domain_entry = {
