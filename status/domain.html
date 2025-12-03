@@ -411,8 +411,8 @@
                         this.outages = outages;
                         const avgResponse = (this.history.reduce((sum, e) => sum + e.response, 0) / totalChecks).toFixed(2);
                         this.avgResponse = avgResponse;
-                        this.firstChecked = this.history[0].time;
-                        this.lastChecked = this.history[this.history.length - 1].time;
+                        this.firstChecked = this.history[0].rawTime;
+                        this.lastChecked = this.history[this.history.length - 1].rawTime;
                         this.uptimePercentage = (((totalChecks - outages) / totalChecks) * 100).toFixed(2);
 
                         this.$nextTick(() => {
