@@ -207,9 +207,9 @@ def main():
             nameservers = info["nameservers"]
             ssl_exp = get_ssl_expiration(hostname, port)
         else:                                  # run whois check
-            exp_date = last_entry.get("whois_expiry")
-            nameservers = last_entry.get("nameservers")
-            ssl_exp = last_entry.get("ssl_expiry")
+            exp_date = domain_history.get("whois_expiry")
+            nameservers = domain_history.get("nameservers")
+            ssl_exp = domain_history.get("ssl_expiry")
 
         # ---- WHOIS Expiration --- #
         days_left = None
@@ -306,10 +306,7 @@ def main():
         # ---- Checks completed for domain, saving.. ----
         domain_entry = {
             "timestamp": timestamp,
-            "whois_expiry": exp_date.strftime("%Y-%m-%d") if exp_date else None,
             "whois_ok": days_left > days_threshold if days_left is not None else False,
-            "nameservers": nameservers if nameservers else None,
-            "ssl_expiry": ssl_exp.strftime("%Y-%m-%d") if ssl_exp else None,
             "ssl_ok": ssl_days > days_threshold if ssl_days is not None else False,
             "http_status": status,
             "http_ok": status is not None and status < 400,
@@ -317,18 +314,27 @@ def main():
             "resolved_ip": resolved_ip
         }
         
-        # ---- Save JSON for domain ----
-        domain_history["history"].append({**domain_entry, "ip_address": outgoing_ipv4})
+        extra_fields = {
+            "ip_address": outgoing_ipv4,
+            "whois_expiry": exp_date.strftime("%Y-%m-%d") if exp_date else None,
+            "nameservers": nameservers if nameservers else None,
+            "ssl_expiry": ssl_exp.strftime("%Y-%m-%d") if ssl_exp else None
+        }
+
+        # ---- Save JSON for domain --- #
+        domain_history["history"].append({**domain_entry, **extra_fields})
         save_domain_history(domain, domain_history)
+
         # ---- Save XML for domain ----
         tree, root = load_domain_xml(domain)
         entry_xml = ET.SubElement(root, "entry")
-        for key, value in {**domain_entry, "ip_address": outgoing_ipv4}.items():
+        
+        for key, value in {**domain_entry, **extra_fields}.items():
             el = ET.SubElement(entry_xml, key)
             el.text = str(value)
         save_domain_xml(domain, tree)
         # ---- Add domain to the dictionary for combined JSON/XML files ----
-        combined_results["domains"].append({**domain_entry, "domain": domain})
+        combined_results["domains"].append({**domain_entry, **extra_fields, "domain": domain})
 
     # ---- Save combined data to status.json ----
     os.makedirs("status", exist_ok=True)
