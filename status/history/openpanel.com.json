@@ -34638,6 +34638,18 @@
       "http_response_time_ms": 91.461,
       "resolved_ip": "76.76.21.21",
       "ip_address": "20.55.223.177"
+    },
+    {
+      "timestamp": "2025-12-03 03:11:20",
+      "whois_expiry": "2027-03-10",
+      "whois_ok": true,
+      "ssl_expiry": "2026-01-25",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 73.234,
+      "resolved_ip": "76.76.21.21",
+      "ip_address": "52.159.229.168"
     }
   ]
 }
