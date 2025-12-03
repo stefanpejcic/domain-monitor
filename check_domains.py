@@ -42,7 +42,6 @@ def get_whois_info(domain):
         exp = w.expiration_date
         if isinstance(exp, list):  # sometimes a list
             exp = exp[0]
-        print(f"[WHOIS] For {domain} | exp: {exp}")
 
         ns = getattr(w, "nameservers", [])
         if isinstance(ns, str):
