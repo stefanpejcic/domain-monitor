@@ -26928,6 +26928,18 @@
       "http_response_time_ms": 155.59300000000002,
       "resolved_ip": "216.198.79.1",
       "ip_address": "74.249.79.50"
+    },
+    {
+      "timestamp": "2025-12-03 16:12:45",
+      "whois_expiry": "2027-03-10",
+      "whois_ok": true,
+      "ssl_expiry": "2026-01-27",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 88.37,
+      "resolved_ip": "216.198.79.65",
+      "ip_address": "172.214.47.50"
     }
   ]
 }
