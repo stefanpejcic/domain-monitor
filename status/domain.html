@@ -306,6 +306,7 @@
             showAPI: false,
             showCSV: false,
             xmlContent: "",
+            csvContent: "",
             isUp: true,
             lastResponse: 0,
             sslExpiringSoon: false,
@@ -466,15 +467,19 @@
             },
                 
             tableToCSV() {
+                if (this.csvContent) return this.csvContent; // return cached CSV if exists
                 if (!this.history || this.history.length === 0) return "";
-                const headers = ["Checked", "Status", "Response (ms)", "Up?"];
+                
+                const headers = ["Timestamp", "Response code", "Response time (ms)", "Status"];
                 const rows = this.history.map(e => [
                     `"${e.rawTime}"`,
                     `"${e.statusCode}"`,
                     `"${e.response}"`,
-                    `"${e.up ? 'Yes' : 'No'}"`
+                    `"${e.up ? 'Up' : 'Down'}"`
                 ]);
-                return [headers, ...rows].map(r => r.join(",")).join("\n");
+        
+                this.csvContent = [headers, ...rows].map(r => r.join(",")).join("\n");
+                return this.csvContent;
             },
         
             statusColor(code) {
