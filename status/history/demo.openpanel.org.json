@@ -22668,6 +22668,18 @@
       "http_response_time_ms": 109.987,
       "resolved_ip": "193.181.23.225",
       "ip_address": "74.249.79.52"
+    },
+    {
+      "timestamp": "2025-12-03 06:55:18",
+      "whois_expiry": "2027-02-27",
+      "whois_ok": true,
+      "ssl_expiry": "2026-02-12",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 161.487,
+      "resolved_ip": "193.181.23.225",
+      "ip_address": "20.171.51.213"
     }
   ]
 }
