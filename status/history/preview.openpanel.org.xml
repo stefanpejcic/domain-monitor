@@ -26520,4 +26520,16 @@
     <resolved_ip>172.67.182.109</resolved_ip>
     <ip_address>52.225.25.102</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-12-03 15:34:44</timestamp>
+    <whois_expiry>2027-02-27</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>2026-03-01</ssl_expiry>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>672.7919999999999</http_response_time_ms>
+    <resolved_ip>172.67.182.109</resolved_ip>
+    <ip_address>135.237.130.149</ip_address>
+  </entry>
 </domain_history>
