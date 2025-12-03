@@ -313,12 +313,12 @@ def main():
             if nameservers and previous_ns != nameservers:
                 if not ip_issue:
                     create_issue(
-                        f"🚨 Nameservers change detected for {domain} (was {previous_ns})",
+                        f"🚨 Nameservers change detected for {domain} ({nameservers})",
                         f"Domain **{domain}** NS changed from `{previous_ns}` to `{nameservers}`"
                     )
                 else:
                     comment_on_issue(ip_issue, f"NS updated to `{nameservers}`")
-                    ip_issue.edit(title=f"🚨 Nameservers change detected for {domain} (was {previous_ns})")
+                    ip_issue.edit(title=f"🚨 Nameservers change detected for {domain} from `{previous_ns}` to `{nameservers}`")
 
         # ---- Check if IPv4 changed ---- #
         try:
@@ -335,15 +335,15 @@ def main():
             elif is_ip_vercel(resolved_ip):
                 print(f"[DNS] {hostname} resolves to Vercel IP {resolved_ip}, ignoring for IP change detection.")            
             else:
-                ip_issue = find_issue(f"IP change for {domain}")
+                ip_issue = find_issue(f"IP change detected for {domain}")
                 if not ip_issue:
                     create_issue(
-                        f"🚨 IP change detected for {domain} (was {previous_ip})",
+                        f"🚨 IP change detected for {domain} ({resolved_ip})",
                         f"Domain **{domain}** IP changed from `{previous_ip}` to `{resolved_ip}`"
                     )
                 else:
                     comment_on_issue(ip_issue, f"IP updated to `{resolved_ip}`")
-                    ip_issue.edit(title=f"🚨 IP change detected for {domain} (was {previous_ip})")
+                    ip_issue.edit(title=f"🚨 IP change detected for {domain} from `{previous_ip}` to `{resolved_ip}`")
 
         # ---- Checks completed for domain, saving.. ----
         domain_entry = {
