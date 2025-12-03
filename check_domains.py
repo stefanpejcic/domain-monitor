@@ -330,10 +330,9 @@ def main():
         previous_ip = last_entry.get("resolved_ip") if last_entry else None
 
         if resolved_ip and previous_ip != resolved_ip:
-
             if is_ip_in_cloudflare_cached(resolved_ip):
                 print(f"[DNS] {hostname} resolves to Cloudflare IP {resolved_ip}, ignoring for IP change detection.")
-            if is_ip_vercel(resolved_ip):
+            elif is_ip_vercel(resolved_ip):
                 print(f"[DNS] {hostname} resolves to Vercel IP {resolved_ip}, ignoring for IP change detection.")            
             else:
                 ip_issue = find_issue(f"IP change for {domain}")
