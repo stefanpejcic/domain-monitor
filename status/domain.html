@@ -381,11 +381,6 @@
                         const sslExpiryDate = data.ssl_expiry ? new Date(data.ssl_expiry + 'T00:00:00Z') : null;
                         this.sslExpiringSoon = !sslExpiryDate || (sslExpiryDate - now) / (1000 * 60 * 60 * 24) < 7;
                         this.lastssl = sslExpiryDate ? sslExpiryDate.toLocaleDateString(undefined, options) : "N/A";
-                
-                        const domainExpiryDate = data.whois_expiry ? new Date(data.whois_expiry + 'T00:00:00Z') : null;
-                        this.domainExpiringSoon = !domainExpiryDate || (domainExpiryDate - now) / (1000 * 60 * 60 * 24) < 30;
-                        this.lastwhois = domainExpiryDate ? domainExpiryDate.toLocaleDateString(undefined, options) : "N/A";
-
 
                         //  COMBINED STATS
                         this.firstChecked = this.history[0].time;
@@ -393,11 +388,10 @@
                         this.uptimePercentage = (((this.history.length - this.history.filter(e => !e.up).length) / this.history.length) * 100).toFixed(2);
 
                         // WHOIS
-                        const domainExpiryDate = new Date(latestEntry.whois_expiry);
-                        this.domainExpiringSoon = latestEntry.whois_ok === false || (domainExpiryDate - now) / (1000 * 60 * 60 * 24) < 30;
-                        this.lastwhois = latestEntry.whois_expiry
-                            ? new Date(latestEntry.whois_expiry + 'T00:00:00Z').toLocaleDateString(undefined, options)
-                            : "N/A";
+                        const domainExpiryDate = data.whois_expiry ? new Date(data.whois_expiry + 'T00:00:00Z') : null;
+                        this.domainExpiringSoon = !domainExpiryDate || (domainExpiryDate - now) / (1000 * 60 * 60 * 24) < 30;
+                        this.lastwhois = domainExpiryDate ? domainExpiryDate.toLocaleDateString(undefined, options) : "N/A";
+
 
                         // UPTIME
                         const totalChecks = this.history.length;
