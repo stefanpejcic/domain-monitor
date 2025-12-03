@@ -41658,6 +41658,18 @@
       "http_response_time_ms": 273.078,
       "resolved_ip": "216.198.79.1",
       "ip_address": "172.182.211.19"
+    },
+    {
+      "timestamp": "2025-12-03 18:51:17",
+      "whois_expiry": "2026-09-28",
+      "whois_ok": true,
+      "ssl_expiry": "2026-02-26",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 94.079,
+      "resolved_ip": "216.198.79.1",
+      "ip_address": "172.182.225.162"
     }
   ]
 }
