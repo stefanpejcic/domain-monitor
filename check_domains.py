@@ -1,7 +1,7 @@
 import whois
 import requests
 import socket, ssl
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 import os
 import re
 import json
@@ -183,33 +183,34 @@ def main():
     for domain in domains:
         print(f"[PREPARATION] checking domain: {domain}")
 
-        # ---- get hostname and url ----
+        # ---- preparation ----
         hostname, port = get_hostname_port(domain)
-
-        if "://" not in domain:
-            url = f"https://{domain}"
-            #if port != 443:
-            #    url += f":{port}"
-        else:
-            url = domain
-
+        url = f"https://{domain}" if "://" not in domain else domain
 
         now = datetime.utcnow()
         timestamp = now.strftime("%Y-%m-%d %H:%M:%S")
-
-        # ---- WHOIS Expiration ----
-        whois_cache = {}       
         apex = get_apex_domain(domain)
-        if apex in whois_cache:
-            info = whois_cache[apex]
-            print(f"[WHOIS] For {domain} reusing existing info from {apex}")
-        else:
-            info = get_whois_info(apex)
-            whois_cache[apex] = info
 
-        exp_date = info["expiration_date"]
-        nameservers = info["nameservers"]
-        
+        # ---- Read existing JSON and read previous data ----
+        domain_history = load_domain_history(domain)
+        last_entry = domain_history["history"][-1] if domain_history["history"] else None
+        checked_in_last_24h = False
+        if last_entry and "timestamp" in last_entry:
+            previous_timestamp = last_entry["timestamp"]
+            if timestamp - previous_timestamp < timedelta(hours=24):
+                checked_in_last_24h = True
+
+        if not checked_in_last_24h:            # use data from previous check
+            info = get_whois_info(apex)
+            exp_date = info["expiration_date"]
+            nameservers = info["nameservers"]
+            ssl_exp = get_ssl_expiration(hostname, port)
+        else:                                  # run whois check
+            exp_date = last_entry.get("whois_expiry")
+            nameservers = last_entry.get("nameservers")
+            ssl_exp = last_entry.get("ssl_expiry")
+
+        # ---- WHOIS Expiration --- #
         days_left = None
         if exp_date:
             if exp_date.tzinfo is not None:
@@ -229,7 +230,6 @@ def main():
                     close_issue(issue, f"✅ Domain {domain} renewed (expires {exp_date:%Y-%m-%d}, {days_left} days left).")
 
         # ---- SSL Expiration ----
-        ssl_exp = get_ssl_expiration(hostname, port)
         ssl_days = None
         issue = find_issue(f"SSL for {domain}")
         if ssl_exp:
@@ -264,23 +264,15 @@ def main():
             if issue:
                 close_issue(issue, f"✅ {domain} is healthy again (status {status}, response time {resp_time_text}).")
 
-        # ---- Update per-domain JSON ----
-        domain_history = load_domain_history(domain)
 
+
+        
         # ---- Check if NS changed ----
-        last_entry = domain_history["history"][-1] if domain_history["history"] else None
         previous_ns = last_entry.get("nameservers") if last_entry else None
         ip_issue = find_issue(f"Nameservers change detected for {domain}")
         
-        last_reported_ns = None
-        if ip_issue:
-            import re
-            m = re.search(r"\(was ([\d\.]+)\)", ip_issue.title)
-            if m:
-                last_reported_ns = m.group(1)
-        
-        if last_reported_ns:
-            if nameservers and last_reported_ns != resolved_ns:
+        if previous_ns:
+            if nameservers and previous_ns != nameservers:
                 if not ip_issue:
                     create_issue(
                         f"🚨 Nameservers change detected for {domain} (was {previous_ns})",
@@ -296,20 +288,11 @@ def main():
         except Exception as e:
             print(f"[DNS] Error resolving {hostname}: {e}")
             resolved_ip = None
-        """
-        # temporary off
-        last_entry = domain_history["history"][-1] if domain_history["history"] else None
+
         previous_ip = last_entry.get("resolved_ip") if last_entry else None
         ip_issue = find_issue(f"IP change for {domain}")
-        
-        last_reported_ip = None
-        if ip_issue:
-            import re
-            m = re.search(r"\(was ([\d\.]+)\)", ip_issue.title)
-            if m:
-                last_reported_ip = m.group(1)
-        
-        if resolved_ip and last_reported_ip != resolved_ip:
+
+        if resolved_ip and previous_ip != resolved_ip:
             if not ip_issue:
                 create_issue(
                     f"🚨 IP change detected for {domain} (was {previous_ip})",
@@ -318,7 +301,6 @@ def main():
             else:
                 comment_on_issue(ip_issue, f"IP updated to `{resolved_ip}`")
                 ip_issue.edit(title=f"🚨 IP change detected for {domain} (was {previous_ip})")
-        """
 
         # ---- Checks completed for domain, saving.. ----
         domain_entry = {
