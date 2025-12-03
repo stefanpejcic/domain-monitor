@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<domain_history domain="demo.openpanel.org:2087">
+  <entry>
+    <timestamp>2025-12-03 21:21:43</timestamp>
+    <whois_ok>True</whois_ok>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>167.419</http_response_time_ms>
+    <resolved_ip>193.181.23.225</resolved_ip>
+    <ip_address>20.169.74.17</ip_address>
+    <whois_expiry>2027-02-27</whois_expiry>
+    <nameservers>None</nameservers>
+    <ssl_expiry>2026-02-12</ssl_expiry>
+  </entry>
+</domain_history>
