@@ -27888,6 +27888,18 @@
       "http_response_time_ms": 49.623,
       "resolved_ip": "66.33.60.67",
       "ip_address": "172.178.119.26"
+    },
+    {
+      "timestamp": "2025-12-03 18:35:38",
+      "whois_expiry": "2027-03-10",
+      "whois_ok": true,
+      "ssl_expiry": "2026-01-25",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 94.96300000000001,
+      "resolved_ip": "76.76.21.22",
+      "ip_address": "64.236.177.117"
     }
   ]
 }
