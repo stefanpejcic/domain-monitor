@@ -44,10 +44,12 @@ def get_whois_info(domain):
             exp = exp[0]
         print(f"[WHOIS] For {domain} | exp: {exp}")
 
-        ns = w.nameservers if hasattr(w, "nameservers") else []
+        ns = getattr(w, "nameservers", [])
+        if isinstance(ns, str):
+            ns = [ns]
         if ns:
             ns = [n.lower().strip(".") for n in ns]
-        
+
         print(f"[WHOIS] For {domain} | exp: {exp} | NS: {ns}")
         return {"expiration_date": exp, "nameservers": ns}
     except Exception as e:
