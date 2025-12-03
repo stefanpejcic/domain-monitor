@@ -36,11 +36,10 @@ def get_hostname_port(domain_or_url, default_port=443):
     return hostname, port
 
 def get_whois_info(domain):
-    # TODO: also detect ns change
     try:
         w = whois.whois(domain)
         exp = w.expiration_date
-        if isinstance(exp, list):  # sometimes a list
+        if isinstance(exp, list):
             exp = exp[0]
 
         ns = getattr(w, "nameservers", [])
