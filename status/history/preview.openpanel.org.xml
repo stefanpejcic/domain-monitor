@@ -180,4 +180,19 @@
     <nameservers>None</nameservers>
     <ssl_expiry>2026-03-01</ssl_expiry>
   </extra>
+  <entry>
+    <timestamp>2025-12-03 21:43:59</timestamp>
+    <whois_ok>True</whois_ok>
+    <ssl_ok>True</ssl_ok>
+    <http_status>None</http_status>
+    <http_ok>False</http_ok>
+    <http_response_time_ms>None</http_response_time_ms>
+    <resolved_ip>172.67.182.109</resolved_ip>
+  </entry>
+  <extra>
+    <ip_address>52.242.243.96</ip_address>
+    <whois_expiry>2027-02-27</whois_expiry>
+    <nameservers>None</nameservers>
+    <ssl_expiry>2026-03-01</ssl_expiry>
+  </extra>
 </domain_history>
