@@ -2490,4 +2490,19 @@
     <nameservers>None</nameservers>
     <ssl_expiry>2026-02-26</ssl_expiry>
   </extra>
+  <entry>
+    <timestamp>2025-12-03 23:42:36</timestamp>
+    <whois_ok>True</whois_ok>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>268.538</http_response_time_ms>
+    <resolved_ip>216.198.79.1</resolved_ip>
+  </entry>
+  <extra>
+    <ip_address>135.232.208.145</ip_address>
+    <whois_expiry>2026-09-28</whois_expiry>
+    <nameservers>None</nameservers>
+    <ssl_expiry>2026-02-26</ssl_expiry>
+  </extra>
 </domain_history>
