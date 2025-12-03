@@ -305,7 +305,7 @@ def main():
 
         # ---- Checks completed for domain, saving.. ----
         domain_entry = {
-            "timestamp": timestamp,
+            "timestamp": timestamp.strftime("%Y-%m-%d %H:%M:%S") if isinstance(timestamp, datetime) else timestamp,
             "whois_ok": days_left > days_threshold if days_left is not None else False,
             "ssl_ok": ssl_days > days_threshold if ssl_days is not None else False,
             "http_status": status,
