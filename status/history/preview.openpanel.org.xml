@@ -22008,4 +22008,16 @@
     <resolved_ip>172.67.182.109</resolved_ip>
     <ip_address>172.215.209.67</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-12-03 04:36:05</timestamp>
+    <whois_expiry>2027-02-27</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>2026-03-01</ssl_expiry>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>216.66299999999998</http_response_time_ms>
+    <resolved_ip>172.67.182.109</resolved_ip>
+    <ip_address>172.184.213.250</ip_address>
+  </entry>
 </domain_history>
