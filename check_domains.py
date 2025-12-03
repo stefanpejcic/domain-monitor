@@ -11,6 +11,8 @@ from urllib.parse import urlparse
 import ipaddress
 
 cf_ranges_cache = None  # global cache for Cloudflare IPs
+vercel_cidrs = ["76.76.21.21/32", "76.76.21.164/32"]
+vercel_networks = [ipaddress.IPv4Network(cidr) for cidr in vercel_cidrs]
 
 def read_domains():
     with open("domains.txt", "r") as f:
@@ -36,6 +38,10 @@ def get_hostname_port(domain_or_url, default_port=443):
     hostname = parsed.hostname
     port = parsed.port if parsed.port else default_port
     return hostname, port
+
+def is_ip_vercel(ip):
+    ip_addr = ipaddress.IPv4Address(ip)
+    return any(ip_addr in net for net in vercel_networks)
 
 def get_cloudflare_ips_cached():
     global cf_ranges_cache
@@ -327,6 +333,8 @@ def main():
 
             if is_ip_in_cloudflare_cached(resolved_ip):
                 print(f"[DNS] {hostname} resolves to Cloudflare IP {resolved_ip}, ignoring for IP change detection.")
+            if is_ip_vercel(resolved_ip):
+                print(f"[DNS] {hostname} resolves to Vercel IP {resolved_ip}, ignoring for IP change detection.")            
             else:
                 ip_issue = find_issue(f"IP change for {domain}")
                 if not ip_issue:
