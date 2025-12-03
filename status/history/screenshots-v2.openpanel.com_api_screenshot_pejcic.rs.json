@@ -28440,6 +28440,18 @@
       "http_response_time_ms": 157.829,
       "resolved_ip": "64.29.17.1",
       "ip_address": "52.159.229.167"
+    },
+    {
+      "timestamp": "2025-12-03 19:09:32",
+      "whois_expiry": "2027-03-10",
+      "whois_ok": true,
+      "ssl_expiry": "2026-01-27",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 171.53199999999998,
+      "resolved_ip": "64.29.17.1",
+      "ip_address": "52.190.141.35"
     }
   ]
 }
