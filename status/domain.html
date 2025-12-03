@@ -469,7 +469,7 @@
                 if (!this.history || this.history.length === 0) return "";
                 const headers = ["Checked", "Status", "Response (ms)", "Up?"];
                 const rows = this.history.map(e => [
-                    `"${e.time}"`,
+                    `"${e.rawTime}"`,
                     `"${e.statusCode}"`,
                     `"${e.response}"`,
                     `"${e.up ? 'Yes' : 'No'}"`
