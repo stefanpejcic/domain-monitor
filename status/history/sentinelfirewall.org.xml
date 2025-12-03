@@ -41520,4 +41520,16 @@
     <resolved_ip>216.198.79.1</resolved_ip>
     <ip_address>64.236.176.146</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-12-03 19:07:38</timestamp>
+    <whois_expiry>2026-09-28</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>2026-02-26</ssl_expiry>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>270.18399999999997</http_response_time_ms>
+    <resolved_ip>216.198.79.1</resolved_ip>
+    <ip_address>172.178.118.195</ip_address>
+  </entry>
 </domain_history>
