@@ -43338,6 +43338,19 @@
       "http_response_time_ms": 29.752000000000002,
       "resolved_ip": "172.67.182.109",
       "ip_address": "52.159.245.145"
+    },
+    {
+      "timestamp": "2025-12-03 20:42:27",
+      "whois_expiry": "2027-02-27",
+      "whois_ok": true,
+      "nameservers": null,
+      "ssl_expiry": "2026-02-28",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 133.397,
+      "resolved_ip": "172.67.182.109",
+      "ip_address": "57.151.138.246"
     }
   ]
 }
