@@ -11,7 +11,7 @@ from urllib.parse import urlparse
 import ipaddress
 
 cf_ranges_cache = None  # global cache for Cloudflare IPs
-vercel_cidrs = ["76.76.21.0/24", "64.29.17.0/24"]
+vercel_cidrs = ["76.76.21.0/24", "64.29.17.0/24", "66.33.60.0/24", "216.198.79.0/24"]
 vercel_networks = [ipaddress.IPv4Network(cidr) for cidr in vercel_cidrs]
 
 def read_domains():
