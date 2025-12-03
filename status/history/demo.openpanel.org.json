@@ -29860,6 +29860,19 @@
       "http_response_time_ms": 159.702,
       "resolved_ip": "193.181.23.225",
       "ip_address": "172.182.225.86"
+    },
+    {
+      "timestamp": "2025-12-03 20:45:28",
+      "whois_expiry": "2027-02-27",
+      "whois_ok": true,
+      "nameservers": null,
+      "ssl_expiry": "2026-02-12",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 164.39999999999998,
+      "resolved_ip": "193.181.23.225",
+      "ip_address": "172.182.213.148"
     }
   ]
 }
