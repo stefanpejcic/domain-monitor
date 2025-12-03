@@ -492,8 +492,8 @@
 
             showTooltip(e, entry) {
                 this.tooltip.show = true;
-                if(entry.time){ 
-                    const dateTime = new Date(entry.time).toLocaleString();
+                if(entry.rawTime){ 
+                    const dateTime = new Date(entry.rawTime).toLocaleString();
                     const resp = entry.response != null ? entry.response.toFixed(2) : "N/A";
                     this.tooltip.text = `${dateTime}\nStatus: ${entry.statusCode} | Response: ${resp} ms`;
                 } else {
