@@ -207,13 +207,9 @@ def main():
             nameservers = info["nameservers"]
             ssl_exp = get_ssl_expiration(hostname, port)
         else:                                  # run whois check
-            exp_date_str = domain_history.get("whois_expiry")
-            if exp_date_str:
-                exp_date = datetime.strptime(exp_date_str, "%Y-%m-%d")
-            else:
-                exp_date = None            
+            exp_date = datetime.strptime(domain_history["whois_expiry"], "%Y-%m-%d") if domain_history.get("whois_expiry") else None       
             nameservers = domain_history.get("nameservers")
-            ssl_exp = domain_history.get("ssl_expiry")
+            ssl_exp = datetime.strptime(domain_history["ssl_expiry"], "%Y-%m-%d") if domain_history.get("ssl_expiry") else None
 
         # ---- WHOIS Expiration --- #
         days_left = None
