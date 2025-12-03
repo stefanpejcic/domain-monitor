@@ -37740,4 +37740,16 @@
     <resolved_ip>216.198.79.1</resolved_ip>
     <ip_address>13.83.162.1</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-12-03 11:13:30</timestamp>
+    <whois_expiry>2026-09-28</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>2026-02-26</ssl_expiry>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>71.41699999999999</http_response_time_ms>
+    <resolved_ip>216.198.79.1</resolved_ip>
+    <ip_address>48.214.53.68</ip_address>
+  </entry>
 </domain_history>
