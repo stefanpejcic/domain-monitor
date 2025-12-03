@@ -53,12 +53,14 @@ The workflow will:
 
 
 ## TODO
-- detect nameserver changes and open issues
-- add ignore option for ip changes when cloudflare proxy is used
+- ~detect nameserver changes and open issues~
+- ~add ignore option for ip changes when cloudflare proxy is used~
+- ~add ignore option for ip changes when vercel is used~
 - record whois data
 - create screenshot when response code >400
 - tag in comment or auto-assign isuses
 - setup assigments per domain
-- if multiple domains (sub dir or domain) of dame domain, reuse ecisting whois data
+- if multiple domains (sub dir or domain) of same domain, reuse existing whois data
+- implement https://raw.githubusercontent.com/stefanpejcic/vercel-ipv4/refs/heads/main/list.txt
 - 
-- 
+implement 
