@@ -174,7 +174,6 @@
 
 <dl class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
 
-
     <div class="relative w-full rounded-lg border p-6 text-left shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900" >
         <dt class="text-sm font-medium text-gray-500 dark:text-gray-500">Status code</dt>
         <dd class="text-3xl font-semibold text-gray-900 dark:text-gray-50" x-text="domain.http_status"></dd>
@@ -352,7 +351,25 @@ function domainMonitor() {
       const data = await res.json();
       this.ip_address = data.ip_address;
       this.lastUpdated = data.last_updated;
-      this.domains = data.domains.map(d => ({ ...d, open: !(d.http_ok && d.whois_ok && d.ssl_ok) }));
+      this.domains = data.domains.map(d => {
+        const h = d.history_entry;
+        return {
+          domain: d.domain,
+          ip_address: d.ip_address,
+          whois_expiry: d.whois_expiry,
+          ssl_expiry: d.ssl_expiry,
+          nameservers: d.nameservers,
+          open: !(h.http_ok && h.whois_ok && h.ssl_ok),
+          http_status: h.http_status,
+          http_ok: h.http_ok,
+          whois_ok: h.whois_ok,
+          ssl_ok: h.ssl_ok,
+          http_response_time_ms: h.http_response_time_ms,
+          timestamp: h.timestamp,
+          resolved_ip: h.resolved_ip
+        };
+      });
+     
       document.title = `Domain Monitor — (${this.domains.length} domain${this.domains.length !== 1 ? 's' : ''})`;  // update browser tab
     }
   }
