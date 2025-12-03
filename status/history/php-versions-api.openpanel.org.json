@@ -28044,6 +28044,18 @@
       "http_response_time_ms": 40.696999999999996,
       "resolved_ip": "172.67.182.109",
       "ip_address": "172.184.191.160"
+    },
+    {
+      "timestamp": "2025-12-03 18:43:41",
+      "whois_expiry": "2027-02-27",
+      "whois_ok": true,
+      "ssl_expiry": "2026-02-28",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 49.327999999999996,
+      "resolved_ip": "104.21.75.224",
+      "ip_address": "52.157.2.243"
     }
   ]
 }
