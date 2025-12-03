@@ -37170,6 +37170,18 @@
       "http_response_time_ms": 68.58200000000001,
       "resolved_ip": "216.198.79.1",
       "ip_address": "64.236.135.3"
+    },
+    {
+      "timestamp": "2025-12-03 09:11:30",
+      "whois_expiry": "2026-09-28",
+      "whois_ok": true,
+      "ssl_expiry": "2026-02-26",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 131.435,
+      "resolved_ip": "216.198.79.1",
+      "ip_address": "52.173.181.25"
     }
   ]
 }
