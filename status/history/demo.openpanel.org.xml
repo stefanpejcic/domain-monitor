@@ -26040,4 +26040,16 @@
     <resolved_ip>193.181.23.225</resolved_ip>
     <ip_address>172.184.211.240</ip_address>
   </entry>
+  <entry>
+    <timestamp>2025-12-03 13:59:59</timestamp>
+    <whois_expiry>2027-02-27</whois_expiry>
+    <whois_ok>True</whois_ok>
+    <ssl_expiry>2026-02-12</ssl_expiry>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>160.125</http_response_time_ms>
+    <resolved_ip>193.181.23.225</resolved_ip>
+    <ip_address>20.169.72.19</ip_address>
+  </entry>
 </domain_history>

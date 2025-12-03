@@ -26040,6 +26040,18 @@
       "http_response_time_ms": 677.8610000000001,
       "resolved_ip": "104.21.75.224",
       "ip_address": "172.184.211.240"
+    },
+    {
+      "timestamp": "2025-12-03 14:00:01",
+      "whois_expiry": "2027-02-27",
+      "whois_ok": true,
+      "ssl_expiry": "2026-03-01",
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 1260.102,
+      "resolved_ip": "104.21.75.224",
+      "ip_address": "20.169.72.19"
     }
   ]
 }
