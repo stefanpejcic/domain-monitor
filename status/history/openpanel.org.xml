@@ -5535,4 +5535,19 @@
     <nameservers>None</nameservers>
     <ssl_expiry>2026-02-28</ssl_expiry>
   </extra>
+  <entry>
+    <timestamp>2025-12-04 05:12:22</timestamp>
+    <whois_ok>True</whois_ok>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>179.32899999999998</http_response_time_ms>
+    <resolved_ip>172.67.182.109</resolved_ip>
+  </entry>
+  <extra>
+    <ip_address>20.172.6.66</ip_address>
+    <whois_expiry>2027-02-27</whois_expiry>
+    <nameservers>None</nameservers>
+    <ssl_expiry>2026-02-28</ssl_expiry>
+  </extra>
 </domain_history>
