@@ -6420,4 +6420,19 @@
     <nameservers>None</nameservers>
     <ssl_expiry>2026-01-27</ssl_expiry>
   </extra>
+  <entry>
+    <timestamp>2025-12-04 05:55:37</timestamp>
+    <whois_ok>True</whois_ok>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>157.743</http_response_time_ms>
+    <resolved_ip>76.76.21.98</resolved_ip>
+  </entry>
+  <extra>
+    <ip_address>172.182.225.192</ip_address>
+    <whois_expiry>2027-03-10</whois_expiry>
+    <nameservers>None</nameservers>
+    <ssl_expiry>2026-01-27</ssl_expiry>
+  </extra>
 </domain_history>
