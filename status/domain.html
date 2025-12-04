@@ -370,7 +370,9 @@ get uptimeDuration() {
 
             async init() {
                 try {
-                    const domainParam = new URLSearchParams(window.location.search).get('domain');
+                    const params = new URLSearchParams(window.location.search);
+                    const domainParam = params.get('domain');
+                    const rangeParam = params.get('range');
                     if (!domainParam) {
                         window.location.href = "index.html";
                         return;
@@ -380,8 +382,11 @@ get uptimeDuration() {
                     this.safeDomain = sanitizeFilename(this.domain);
                     document.title = `${this.domain} — Checking..`;                           // browser tab title
 
+                    if (rangeParam) {
+                        this.selectedRange = rangeParam;                                      // &range=7d
+                    }
+                              
                     const res = await fetch(`history/${this.safeDomain}.json`);
-
                     if (!res.ok) {
                       window.location.href = "index.html";
                       return;
@@ -403,6 +408,8 @@ get uptimeDuration() {
                         this.fullFirstChecked = this.fullHistory[0].rawTime;
                         this.fullLastChecked = this.fullHistory[this.fullHistory.length - 1].rawTime;
                     }
+
+                  this.applyRange();                                                           // apply range on page load if in uri params
 
 
                   
@@ -530,7 +537,10 @@ get uptimeDuration() {
                     });
                 }
             
-                // Recalculate summary fields after filtering
+                const url = new URL(window.location);
+                url.searchParams.set('range', this.selectedRange);
+                window.history.replaceState({}, '', url);
+
                 this.recalculateSummary();
             },
 
