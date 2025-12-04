@@ -8046,9 +8046,18 @@
       "http_ok": true,
       "http_response_time_ms": 208.066,
       "resolved_ip": "216.198.79.1"
+    },
+    {
+      "timestamp": "2025-12-04 13:32:25",
+      "whois_ok": true,
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 281.949,
+      "resolved_ip": "216.198.79.1"
     }
   ],
-  "ip_address": "13.83.166.245",
+  "ip_address": "172.178.119.120",
   "whois_expiry": "2026-09-28",
   "nameservers": null,
   "ssl_expiry": "2026-02-26"
