@@ -409,11 +409,7 @@ get uptimeDuration() {
                         this.fullLastChecked = this.fullHistory[this.fullHistory.length - 1].rawTime;
                     }
 
-                  this.applyRange();                                                           // apply range on page load if in uri params
-
-
-                  
-                  this.history = this.fullHistory;
+                    this.applyRange();                                                          // set history and apply range
                   
                     if (this.history.length > 0) {
                         const latestEntry = this.history[this.history.length - 1];
