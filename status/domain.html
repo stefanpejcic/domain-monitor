@@ -150,8 +150,8 @@
             </div>
 
             <div class="mt-3 flex items-center justify-between text-sm text-gray-500 dark:text-gray-500">
-                <span>First checked: <span x-text="timeAgo(firstChecked)"></span></span>
-                <span>Last checked: <span x-text="timeAgo(lastChecked)"></span></span>
+                <span>First checked: <span x-text="timeAgo(fullFirstChecked)"></span></span>
+                <span>Last checked: <span x-text="timeAgo(fullLastChecked)"></span></span>
             </div>
 
             <!-- Legends and switch view -->
@@ -335,38 +335,36 @@
             lastChecked: '',
             copied: false,
             
-            get uptimeDuration() {
-                if (!this.firstChecked || !this.lastChecked) return "N/A";
-            
-                const start = new Date(this.firstChecked);
-                const end = new Date(this.lastChecked);
-                let diffMs = end - start;
-            
-                const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-                diffMs -= days * 1000 * 60 * 60 * 24;
-            
-                const hours = Math.floor(diffMs / (1000 * 60 * 60));
-                diffMs -= hours * 1000 * 60 * 60;
-            
-                const minutes = Math.floor(diffMs / (1000 * 60));
-                // seconds ignored
-            
-                let parts = [];
-            
-                if (days > 0) {
-                    parts.push(`${days} day${days > 1 ? 's' : ''}`);
-                    if (minutes > 0) parts.push(`${minutes} min`);
-                } else if (hours > 0) {
-                    parts.push(`${hours} hour${hours > 1 ? 's' : ''}`);
-                    if (minutes > 0) parts.push(`${minutes} min`);
-                } else if (minutes > 0) {
-                    parts.push(`${minutes} min`);
-                } else {
-                    parts.push("0 min");
-                }
-            
-                return parts.join(', ');
-            },
+get uptimeDuration() {
+    if (!this.fullFirstChecked || !this.fullLastChecked) return "N/A";
+    const start = new Date(this.fullFirstChecked);
+    const end = new Date(this.fullLastChecked);
+    let diffMs = end - start;
+
+    const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    diffMs -= days * 1000 * 60 * 60 * 24;
+
+    const hours = Math.floor(diffMs / (1000 * 60 * 60));
+    diffMs -= hours * 1000 * 60 * 60;
+
+    const minutes = Math.floor(diffMs / (1000 * 60));
+
+    let parts = [];
+
+    if (days > 0) {
+        parts.push(`${days} day${days > 1 ? 's' : ''}`);
+        if (minutes > 0) parts.push(`${minutes} min`);
+    } else if (hours > 0) {
+        parts.push(`${hours} hour${hours > 1 ? 's' : ''}`);
+        if (minutes > 0) parts.push(`${minutes} min`);
+    } else if (minutes > 0) {
+        parts.push(`${minutes} min`);
+    } else {
+        parts.push("0 min");
+    }
+
+    return parts.join(', ');
+},
 
             async init() {
                 try {
@@ -399,8 +397,15 @@
                     }));
 
 
-                  this.history = this.fullHistory;
+                    if (this.fullHistory.length > 0) {
+                        this.fullFirstChecked = this.fullHistory[0].rawTime;
+                        this.fullLastChecked = this.fullHistory[this.fullHistory.length - 1].rawTime;
+                    }
 
+
+                  
+                  this.history = this.fullHistory;
+                  
                     if (this.history.length > 0) {
                         const latestEntry = this.history[this.history.length - 1];
                     
@@ -433,8 +438,6 @@
                         this.outages = outages;
                         const avgResponse = (this.history.reduce((sum, e) => sum + e.response, 0) / totalChecks).toFixed(2);
                         this.avgResponse = avgResponse;
-                        this.firstChecked = this.history[0].rawTime;
-                        this.lastChecked = this.history[this.history.length - 1].rawTime;
                         this.uptimePercentage = (((totalChecks - outages) / totalChecks) * 100).toFixed(2);
 
                         this.$nextTick(() => {
