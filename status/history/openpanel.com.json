@@ -6408,9 +6408,18 @@
       "http_ok": true,
       "http_response_time_ms": 156.233,
       "resolved_ip": "76.76.21.21"
+    },
+    {
+      "timestamp": "2025-12-04 10:52:22",
+      "whois_ok": true,
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 105.987,
+      "resolved_ip": "76.76.21.21"
     }
   ],
-  "ip_address": "20.55.223.183",
+  "ip_address": "20.236.100.6",
   "whois_expiry": "2027-03-10",
   "nameservers": null,
   "ssl_expiry": "2026-01-25"
