@@ -9870,4 +9870,19 @@
     <nameservers>None</nameservers>
     <ssl_expiry>2026-03-01</ssl_expiry>
   </extra>
+  <entry>
+    <timestamp>2025-12-04 09:18:29</timestamp>
+    <whois_ok>True</whois_ok>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>186.28900000000002</http_response_time_ms>
+    <resolved_ip>104.21.75.224</resolved_ip>
+  </entry>
+  <extra>
+    <ip_address>13.83.216.97</ip_address>
+    <whois_expiry>2027-02-27</whois_expiry>
+    <nameservers>None</nameservers>
+    <ssl_expiry>2026-03-01</ssl_expiry>
+  </extra>
 </domain_history>
