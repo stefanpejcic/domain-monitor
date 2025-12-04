@@ -4248,9 +4248,18 @@
       "http_ok": true,
       "http_response_time_ms": 60.601,
       "resolved_ip": "66.33.60.130"
+    },
+    {
+      "timestamp": "2025-12-04 06:37:45",
+      "whois_ok": true,
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 158.119,
+      "resolved_ip": "76.76.21.142"
     }
   ],
-  "ip_address": "172.178.118.193",
+  "ip_address": "20.161.68.241",
   "whois_expiry": "2027-03-10",
   "nameservers": null,
   "ssl_expiry": "2026-01-25"
