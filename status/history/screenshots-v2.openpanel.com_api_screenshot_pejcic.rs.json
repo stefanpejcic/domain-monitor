@@ -11232,9 +11232,18 @@
       "http_ok": true,
       "http_response_time_ms": 289.65000000000003,
       "resolved_ip": "64.29.17.1"
+    },
+    {
+      "timestamp": "2025-12-04 16:20:13",
+      "whois_ok": true,
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 1031.599,
+      "resolved_ip": "64.29.17.1"
     }
   ],
-  "ip_address": "52.159.227.2",
+  "ip_address": "64.236.141.214",
   "whois_expiry": "2027-03-10",
   "nameservers": null,
   "ssl_expiry": "2026-01-27"
