@@ -9360,9 +9360,18 @@
       "http_ok": true,
       "http_response_time_ms": 179.288,
       "resolved_ip": "76.76.21.164"
+    },
+    {
+      "timestamp": "2025-12-04 14:29:55",
+      "whois_ok": true,
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 273.68,
+      "resolved_ip": "76.76.21.123"
     }
   ],
-  "ip_address": "132.196.82.129",
+  "ip_address": "132.196.19.19",
   "whois_expiry": "2027-03-10",
   "nameservers": null,
   "ssl_expiry": "2026-01-27"
