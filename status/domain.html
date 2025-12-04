@@ -22,24 +22,26 @@
 
         <div class="flex w-full justify-between mt-2 text-xs">
           <a href="index.html" class="hover:underline">← Back to main status page</a>
-          <div class="flex items-center gap-2">
-            <label class="text-sm">Range:</label>
-            <select x-model="selectedRange" @change="applyRange()" class="text-black px-2 py-1 rounded">
-                <option value="1h">1h</option>
-                <option value="3h">3h</option>
-                <option value="6h">6h</option>
-                <option value="12h">12h</option>
-                <option value="24h" selected>24h</option>
-                <option value="2d">2d</option>
-                <option value="7d">7d</option>
-                <option value="14d">14d</option>
-                <option value="30d">30d</option>
-                <option value="3mo">3mo</option>
-                <option value="6mo">6mo</option>
-                <option value="1yr">1yr</option>
-                <option value="all">All</option>
-            </select>
+          <div class="flex items-center gap-2 bg-gray-900 p-2 rounded">
+              <label class="text-sm text-gray-300">Range:</label>
+              <select x-model="selectedRange" @change="applyRange()" class="appearance-none bg-gray-800 text-gray-200 px-2 py-1 rounded border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <option value="1h">1h</option>
+                  <option value="3h">3h</option>
+                  <option value="6h">6h</option>
+                  <option value="12h">12h</option>
+                  <option value="24h" selected>24h</option>
+                  <option value="2d">2d</option>
+                  <option value="7d">7d</option>
+                  <option value="14d">14d</option>
+                  <option value="30d">30d</option>
+                  <option value="3mo">3mo</option>
+                  <option value="6mo">6mo</option>
+                  <option value="1yr">1yr</option>
+                  <option value="all">All</option>
+              </select>
           </div>
+
+          
         </div>
     
         <!-- Header -->
