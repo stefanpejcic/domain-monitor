@@ -13350,4 +13350,19 @@
     <nameservers>None</nameservers>
     <ssl_expiry>2026-02-12</ssl_expiry>
   </extra>
+  <entry>
+    <timestamp>2025-12-04 13:30:52</timestamp>
+    <whois_ok>True</whois_ok>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>127.50600000000001</http_response_time_ms>
+    <resolved_ip>193.181.23.225</resolved_ip>
+  </entry>
+  <extra>
+    <ip_address>52.154.19.224</ip_address>
+    <whois_expiry>2027-02-27</whois_expiry>
+    <nameservers>None</nameservers>
+    <ssl_expiry>2026-02-12</ssl_expiry>
+  </extra>
 </domain_history>
