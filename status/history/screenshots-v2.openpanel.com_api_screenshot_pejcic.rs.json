@@ -8532,9 +8532,18 @@
       "http_ok": true,
       "http_response_time_ms": 187.531,
       "resolved_ip": "64.29.17.1"
+    },
+    {
+      "timestamp": "2025-12-04 13:52:53",
+      "whois_ok": true,
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 227.865,
+      "resolved_ip": "64.29.17.1"
     }
   ],
-  "ip_address": "135.232.185.22",
+  "ip_address": "20.109.38.227",
   "whois_expiry": "2027-03-10",
   "nameservers": null,
   "ssl_expiry": "2026-01-27"
