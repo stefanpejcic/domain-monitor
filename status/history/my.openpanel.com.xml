@@ -9975,4 +9975,19 @@
     <nameservers>None</nameservers>
     <ssl_expiry>2026-01-05</ssl_expiry>
   </extra>
+  <entry>
+    <timestamp>2025-12-04 09:20:55</timestamp>
+    <whois_ok>True</whois_ok>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>641.6279999999999</http_response_time_ms>
+    <resolved_ip>185.193.66.252</resolved_ip>
+  </entry>
+  <extra>
+    <ip_address>13.83.162.34</ip_address>
+    <whois_expiry>2027-03-10</whois_expiry>
+    <nameservers>None</nameservers>
+    <ssl_expiry>2026-01-05</ssl_expiry>
+  </extra>
 </domain_history>
