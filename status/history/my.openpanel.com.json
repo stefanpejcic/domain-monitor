@@ -4932,9 +4932,18 @@
       "http_ok": true,
       "http_response_time_ms": 639.3050000000001,
       "resolved_ip": "185.193.66.252"
+    },
+    {
+      "timestamp": "2025-12-04 07:41:48",
+      "whois_ok": true,
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 574.001,
+      "resolved_ip": "185.193.66.252"
     }
   ],
-  "ip_address": "52.176.19.192",
+  "ip_address": "128.24.161.20",
   "whois_expiry": "2027-03-10",
   "nameservers": null,
   "ssl_expiry": "2026-01-05"
