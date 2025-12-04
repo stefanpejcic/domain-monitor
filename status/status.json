@@ -3,15 +3,15 @@
     {
       "domain": "openpanel.com",
       "history_entry": {
-        "timestamp": "2025-12-04 17:36:50",
+        "timestamp": "2025-12-04 17:37:18",
         "whois_ok": true,
         "ssl_ok": true,
         "http_status": 200,
         "http_ok": true,
-        "http_response_time_ms": 240.679,
+        "http_response_time_ms": 140.33100000000002,
         "resolved_ip": "76.76.21.21"
       },
-      "ip_address": "52.176.138.201",
+      "ip_address": "68.220.57.97",
       "whois_expiry": "2027-03-10",
       "nameservers": null,
       "ssl_expiry": "2026-01-25"
@@ -19,15 +19,15 @@
     {
       "domain": "https://sentinelfirewall.org",
       "history_entry": {
-        "timestamp": "2025-12-04 17:36:51",
+        "timestamp": "2025-12-04 17:37:18",
         "whois_ok": true,
         "ssl_ok": true,
         "http_status": 200,
         "http_ok": true,
-        "http_response_time_ms": 332.418,
+        "http_response_time_ms": 251.091,
         "resolved_ip": "216.198.79.1"
       },
-      "ip_address": "52.176.138.201",
+      "ip_address": "68.220.57.97",
       "whois_expiry": "2026-09-28",
       "nameservers": null,
       "ssl_expiry": "2026-02-26"
@@ -35,15 +35,15 @@
     {
       "domain": "openpanel.org",
       "history_entry": {
-        "timestamp": "2025-12-04 17:36:51",
+        "timestamp": "2025-12-04 17:37:19",
         "whois_ok": true,
         "ssl_ok": true,
         "http_status": 200,
         "http_ok": true,
-        "http_response_time_ms": 111.915,
-        "resolved_ip": "104.21.75.224"
+        "http_response_time_ms": 114.39,
+        "resolved_ip": "172.67.182.109"
       },
-      "ip_address": "52.176.138.201",
+      "ip_address": "68.220.57.97",
       "whois_expiry": "2027-02-27",
       "nameservers": null,
       "ssl_expiry": "2026-02-28"
@@ -51,15 +51,15 @@
     {
       "domain": "ip.openpanel.com",
       "history_entry": {
-        "timestamp": "2025-12-04 17:36:52",
+        "timestamp": "2025-12-04 17:37:19",
         "whois_ok": true,
         "ssl_ok": true,
         "http_status": 200,
         "http_ok": true,
-        "http_response_time_ms": 240.422,
-        "resolved_ip": "76.76.21.241"
+        "http_response_time_ms": 115.702,
+        "resolved_ip": "66.33.60.35"
       },
-      "ip_address": "52.176.138.201",
+      "ip_address": "68.220.57.97",
       "whois_expiry": "2027-03-10",
       "nameservers": null,
       "ssl_expiry": "2026-01-27"
@@ -67,15 +67,15 @@
     {
       "domain": "my.openpanel.com",
       "history_entry": {
-        "timestamp": "2025-12-04 17:36:52",
+        "timestamp": "2025-12-04 17:37:19",
         "whois_ok": true,
         "ssl_ok": true,
         "http_status": 200,
         "http_ok": true,
-        "http_response_time_ms": 560.542,
+        "http_response_time_ms": 682.08,
         "resolved_ip": "185.193.66.252"
       },
-      "ip_address": "52.176.138.201",
+      "ip_address": "68.220.57.97",
       "whois_expiry": "2027-03-10",
       "nameservers": null,
       "ssl_expiry": "2026-01-05"
@@ -83,15 +83,15 @@
     {
       "domain": "dev.openpanel.com",
       "history_entry": {
-        "timestamp": "2025-12-04 17:36:53",
+        "timestamp": "2025-12-04 17:37:20",
         "whois_ok": true,
         "ssl_ok": true,
         "http_status": 200,
         "http_ok": true,
-        "http_response_time_ms": 241.606,
-        "resolved_ip": "76.76.21.164"
+        "http_response_time_ms": 135.999,
+        "resolved_ip": "66.33.60.35"
       },
-      "ip_address": "52.176.138.201",
+      "ip_address": "68.220.57.97",
       "whois_expiry": "2027-03-10",
       "nameservers": null,
       "ssl_expiry": "2026-01-25"
@@ -99,15 +99,15 @@
     {
       "domain": "demo.openpanel.org:2087",
       "history_entry": {
-        "timestamp": "2025-12-04 17:36:53",
+        "timestamp": "2025-12-04 17:37:20",
         "whois_ok": true,
         "ssl_ok": true,
         "http_status": 200,
         "http_ok": true,
-        "http_response_time_ms": 130.98399999999998,
+        "http_response_time_ms": 172.704,
         "resolved_ip": "193.181.23.225"
       },
-      "ip_address": "52.176.138.201",
+      "ip_address": "68.220.57.97",
       "whois_expiry": "2027-02-27",
       "nameservers": null,
       "ssl_expiry": "2026-02-12"
@@ -115,15 +115,15 @@
     {
       "domain": "community.openpanel.org",
       "history_entry": {
-        "timestamp": "2025-12-04 17:36:54",
+        "timestamp": "2025-12-04 17:37:21",
         "whois_ok": true,
         "ssl_ok": true,
         "http_status": 200,
         "http_ok": true,
-        "http_response_time_ms": 1070.28,
+        "http_response_time_ms": 773.3149999999999,
         "resolved_ip": "104.21.75.224"
       },
-      "ip_address": "52.176.138.201",
+      "ip_address": "68.220.57.97",
       "whois_expiry": "2027-02-27",
       "nameservers": null,
       "ssl_expiry": "2026-03-01"
@@ -131,15 +131,15 @@
     {
       "domain": "preview.openpanel.org",
       "history_entry": {
-        "timestamp": "2025-12-04 17:36:55",
+        "timestamp": "2025-12-04 17:37:25",
         "whois_ok": true,
         "ssl_ok": true,
         "http_status": 200,
         "http_ok": true,
-        "http_response_time_ms": 205.152,
+        "http_response_time_ms": 207.039,
         "resolved_ip": "104.21.75.224"
       },
-      "ip_address": "52.176.138.201",
+      "ip_address": "68.220.57.97",
       "whois_expiry": "2027-02-27",
       "nameservers": null,
       "ssl_expiry": "2026-03-01"
@@ -147,15 +147,15 @@
     {
       "domain": "php-versions-api.openpanel.org",
       "history_entry": {
-        "timestamp": "2025-12-04 17:36:56",
+        "timestamp": "2025-12-04 17:37:25",
         "whois_ok": true,
         "ssl_ok": true,
         "http_status": 200,
         "http_ok": true,
-        "http_response_time_ms": 295.999,
+        "http_response_time_ms": 215.43699999999998,
         "resolved_ip": "172.67.182.109"
       },
-      "ip_address": "52.176.138.201",
+      "ip_address": "68.220.57.97",
       "whois_expiry": "2027-02-27",
       "nameservers": null,
       "ssl_expiry": "2026-02-28"
@@ -163,20 +163,20 @@
     {
       "domain": "screenshots-v2.openpanel.com/api/screenshot/pejcic.rs",
       "history_entry": {
-        "timestamp": "2025-12-04 17:36:57",
+        "timestamp": "2025-12-04 17:37:26",
         "whois_ok": true,
         "ssl_ok": true,
         "http_status": 200,
         "http_ok": true,
-        "http_response_time_ms": 210.79899999999998,
-        "resolved_ip": "64.29.17.1"
+        "http_response_time_ms": 303.121,
+        "resolved_ip": "64.29.17.65"
       },
-      "ip_address": "52.176.138.201",
+      "ip_address": "68.220.57.97",
       "whois_expiry": "2027-03-10",
       "nameservers": null,
       "ssl_expiry": "2026-01-27"
     }
   ],
-  "last_updated": "2025-12-04 17:36:50",
-  "ip_address": "52.176.138.201"
+  "last_updated": "2025-12-04 17:37:18",
+  "ip_address": "68.220.57.97"
 }
