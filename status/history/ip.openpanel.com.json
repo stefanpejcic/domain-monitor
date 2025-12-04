@@ -9090,9 +9090,18 @@
       "http_ok": true,
       "http_response_time_ms": 249.48999999999998,
       "resolved_ip": "66.33.60.67"
+    },
+    {
+      "timestamp": "2025-12-04 14:17:27",
+      "whois_ok": true,
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 213.79899999999998,
+      "resolved_ip": "76.76.21.61"
     }
   ],
-  "ip_address": "172.212.167.83",
+  "ip_address": "172.215.209.185",
   "whois_expiry": "2027-03-10",
   "nameservers": null,
   "ssl_expiry": "2026-01-27"
