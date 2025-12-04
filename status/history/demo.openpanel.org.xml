@@ -13755,4 +13755,19 @@
     <nameservers>None</nameservers>
     <ssl_expiry>2026-02-12</ssl_expiry>
   </extra>
+  <entry>
+    <timestamp>2025-12-04 13:41:01</timestamp>
+    <whois_ok>True</whois_ok>
+    <ssl_ok>True</ssl_ok>
+    <http_status>200</http_status>
+    <http_ok>True</http_ok>
+    <http_response_time_ms>169.793</http_response_time_ms>
+    <resolved_ip>193.181.23.225</resolved_ip>
+  </entry>
+  <extra>
+    <ip_address>20.169.73.145</ip_address>
+    <whois_expiry>2027-02-27</whois_expiry>
+    <nameservers>None</nameservers>
+    <ssl_expiry>2026-02-12</ssl_expiry>
+  </extra>
 </domain_history>
