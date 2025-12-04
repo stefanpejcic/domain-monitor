@@ -129,7 +129,7 @@
         <div class="relative w-full rounded-lg border p-6 shadow-sm bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-900">
             <p class="flex justify-between text-sm font-medium mb-3">
                 <span class="flex items-center gap-2 font-medium">
-                    <img :src="`https://www.google.com/s2/favicons?domain=${domain}`" alt="" class="h-4 w-4 rounded-full">
+                    <img loading="lazy" :src="`https://www.google.com/s2/favicons?domain=${domain}`" alt="" class="h-4 w-4 rounded-full">
                     <span x-text="domain"></span>
                 </span>
                 <span x-text="uptimePercentage + '% uptime'"></span>
