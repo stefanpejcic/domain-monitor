@@ -21,4 +21,4 @@ Easily monitor your domains and get alerts when:
 
 relies entirely on **GitHub Actions** and **GitHub Issues** - no external services required.
 
-Visit on github: [stefanpejcic/heimdall/](https://github.com/stefanpejcic/heimdall/)
+Visit on github: [stefanpejcic/heimdall/](https://github.com/stefanpejcic/heimdall/wiki)
