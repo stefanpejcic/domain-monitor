@@ -37,7 +37,7 @@ relies entirely on **GitHub Actions** and **GitHub Issues** - no external servic
 
 ## Demo
 
-For live demo view: [http://status.pejcic.rs/status/](http://status.pejcic.rs/status/)
+For live demo view: [http://status.openpanel.com/status/](http://status.openpanel.com/status/)
 
 <table border="0">
  <tr>
@@ -45,8 +45,8 @@ For live demo view: [http://status.pejcic.rs/status/](http://status.pejcic.rs/st
     <td><b style="font-size:30px">Single page</b></td>
  </tr>
  <tr>
-    <td><a href="http://status.pejcic.rs/status/"><img src="https://github.com/user-attachments/assets/b0b98526-d5b4-4a9d-9f94-526e93147707" width="400" /></a></td>
-    <td><a href="https://status.pejcic.rs/status/domain.html?domain=openpanel.com"><img src="https://github.com/user-attachments/assets/9ca1d2bb-5c3a-47ef-aabb-666a375ccae5" width="400" /></a></td>
+    <td><a href="http://status.openpanel.com/status/"><img src="https://github.com/user-attachments/assets/b0b98526-d5b4-4a9d-9f94-526e93147707" width="400" /></a></td>
+    <td><a href="http://status.openpanel.com/status/domain.html?domain=openpanel.com"><img src="https://github.com/user-attachments/assets/9ca1d2bb-5c3a-47ef-aabb-666a375ccae5" width="400" /></a></td>
  </tr>
 </table>
 
