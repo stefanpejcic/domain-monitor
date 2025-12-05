@@ -1,11 +1,13 @@
 Easily monitor your domains and get alerts when:
 
-* ⏳ domain is set to expire within **30 days**
-* 🔒 domain SSL certificate **expires soon**
+* ⏳ Domain (WHOIS) is set to expire within **30 days**
+* 🔒 SSL certificate **expires soon**
 * ⚠️ HTTP status code for website is **>400**
-* 🚨 IP address for the website changes
+* ⚠️ Response time for website is **>1000ms**
+* 🚨 IP address (A record) for domain changes
+* 🚨 Nameservers for the domain are changed
 
-relies entirely on **GitHub Actions** and **GitHub Issues**—no external services required.
+relies entirely on **GitHub Actions** and **GitHub Issues** — no external services required.
 
 ---
 
@@ -30,12 +32,13 @@ For demo view: [http://status.pejcic.rs/status/](http://status.pejcic.rs/status/
 1. Fork repository
 2. Add your domains to `domains.txt`.
 3. Optional: If you want a status page, create Gitub Page
-4. That’s it—no extra configuration needed.
+4. That's it.
 
 The workflow will:
 
 * Run automatically **almost every mininute** (or you can trigger it manually).
-* Check the expiration dates of your listed domains.
+* Check daily: WHOIS expiration date, SSL expiration date, Nameservers.
+* Check every time: A record, HTTP response time, Status code.
 
 <table border="0">
  <tr>
@@ -57,6 +60,7 @@ The workflow will:
 - ~add ignore option for ip changes when cloudflare proxy is used~
 - ~add ignore option for ip changes when vercel is used~
 - record whois data
+- check A, AAAA, MX, SOA, TXT records
 - create screenshot when response code >400
 - tag in comment or auto-assign isuses
 - setup assigments per domain
