@@ -1,6 +1,6 @@
 <!--start: description-->
 
-**🗿 Heimdall** is an open-source uptime monitor and status page, fully powered by GitHub Actions and GitHub Pages.
+**🗿 Heimdall** is an open-source WHOIS, DNS, Uptime monitor and status page, fully powered by GitHub Actions and GitHub Pages.
 
 <details data-embed="anandchowdhary.com" data-title="Upptime" data-summary="Uptime monitor and status page powered by GitHub Actions">
   <summary>Why Heimdall?</summary>
