@@ -1,11 +1,1 @@
-openpanel.com
-https://sentinelfirewall.org
-openpanel.org
-ip.openpanel.com
-my.openpanel.com
-dev.openpanel.com
-demo.openpanel.org:2087
-community.openpanel.org
-preview.openpanel.org
-php-versions-api.openpanel.org
-screenshots-v2.openpanel.com/api/screenshot/pejcic.rs
+
