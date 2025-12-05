@@ -17640,9 +17640,18 @@
       "http_ok": true,
       "http_response_time_ms": 159.34,
       "resolved_ip": "66.33.60.34"
+    },
+    {
+      "timestamp": "2025-12-05 04:06:44",
+      "whois_ok": true,
+      "ssl_ok": true,
+      "http_status": 200,
+      "http_ok": true,
+      "http_response_time_ms": 142.05,
+      "resolved_ip": "76.76.21.98"
     }
   ],
-  "ip_address": "13.83.166.225",
+  "ip_address": "20.109.95.162",
   "whois_expiry": "2027-03-10",
   "nameservers": null,
   "ssl_expiry": "2026-01-27"
