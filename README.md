@@ -59,6 +59,7 @@ The workflow will:
 - ~detect nameserver changes and open issues~
 - ~add ignore option for ip changes when cloudflare proxy is used~
 - ~add ignore option for ip changes when vercel is used~
+- ~detect registrar changes in whois info~
 - record whois data
 - check A, AAAA, MX, SOA, TXT records
 - create screenshot when response code >400
