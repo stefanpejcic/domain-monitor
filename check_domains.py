@@ -75,15 +75,18 @@ def is_ip_in_cloudflare_cached(ip):
 def get_whois_info(domain):
     try:
         w = whois.whois(domain)
+
         exp = w.expiration_date
         if isinstance(exp, list):
             exp = exp[0]
 
-        print(f"[WHOIS] For {domain} | exp: {exp}")
-        return exp
+        registrar = w.registrar if hasattr(w, 'registrar') else None
+
+        print(f"[WHOIS] For {domain} | exp: {exp} | registrar: {registrar}")
+        return exp, registrar
     except Exception as e:
         print(f"[WHOIS] Error checking {domain}: {e}")
-        return None
+        return None, None
 
 def get_dns_nameservers(domain):
     try:
@@ -242,11 +245,12 @@ def main():
                 checked_in_last_24h = True  
 
         if not checked_in_last_24h:            # use data from previous check
-            exp_date = get_whois_info(apex)
+            exp_date, registrar = get_whois_info(apex)
             nameservers = get_dns_nameservers(apex)
             ssl_exp = get_ssl_expiration(hostname, port)
         else:                                  # run whois check
-            exp_date = datetime.strptime(domain_history["whois_expiry"], "%Y-%m-%d") if domain_history.get("whois_expiry") else None       
+            exp_date = datetime.strptime(domain_history["whois_expiry"], "%Y-%m-%d") if domain_history.get("whois_expiry") else None
+            registrar = domain_history.get("registrar")
             nameservers = domain_history.get("nameservers")
             ssl_exp = datetime.strptime(domain_history["ssl_expiry"], "%Y-%m-%d") if domain_history.get("ssl_expiry") else None
 
@@ -269,7 +273,21 @@ def main():
                 if issue:
                     close_issue(issue, f"✅ Domain {domain} renewed (expires {exp_date:%Y-%m-%d}, {days_left} days left).")
 
-        # ---- SSL Expiration ----
+        # ---- WHOIS registrar --- #
+        previous_registrar = last_entry.get("registrar") if last_entry else None
+        if previous_registrar:
+            if registrar != previous_registrar:
+                issue = find_issue(f"Registar changed for domain: {domain}")
+                if not issue:
+                    create_issue(
+                        f"🚨 Registar changed for domain: {domain} to: {registrar}",
+                        f"**{domain}** register on last check was: {previous_registrar}.\nNew register information: {registrar}"
+                    )
+                else:
+                    comment_on_issue(issue, f"@stefanpejcic Reminder: **{domain}** register info was changed from: {previous_registrar} to: {registrar}\nCheck domain WHOIS information ASAP!")
+            # no else, this need to be manually closed! 
+
+        # ---- SSL Expiration ---- #
         ssl_days = None
         issue = find_issue(f"SSL for {domain}")
         if ssl_exp:
@@ -376,6 +394,7 @@ def main():
             "ip_address": outgoing_ipv4,
             "whois_expiry": exp_date.strftime("%Y-%m-%d") if exp_date else None,
             "nameservers": nameservers if nameservers else None,
+            "registrar": registrar,
             "ssl_expiry": ssl_exp.strftime("%Y-%m-%d") if ssl_exp else None
         }
 
