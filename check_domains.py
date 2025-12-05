@@ -79,17 +79,20 @@ def get_whois_info(domain):
         if isinstance(exp, list):
             exp = exp[0]
 
-        ns = getattr(w, "nameservers", [])
-        if isinstance(ns, str):
-            ns = [ns]
-        if ns:
-            ns = [n.lower().strip(".") for n in ns]
-
-        print(f"[WHOIS] For {domain} | exp: {exp} | NS: {ns}")
-        return {"expiration_date": exp, "nameservers": ns}
+        print(f"[WHOIS] For {domain} | exp: {exp}")
+        return exp
     except Exception as e:
         print(f"[WHOIS] Error checking {domain}: {e}")
-        return {"expiration_date": None, "nameservers": []}
+        return None
+
+def get_dns_nameservers(domain):
+    try:
+        answers = dns.resolver.resolve(domain, 'NS')
+        return [rdata.to_text().lower().strip('.') for rdata in answers]
+    except Exception as e:
+        print(f"[DNS] Error getting NS for {domain}: {e}")
+        return []
+
 
 def get_ssl_expiration(domain, port=443):
     try:
@@ -239,9 +242,8 @@ def main():
                 checked_in_last_24h = True  
 
         if not checked_in_last_24h:            # use data from previous check
-            info = get_whois_info(apex)
-            exp_date = info["expiration_date"]
-            nameservers = info["nameservers"]
+            exp_date = get_whois_info(apex)
+            nameservers = get_dns_nameservers(apex)
             ssl_exp = get_ssl_expiration(hostname, port)
         else:                                  # run whois check
             exp_date = datetime.strptime(domain_history["whois_expiry"], "%Y-%m-%d") if domain_history.get("whois_expiry") else None       
