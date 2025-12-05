@@ -39,7 +39,7 @@ relies entirely on **GitHub Actions** and **GitHub Issues** — no external serv
 
 ## Demo
 
-For demo view: [http://status.pejcic.rs/status/](http://status.pejcic.rs/status/)
+For live demo view: [http://status.pejcic.rs/status/](http://status.pejcic.rs/status/)
 
 <table border="0">
  <tr>
