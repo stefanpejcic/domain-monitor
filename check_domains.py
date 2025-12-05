@@ -167,7 +167,7 @@ def get_outgoing_ip():
 def main():
     token = os.getenv("GITHUB_TOKEN")
     repo_name = os.getenv("GITHUB_REPOSITORY")
-    days_threshold = int(os.getenv("DAYS_THRESHOLD", "30"))
+    days_threshold = int(os.getenv("DAYS_THRESHOLD", "29"))
     response_threshold = int(os.getenv("RESPONSE_THRESHOLD", "1000"))
     
     print("==============================================")
