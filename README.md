@@ -1,9 +1,9 @@
 Easily monitor your domains and get alerts when:
 
 * ⏳ Domain (WHOIS) is set to expire within **30 days**
-* 🔒 SSL certificate **expires soon**
+* 🔓 SSL certificate **expires soon**
 * ⚠️ HTTP status code for website is **>400**
-* ⚠️ Response time for website is **>1000ms**
+* 🐌 Response time for website is **>1000ms**
 * 🚨 IP address (A record) for domain changes
 * 🚨 Nameservers for the domain are changed
 
