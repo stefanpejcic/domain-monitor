@@ -2,7 +2,7 @@
 
 **🗿 Heimdall** is an open-source WHOIS, DNS, Uptime monitor and status page, fully powered by GitHub Actions and GitHub Pages.
 
-<details data-embed="anandchowdhary.com" data-title="Upptime" data-summary="Uptime monitor and status page powered by GitHub Actions">
+<details data-embed="https://github.com/stefanpejcic/heimdall/" data-title="Heimdall" data-summary="an open-source WHOIS, DNS, Uptime monitor and status page, fully powered by GitHub Actions and GitHub Pages">
   <summary>Why Heimdall?</summary>
 
 In the summer of 2025, I got caught up with personal milestones: got married, became a father, bought an apartment - and **ended up missing domain expiration emails**. Several of my domains, including [pcx3.com](https://web.archive.org/web/20250617005754/https://pcx3.com/) and [plugins.club](https://web.archive.org/web/20250418220804/http://plugins.club/), expired, and years of work and projects were lost. 😞 I didn't want this to ever happen again, neither to me nor anyone else.
