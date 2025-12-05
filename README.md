@@ -53,7 +53,7 @@ For live demo view: [http://status.pejcic.rs/status/](http://status.pejcic.rs/st
 ---
 ## 🚀 Usage
 
-1. Fork repository
+1. Click on ['Use this template'](https://github.com/new?template_name=heimdall&template_owner=stefanpejcic)
 2. Add your domains to `domains.txt`.
 3. Optional: If you want a status page, create Gitub Page
 4. That's it.
