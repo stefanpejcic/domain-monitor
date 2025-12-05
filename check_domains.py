@@ -282,17 +282,12 @@ def main():
                 if issue:
                     close_issue(issue, f"✅ SSL for {domain} renewed (expires {ssl_exp:%Y-%m-%d}, {ssl_days} days left).")
 
-        # ---- HTTP Status ----
+        # ---- HTTP response time ----
         status, resp_time = get_http_status(url, session)
         resp_time_text = f"{resp_time:.0f} ms" if resp_time is not None else "N/A"
-        issue = find_issue(f"Slow response for {domain}") # todo: cover statuses!
-        if status is None or status >= 400:
-            if not issue:
-                create_issue(
-                    f"❌ Status check failed for {domain} | URL: {url}",
-                    f"Latest HTTP response: `{status}`, response time: {resp_time_text} ms"
-                )
-        elif resp_time and resp_time > response_threshold:
+
+        issue = find_issue(f"Slow response for {domain}")
+        if resp_time and resp_time > response_threshold:
             if not issue:
                 create_issue(
                     f"⚠️ Slow response for {domain}",
@@ -300,11 +295,29 @@ def main():
                 )
         else:
             if issue:
-                close_issue(issue, f"✅ {domain} is healthy again (status {status}, response time {resp_time_text}).")
+                close_issue(issue, f"✅ {domain} is healthy again, response time {resp_time_text}).")
+
+        # ---- Status code ----
+        issue = find_issue(f"Status check failed for {domain}")
+        if status is None:
+            if not issue:
+                create_issue(
+                    f"❌ Status check failed for {domain} | URL: {url}",
+                    f"Latest HTTP response code: `{status}`"
+                )
+            else:
+                comment_on_issue(issue, f"Still no HTTP status code received.")
+        elif status >= 400:
+            if not issue:
+                create_issue(
+                    f"❌ Status check failed for {domain} | URL: {url}",
+                    f"Latest HTTP response code: `{status}`"
+                )
+        else:
+            if issue:
+                close_issue(issue, f"✅ {domain} is healthy again, status code: {status}).")
 
 
-
-        
         # ---- Check if NS changed ----
         previous_ns = last_entry.get("nameservers") if last_entry else None
         ip_issue = find_issue(f"Nameservers change detected for {domain}")
@@ -319,6 +332,7 @@ def main():
                 else:
                     comment_on_issue(ip_issue, f"NS updated to `{nameservers}`")
                     ip_issue.edit(title=f"🚨 Nameservers change detected for {domain} from `{previous_ns}` to `{nameservers}`")
+
 
         # ---- Check if IPv4 changed ---- #
         try:
