@@ -5,7 +5,7 @@
 <details data-embed="anandchowdhary.com" data-title="Upptime" data-summary="Uptime monitor and status page powered by GitHub Actions">
   <summary>Why Heimdall?</summary>
 
-In the summer of 2025, I got caught up with personal milestones: got married, became a father, bought an apartment - and **ended up missing domain expiration emails**. Several of my domains, including `pcx3.com` and `plugins.club`, expired, and years of work and projects were lost. 😞 I didn't want this to ever happen again, neither to me nor anyone else.
+In the summer of 2025, I got caught up with personal milestones: got married, became a father, bought an apartment - and **ended up missing domain expiration emails**. Several of my domains, including [pcx3.com](https://web.archive.org/web/20250617005754/https://pcx3.com/) and [plugins.club](https://web.archive.org/web/20250418220804/http://plugins.club/), expired, and years of work and projects were lost. 😞 I didn't want this to ever happen again, neither to me nor anyone else.
 
 Since I use GitHub daily, I realized that if these were GitHub Issues, I probably wouldn't have missed them.
 
