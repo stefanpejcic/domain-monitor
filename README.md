@@ -1,3 +1,28 @@
+<!--start: description-->
+
+**🗿 Heimdall** is an open-source uptime monitor and status page, fully powered by GitHub Actions and GitHub Pages.
+
+<details data-embed="anandchowdhary.com" data-title="Upptime" data-summary="Uptime monitor and status page powered by GitHub Actions">
+  <summary>Why Heimdall?</summary>
+
+In the summer of 2025, I got caught up with personal milestones: got married, became a father, bought an apartment - and **ended up missing domain expiration emails**. Several of my domains, including `pcx3.com` and `plugins.club`, expired, and years of work and projects were lost. 😞 I didn't want this to ever happen again, neither to me nor anyone else.
+
+Since I use GitHub daily, I realized that if these were GitHub Issues, I probably wouldn't have missed them.
+
+That's why I decided to use [Upptime](https://github.com/upptime/upptime), an amazing tool that tracks uptime using GitHub Issues. However, I wasn't a fan of how it records statuses via git commits. I wanted JSON data that could easily feed into other tools like Grafana.
+
+Enter **Heimdall**: it uses GitHub Actions to run scheduled checks, stores results in JSON files per domain, and presents the data on a front-end using simple HTML pages.
+
+It notifies you whenever there are changes to your domain's WHOIS info, SSL certificate, or HTTP status/response.
+
+Feel free to use it, experiment, break it, fork it - whatever you like!
+
+</details>
+
+<!--end: description-->
+
+
+
 Easily monitor your domains and get alerts when:
 
 * ⏳ Domain (WHOIS) is set to expire within **30 days**
