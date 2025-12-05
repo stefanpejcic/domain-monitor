@@ -8,7 +8,7 @@ on:
       ssl_threshold:
         description: "Days before SSL/WHOIS expiration to trigger an alert"
         required: false
-        default: "30"
+        default: "29"
       response_time:
         description: "HTTP response time in ms to trigger an alert"
         required: false
@@ -55,7 +55,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           RESPONSE_THRESHOLD: ${{ github.event.inputs.response_time || '1000' }}
-          DAYS_THRESHOLD: ${{ github.event.inputs.ssl_threshold || '30' }}
+          DAYS_THRESHOLD: ${{ github.event.inputs.ssl_threshold || '29' }}
         run: python check_domains.py
 
       - name: Commit files
