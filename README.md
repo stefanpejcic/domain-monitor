@@ -17,6 +17,7 @@ It notifies you whenever there are changes to your domain's WHOIS info, SSL cert
 
 Feel free to use it, experiment, break it, fork it - whatever you like!
 
+---
 </details>
 
 <!--end: description-->
