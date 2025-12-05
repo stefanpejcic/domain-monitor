@@ -342,16 +342,15 @@ def main():
         previous_ns = last_entry.get("nameservers") if last_entry else None
         ip_issue = find_issue(f"Nameservers change detected for {domain}")
         
-        if previous_ns:
-            if nameservers and previous_ns != nameservers:
-                if not ip_issue:
-                    create_issue(
-                        f"🚨 Nameservers change detected for {domain} ({nameservers})",
-                        f"Domain **{domain}** NS changed from `{previous_ns}` to `{nameservers}`"
-                    )
-                else:
-                    comment_on_issue(ip_issue, f"NS updated to `{nameservers}`")
-                    ip_issue.edit(title=f"🚨 Nameservers change detected for {domain} from `{previous_ns}` to `{nameservers}`")
+        if previous_ns and nameservers and previous_ns != nameservers:
+            if not ip_issue:
+                create_issue(
+                    f"🚨 Nameservers change detected for {domain} ({nameservers})",
+                    f"Domain **{domain}** NS changed from `{previous_ns}` to `{nameservers}`"
+                )
+            else:
+                comment_on_issue(ip_issue, f"NS updated to `{nameservers}`")
+                ip_issue.edit(title=f"🚨 Nameservers change detected for {domain} from `{previous_ns}` to `{nameservers}`")
 
 
         # ---- Check if IPv4 changed ---- #
@@ -363,7 +362,7 @@ def main():
 
         previous_ip = last_entry.get("resolved_ip") if last_entry else None
 
-        if resolved_ip and previous_ip != resolved_ip:
+        if resolved_ip and previous_ip and previous_ip != resolved_ip:
             if is_ip_in_cloudflare_cached(resolved_ip):
                 print(f"[DNS] {hostname} resolves to Cloudflare IP {resolved_ip}, ignoring for IP change detection.")
             elif is_ip_vercel(resolved_ip):
