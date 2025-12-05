@@ -22,8 +22,6 @@ Feel free to use it, experiment, break it, fork it - whatever you like!
 
 <!--end: description-->
 
-
-
 Easily monitor your domains and get alerts when:
 
 * ⏳ Domain (WHOIS) is set to expire within **30 days**
@@ -33,7 +31,7 @@ Easily monitor your domains and get alerts when:
 * 🚨 IP address (A record) for domain changes
 * 🚨 Nameservers for the domain are changed
 
-relies entirely on **GitHub Actions** and **GitHub Issues** — no external services required.
+relies entirely on **GitHub Actions** and **GitHub Issues** - no external services required.
 
 ---
 
