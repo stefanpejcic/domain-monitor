@@ -25,10 +25,10 @@ Feel free to use it, experiment, break it, fork it - whatever you like!
 Easily monitor your domains and get alerts when:
 
 * ⏳ Domain (WHOIS) is set to expire within **30 days**
-* 🔓 SSL certificate **expires soon**
-* ⚠️ HTTP status code for website is **>400**
-* 🐌 Response time for website is **>1000ms**
-* 🚨 IP address (A record) for domain changes
+* 🔓 SSL certificate **expires soon** _([example](https://github.com/stefanpejcic/heimdall/issues/410))_
+* ⚠️ HTTP status code for website is **>400** _([example](https://github.com/stefanpejcic/heimdall/issues/1432))_
+* 🐌 Response time for website is **>1000ms** _([example](https://github.com/stefanpejcic/heimdall/issues/1433))_
+* 🚨 IP address (A record) for domain changes _([example](https://github.com/stefanpejcic/heimdall/issues/1372))_
 * 🚨 Nameservers for the domain are changed
 
 relies entirely on **GitHub Actions** and **GitHub Issues** - no external services required.
