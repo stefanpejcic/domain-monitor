@@ -2,7 +2,7 @@
 <html lang="en" x-data="domainMonitor()" x-init="init()">
 <head>
   <meta charset="UTF-8">
-  <title>Domain Monitor</title>
+  <title>Status Page</title>
   <style>
     [x-cloak] { display: none !important; }
   </style>  
@@ -370,7 +370,7 @@ function domainMonitor() {
         };
       });
      
-      document.title = `Domain Monitor — (${this.domains.length} domain${this.domains.length !== 1 ? 's' : ''})`;  // update browser tab
+      document.title = `Status Page — (${this.domains.length} domain${this.domains.length !== 1 ? 's' : ''})`;  // update browser tab
     }
   }
 }
